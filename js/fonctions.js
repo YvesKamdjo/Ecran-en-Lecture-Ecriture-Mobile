@@ -13,8 +13,8 @@ function getDocumentReady(){
 }
 
  function getUrbaToken(){
- try{
- $.ajax({
+	try{
+	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',			
@@ -24,4 +24,16 @@ function getDocumentReady(){
 	console.log(e);
 
 	}	
+}
+
+function setValidToken(newToken){
+	try { 
+	ecranEnLecture.validToken= newToken.Token;
+	}
+	catch(e){
+	console.log(e);
+	getUrbaToken();
+	}
+	console.log(newToken.Token);
+	
 }
