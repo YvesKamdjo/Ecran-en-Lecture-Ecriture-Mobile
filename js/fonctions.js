@@ -25,6 +25,7 @@ function getDocumentReady(){
 
 	}	
 }
+// teste de git extension{}
 
 function setValidToken(newToken){
 	try { 
