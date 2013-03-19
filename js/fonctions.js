@@ -21,7 +21,7 @@ function getDocumentReady(){
 	})
 	}
 	catch(e){
-	console.log(e);
+	console.log(error);
 
 	}	
 }
