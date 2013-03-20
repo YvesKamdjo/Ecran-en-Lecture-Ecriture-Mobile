@@ -1,3 +1,14 @@
 .body
 {
 }
+
+#salles-libres
+{
+color: green;
+text-align: center;
+}
+#salles-occupees
+{
+color: red;
+text-align: center;
+}

@@ -40,18 +40,23 @@ function setValidToken(newToken){
 	
 }
 
-function creerListeSalles(){
+function creerListeSallesLibres(){
 var creation=[];
-creation[0]='<ul id="listes-salles" data-role="listview" data-inset="true" data-divider-theme="d">';
-creation[1]='<li data-role="list-divider" id="salles-libres">Libres</li>';
-creation[3]='<li data-role="list-divider" id="salles-occupees">Occupées</li></ul>';
+creation[0]='<ul id="listes-salles-libres" data-role="listview" data-inset="true" data-divider-theme="d">';
+creation[1]='<li data-role="list-divider" id="salles-libres">Libres</li></ul>';
+$('#container').append(creation.join(''));
+}
+function creerListeSallesOccupees(){
+var creation=[];
+creation[0]='<ul id="listes-salles-occupees" data-role="listview" data-inset="true" data-divider-theme="d">';
+creation[1]='<li data-role="list-divider" id="salles-occupees">Occupées</li></ul>';
 $('#container').append(creation.join(''));
 }
 
 function ajouterSalleLibre(nomSalle){
-$("#salles-libres").append('<li><a href="#">'+nomsalle+'</a></li>');
+$("#listes-salles-libres").append('<li><a href="#">'+nomSalle+'</a></li>');
 }
 
 function ajouterSalleOccupee(nomSalle){
-$("#salles-occupees").append('<li><a href="#">'+nomsalle+'</a></li>');
+$("#listes-salles-occupees").append('<li><a href="#">'+nomSalle+'</a></li>');
 }

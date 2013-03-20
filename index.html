@@ -15,7 +15,12 @@
 		<script> 
                // setIdentification('hanae', 'hanae');
 				//getDocumentReady();
-				creerListeSalles();
+				creerListeSallesLibres();
+				creerListeSallesOccupees();
+				for (var i=1; i<4;i++){
+					ajouterSalleLibre("Libre "&i);
+					ajouterSalleOccupee("Occupées "&i);
+				}
 		</script>
 	</body>
 	
