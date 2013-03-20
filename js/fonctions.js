@@ -36,7 +36,7 @@ function setValidToken(newToken){
 	console.log(e);
 	getUrbaToken();
 	}
-	console.log(newToken.Token);
+	//console.log(newToken.Token);
 	getRoomList();
 	
 }
@@ -56,7 +56,27 @@ function getRoomList(){
 }
 
 function fillRoomList(objJson) {
-	console.log(objJson);
+	//console.log(objJson);
+	try {
+		var i=0;
+		var j=0;
+		var allRoomList = [];
+		while (objJson[i]){
+			if (objJson[i].location.id==85) {
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				j++;}
+			else if (objJson[i].location.id==89) {
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				j++;}
+			i++;
+			
+		}
+	}
+
+	catch(e){
+	console.log(e);
+	getRoomList();
+	}
 }
 
 function creerListeSallesLibres(){
