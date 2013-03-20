@@ -54,9 +54,11 @@ $('#container').append(creation.join(''));
 }
 
 function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li><a href="#">'+nomSalle+'</a></li>');
+var idSalle="salle"+nomSalle
+$("#listes-salles-libres").append('<li class="libre"> <a  href="#">'+nomSalle+'</a></li></div>');
+//$(this).css('color','green');
 }
 
 function ajouterSalleOccupee(nomSalle){
-$("#listes-salles-occupees").append('<li><a href="#">'+nomSalle+'</a></li>');
+$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a href="#">'+nomSalle+'</a></li>');
 }
