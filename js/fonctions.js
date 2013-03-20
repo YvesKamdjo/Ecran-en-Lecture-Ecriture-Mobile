@@ -9,7 +9,7 @@ function setIdentification(log, pass){
 function getDocumentReady(){
 	$(document).ready(function() {
 		
-		//getUrbaToken();
+		getUrbaToken();
 	});
 }
 
@@ -37,7 +37,26 @@ function setValidToken(newToken){
 	getUrbaToken();
 	}
 	console.log(newToken.Token);
+	getRoomList();
 	
+}
+
+function getRoomList(){
+	try{
+	$.ajax({
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
+			dataType : 'jsonp',
+			jsonpCallback: 'fillRoomList',		
+		})
+		}
+	catch(e){
+	console.log(e);
+	getRoomList();
+	}
+}
+
+function fillRoomList(objJson) {
+	console.log(objJson);
 }
 
 function creerListeSallesLibres(){
