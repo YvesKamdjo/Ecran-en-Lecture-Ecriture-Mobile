@@ -8,7 +8,8 @@ function setIdentification(log, pass){
 
 function getDocumentReady(){
 	$(document).ready(function() {
-		getUrbaToken();
+		
+		//getUrbaToken();
 	});
 }
 
@@ -41,11 +42,16 @@ function setValidToken(newToken){
 
 function creerListeSalles(){
 var creation=[];
-creation[0]='<ul id="liste-salle" data-role="listView" data-inset="true" data-divider-theme="d">';
+creation[0]='<ul id="listes-salles" data-role="listview" data-inset="true" data-divider-theme="d">';
 creation[1]='<li data-role="list-divider" id="salles-libres">Libres</li>';
-creation[2]='<li data-role="list-divider" id="salles-occupees">Occupées</li></ul>';
+creation[3]='<li data-role="list-divider" id="salles-occupees">Occupées</li></ul>';
 $('#container').append(creation.join(''));
 }
 
-function ajouterSallesBusy(){
+function ajouterSalleLibre(nomSalle){
+$("#salles-libres").append('<li><a href="#">'+nomsalle+'</a></li>');
+}
+
+function ajouterSalleOccupee(nomSalle){
+$("#salles-occupees").append('<li><a href="#">'+nomsalle+'</a></li>');
 }
