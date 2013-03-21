@@ -159,6 +159,11 @@ function compareRoomLists() {
 function splitRoomList(freeRooms, busyRooms) {
 	creerListeSallesLibres();
 	creerListeSallesOccupees();
+	
+	$('.listes-salles-libres').remove();
+	$('.listes-salles-occupees').remove();
+	$('.salles-libres').remove();
+	$('.salles-occupees').remove();
 
 	for (i=0;i<freeRooms.length;i++){
 			ajouterSalleLibre(freeRooms[i].name);
@@ -168,10 +173,16 @@ function splitRoomList(freeRooms, busyRooms) {
 	}
 	
 	setTimeout(function(){
-		console.log("refresh");
+	
+		$('.listes-salles-libres').remove();
+		$('.listes-salles-occupees').remove();
+		$('.salles-libres').remove();
+		$('.salles-occupees').remove();
+		
+		console.log("refresh");/*
 		ecranEnLecture.roomList.length=0;
 		ecranEnLecture.freeRoomList.length=0;
-		getUrbaToken();
+		getUrbaToken();*/
 	},60000);
 }
 
