@@ -53,7 +53,6 @@ function getRoomList(){
 }
 
 function fillRoomList(objJson) {
-	//console.log(objJson);
 	try {
 		var i=0;
 		var j=0;
@@ -69,7 +68,6 @@ function fillRoomList(objJson) {
 			
 		}
 	}
-
 	catch(e){
 	console.log(e);
 	getRoomList();
@@ -97,10 +95,9 @@ function createDuration(){
 	if (minuteBis < 10) { minuteBis = "0" + minuteBis; }	
 	
 	var nowUrba=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+hour+":"+minute+":00";
-	var inFifteenUrba=later.getFullYear()+"-"+(later.getMonth()+1)+"-"+later.getDate()+"T"+hourBis+":"+minuteBis+":00";
+	var laterUrba=later.getFullYear()+"-"+(later.getMonth()+1)+"-"+later.getDate()+"T"+hourBis+":"+minuteBis+":00";
 	
-	var duration=nowUrba+","+inFifteenUrba;
-	console.log(duration);
+	var duration=nowUrba+","+laterUrba;
 	return duration;
 }
 
@@ -109,7 +106,6 @@ function getFreeRoomList(){
 	try{
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+ecranEnLecture.validToken,
-			//url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,2013-03-21T15:00:00,2013-03-21T15:30:00&Token='+ecranEnLecture.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList',		
 		})
@@ -121,8 +117,6 @@ function getFreeRoomList(){
 }
 
 function fillFreeRoomList(objJson){
-	//console.log('http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,2013-03-21T15:00:00,2013-03-21T16:00:00&Token='+ecranEnLecture.validToken);
-	console.log(objJson);
 	try {
 		var i=0;
 		var j=0;
@@ -153,13 +147,8 @@ function compareRoomLists() {
 	var allRooms=ecranEnLecture.roomList;
 	var freeRooms=ecranEnLecture.freeRoomList;
 	var i,j=0;
-	var a=freeRooms.length;
-	var b=allRooms.length;
-	console.log("compareRoomList");
-	console.log(a+", "+b);
 	for (i=0;i<freeRooms.length;i++) {
 		for (j=0;j<allRooms.length;j++) {
-			console.log(freeRooms[i].name+" et "+allRooms[j].name);
 			if (freeRooms[i].name==allRooms[j].name) allRooms.splice(i,1);
 		}
 	}
@@ -177,6 +166,13 @@ function splitRoomList(freeRooms, busyRooms) {
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name);
 	}
+	
+	setTimeout(function(){
+		console.log("refresh");
+		ecranEnLecture.roomList.length=0;
+		ecranEnLecture.freeRoomList.length=0;
+		getUrbaToken();
+	},60000);
 }
 
 function creerListeSallesLibres(){
@@ -194,7 +190,6 @@ $('#container').append(creation.join(''));
 
 function ajouterSalleLibre(nomSalle){
 //var idSalle="salle"+nomSalle;
-console.log(nomSalle);
 $("#listes-salles-libres").append('<li > <a class="libre"  href="#">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 }
