@@ -83,13 +83,13 @@ console.log(objJson);
 }
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" data-transition="flow" href="details-salle.html">'+nomSalle+'</a></li></div>');
+$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 $('ul').listview('refresh');
 }
 
 function ajouterSalleOccupee(nomSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" href="#">'+nomSalle+'</a></li>');
+$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html">'+nomSalle+'</a></li>');
 $("a.occupee").css('color','red');
 $('ul').listview('refresh');
 }
