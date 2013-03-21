@@ -20,7 +20,6 @@ function getDocumentReady(){
 	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
-		async: 'false',
 		jsonpCallback: 'setValidToken',			
 	})
 	}
@@ -39,7 +38,6 @@ function setValidToken(newToken){
 	console.log(e);
 	getUrbaToken();
 	}
-	//console.log(newToken.Token);
 	getRoomList();
 	
 }
@@ -49,7 +47,6 @@ function getRoomList(){
 	$.ajax({
 			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
 			'dataType' : 'jsonp',
-			'async':'false',
 			'jsonpCallback': 'fillRoomList',		
 		})
 		}
@@ -84,7 +81,7 @@ function fillRoomList(objJson) {
 	afficheSallesLibres();
 	afficheSallesOccupees();
 }
-// Interface graphique En JQuery
+// Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle){
 $("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" href="#">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
@@ -97,13 +94,11 @@ $("a.occupee").css('color','red');
 $('ul').listview('refresh');
 }
 function afficheSallesLibres(){
-//console.log(allRoomList[0].name);
 $.each(freeRoomList, function(key, value) {
 ajouterSalleLibre(value.name);
 });
 }
 function afficheSallesOccupees(){
-//console.log(allRoomList[0].name);
 $.each(busyRoomList, function(key, value) {
 ajouterSalleOccupee(value.name);
 });
