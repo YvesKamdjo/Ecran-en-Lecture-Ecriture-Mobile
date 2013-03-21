@@ -57,7 +57,7 @@ function getRoomList(){
 }
 
 function fillRoomList(objJson) {
-	console.log(objJson);
+console.log(objJson);
 	try {
 		var i=0;
 		var j=0;
@@ -83,7 +83,7 @@ function fillRoomList(objJson) {
 }
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" href="#">'+nomSalle+'</a></li></div>');
+$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" data-transition="flow" href="details-salle.html">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 $('ul').listview('refresh');
 }
