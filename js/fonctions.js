@@ -1,5 +1,8 @@
 var ecranEnLecture= new Object();
 var refresh=false;
+var freeRoomList = [];
+var busyRoomList=[];
+var objetJSON= new Object();
 
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
@@ -7,17 +10,17 @@ function setIdentification(log, pass){
 }
 
 function getDocumentReady(){
-	$(document).ready(function() {
-		
-		//getUrbaToken();
-	});
-}
-
+					$(document).ready(function() {
+						getUrbaToken();
+					});
+				}
+				
  function getUrbaToken(){
 	try{
 	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
+		async: 'false',
 		jsonpCallback: 'setValidToken',			
 	})
 	}
@@ -44,9 +47,10 @@ function setValidToken(newToken){
 function getRoomList(){
 	try{
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
-			dataType : 'jsonp',
-			jsonpCallback: 'fillRoomList',		
+			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
+			'dataType' : 'jsonp',
+			'async':'false',
+			'jsonpCallback': 'fillRoomList',		
 		})
 		}
 	catch(e){
@@ -56,18 +60,18 @@ function getRoomList(){
 }
 
 function fillRoomList(objJson) {
-	//console.log(objJson);
+	console.log(objJson);
 	try {
 		var i=0;
 		var j=0;
-		var allRoomList = [];
+		var k=0;
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
-				j++;}
+				busyRoomList[k]={"id":objJson[i].id, "name":objJson[i].displayName};
+				k++;}
 			i++;
 			
 		}
@@ -77,30 +81,31 @@ function fillRoomList(objJson) {
 	console.log(e);
 	getRoomList();
 	}
+	afficheSallesLibres();
+	afficheSallesOccupees();
 }
-
 // Interface graphique En JQuery
-
-function creerListeSallesLibres(){
-var creation=[];
-creation[0]='<ul id="listes-salles-libres" data-role="listview" data-inset="true" data-divider-theme="d">';
-creation[1]='<li data-role="list-divider" id="salles-libres">Salles Libres</li></ul>';
-$('#container').append(creation.join(''));
-}
-function creerListeSallesOccupees(){
-var creation=[];
-creation[0]='<ul id="listes-salles-occupees" data-role="listview" data-inset="true" data-divider-theme="d">';
-creation[1]='<li data-role="list-divider" id="salles-occupees">Salles Occupées</li></ul>';
-$('#container').append(creation.join(''));
-}
-
 function ajouterSalleLibre(nomSalle){
 $("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" href="#">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
+$('ul').listview('refresh');
 }
 
 function ajouterSalleOccupee(nomSalle){
 $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" href="#">'+nomSalle+'</a></li>');
 $("a.occupee").css('color','red');
+$('ul').listview('refresh');
+}
+function afficheSallesLibres(){
+//console.log(allRoomList[0].name);
+$.each(freeRoomList, function(key, value) {
+ajouterSalleLibre(value.name);
+});
+}
+function afficheSallesOccupees(){
+//console.log(allRoomList[0].name);
+$.each(busyRoomList, function(key, value) {
+ajouterSalleOccupee(value.name);
+});
 }
 //Fin Interface graphique
