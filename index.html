@@ -11,11 +11,18 @@
 		<title> index </title>
 	</head>
 	<body>
-		<div  id="container"></div>
+		<div data-role="header">
+		<h1>Occupation des Salles</h1><!-- l'entête-->
+		</div>
+		<div  id="container"></div><!-- le contenue-->
+		<div data-role="footer"><!-- le pied de page-->
+		<h4>Lucca @2013</h4>
+		</div>
 		<script> 
 		var i;
-                setIdentification('hanae', 'hanae');
-				getDocumentReady();
+                                setIdentification('hanae', 'hanae');
+				//getDocumentReady();
+
 				creerListeSallesLibres();
 				creerListeSallesOccupees();
 				for (i=1; i<4;i++){

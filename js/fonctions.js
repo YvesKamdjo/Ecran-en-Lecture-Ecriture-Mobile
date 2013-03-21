@@ -9,7 +9,7 @@ function setIdentification(log, pass){
 function getDocumentReady(){
 	$(document).ready(function() {
 		
-		getUrbaToken();
+		//getUrbaToken();
 	});
 }
 
@@ -79,27 +79,28 @@ function fillRoomList(objJson) {
 	}
 }
 
+// Interface graphique En JQuery
+
 function creerListeSallesLibres(){
 var creation=[];
 creation[0]='<ul id="listes-salles-libres" data-role="listview" data-inset="true" data-divider-theme="d">';
-creation[1]='<li data-role="list-divider" id="salles-libres">Libres</li></ul>';
+creation[1]='<li data-role="list-divider" id="salles-libres">Salles Libres</li></ul>';
 $('#container').append(creation.join(''));
 }
 function creerListeSallesOccupees(){
 var creation=[];
 creation[0]='<ul id="listes-salles-occupees" data-role="listview" data-inset="true" data-divider-theme="d">';
-creation[1]='<li data-role="list-divider" id="salles-occupees">Occupées</li></ul>';
+creation[1]='<li data-role="list-divider" id="salles-occupees">Salles Occupées</li></ul>';
 $('#container').append(creation.join(''));
 }
 
 function ajouterSalleLibre(nomSalle){
-var idSalle="salle"+nomSalle;
-$("#listes-salles-libres").append('<li > <a class="libre"  href="#">'+nomSalle+'</a></li></div>');
+$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" href="#">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 }
 
 function ajouterSalleOccupee(nomSalle){
-var idSalle="salle"+nomSalle;
 $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" href="#">'+nomSalle+'</a></li>');
 $("a.occupee").css('color','red');
 }
+//Fin Interface graphique
