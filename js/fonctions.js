@@ -28,7 +28,7 @@ function getDocumentReady(){
 }
 // teste de git extension{}
 
-function setValidToken(newToken){
+function setValidToken(newToken,a){
 	try { 
 	ecranEnLecture.validToken= newToken.Token;
 	}
@@ -63,10 +63,10 @@ function fillRoomList(objJson) {
 		var allRoomList = [];
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":0};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":1};
 				j++;}
 			i++;
 			
@@ -76,6 +76,54 @@ function fillRoomList(objJson) {
 	catch(e){
 	console.log(e);
 	getRoomList();
+	}
+	//getFreeRoomList();
+	//console.log(allRoomList);
+	splitRoomList(allRoomList);
+}
+/*
+function createDate(){
+	var today= new Date();
+
+	return endDate;
+}
+
+function getFreeRoomList(){
+	try{
+	$.ajax({
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,21/03/2013T09:00:00,21/03/2013T10:00:00&Token='+ecranEnLecture.validToken,
+			dataType : 'jsonp',
+			jsonpCallback: 'editRoomList',		
+		})
+		}
+	catch(e){
+	console.log(e);
+	getRoomList();
+	}
+}
+
+function editRoomList(json){
+	console.log(json);
+}
+*/
+
+function splitRoomList(roomList) {
+	creerListeSallesLibres();
+	creerListeSallesOccupees();
+
+	for (i=0;i<roomList.length;i++){
+		if ((roomList[i].free)==0) {
+			//busyRoomList[j]=roomList[i];
+			console.log(roomList[i].name);
+			ajouterSalleOccupee(roomList[i].name);
+			//j++;
+		}
+		else {
+			//freeRoomList[k]=roomList[i];
+			console.log(roomList[i].name);
+			ajouterSalleLibre(roomList[i].name)
+			//k++;
+		}
 	}
 }
 
@@ -93,13 +141,14 @@ $('#container').append(creation.join(''));
 }
 
 function ajouterSalleLibre(nomSalle){
-var idSalle="salle"+nomSalle;
+//var idSalle="salle"+nomSalle;
+console.log(nomSalle);
 $("#listes-salles-libres").append('<li > <a class="libre"  href="#">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 }
 
 function ajouterSalleOccupee(nomSalle){
-var idSalle="salle"+nomSalle;
+//var idSalle="salle"+nomSalle;
 $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" href="#">'+nomSalle+'</a></li>');
 $("a.occupee").css('color','red');
 }
