@@ -25,7 +25,7 @@ function getDocumentReady(){
 	}
 	catch(e){
 	console.log(error);
-	}	
+	}
 }
 
 function setValidToken(newToken){
@@ -39,7 +39,6 @@ function setValidToken(newToken){
 }
 
 function getRoomList(){
-	if (request==0) url ='http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken;
 	try{
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
