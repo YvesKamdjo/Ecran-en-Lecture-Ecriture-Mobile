@@ -132,7 +132,6 @@ function fillFreeRoomList(objJson){
 	console.log(e);
 	getRoomList();
 	}
-	console.log(freeRoomList);
 	ecranEnLecture.freeRoomList=freeRoomList;
 	compareRoomLists();
 
@@ -161,6 +160,14 @@ function splitRoomList(freeRooms, busyRooms) {
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name);
 	}
+	
+	$('#listes-salles-libres').on('click', 'li', function() {
+		getNameFreeRoomDisplayed($(this).text());  
+	});
+	$('#listes-salles-occupees').on('click', 'li', function() {
+        getNameBusyRoomDisplayed($(this).text()); 
+    }); 
+	 
 }
 
 // Interface graphique En JQuery Mobile
