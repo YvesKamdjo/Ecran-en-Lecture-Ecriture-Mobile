@@ -11,12 +11,17 @@
 		<title> Détails de la salle </title>
 	</head>
 	<body>
-		<div data-role="header" id="entete-detail-salle">
-		<h1></h1><!-- l'entête-->
+		<div data-role="header">
+		<!--a href="#" data-icon="delete">Cancel</a-->
+		<h1 id="text-salle-occupee"> Salle...</h1><!-- l'entête-->
+		<a href="index.html" data-icon="home" data-transition="flow" data-theme="b" class="ui-btn-right">Accueil</a>
 		</div>
 		<div data-role="content" id="contenu-details-salle" background="red">
 		</div>
 		<div data-role="footer"><!-- le pied de page-->
 		<h4>Lucca @2013</h4>
 		</div>
+		<script>
+		setNameBusyRoomDisplayed();
+		</script>
 	</body>

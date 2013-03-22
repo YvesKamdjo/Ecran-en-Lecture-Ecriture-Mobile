@@ -80,10 +80,17 @@ console.log(objJson);
 	}
 	afficheSallesLibres();
 	afficheSallesOccupees();
+	$('#listes-salles-libres').on('click', 'li', function() {
+       getNameFreeRoomDisplayed($(this).text()); 
+    });
+	$('#listes-salles-occupees').on('click', 'li', function() {
+       getNameBusyRoomDisplayed($(this).text()); 
+    });
+	 
 }
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li><div id="col"></div> <a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li></div>');
+$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li></div>');
 $("a.libre").css('color','green');
 $('ul').listview('refresh');
 }
@@ -104,3 +111,16 @@ ajouterSalleOccupee(value.name);
 });
 }
 //Fin Interface graphique
+// Evenements sur les cliques des listes
+function getNameFreeRoomDisplayed(salle){
+	ecranEnLecture.nomSalle=salle;
+}
+function setNameFreeRoomDisplayed(){
+	$("#text-salle-libre").html("Salle "+ecranEnLecture.nomSalle);
+}
+function getNameBusyRoomDisplayed(salle){
+	ecranEnLecture.nomSalle=salle;
+}
+function setNameBusyRoomDisplayed(){
+	$("#text-salle-occupee").html("Salle "+ecranEnLecture.nomSalle);
+}

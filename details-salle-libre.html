@@ -10,13 +10,17 @@
 		<script type="text/javascript" src="js/fonctions.js"></script>
 		<title> Détails de la salle </title>
 	</head>
-	<body>
+	<body >
 		<div data-role="header" id="entete-detail-salle">
-		<h1></h1><!-- l'entête-->
+		<h1 id="text-salle-libre"> salle...</h1><!-- l'entête-->
+		<a href="index.html" data-icon="home" data-transition="flow" data-theme="b" class="ui-btn-right">Accueil</a>
 		</div>
 		<div data-role="content" id="contenu-details-salle">
 		</div>
 		<div data-role="footer"><!-- le pied de page-->
 		<h4>Lucca @2013</h4>
 		</div>
+		<script>
+		setNameFreeRoomDisplayed();
+		</script>
 	</body>
