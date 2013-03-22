@@ -1,5 +1,4 @@
 var ecranEnLecture= new Object();
-var refresh=false;
 
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
@@ -18,7 +17,10 @@ function getDocumentReady(){
 	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
-		jsonpCallback: 'setValidToken',			
+		jsonpCallback: 'setValidToken',
+		success: function(jsonp) { 
+                getRoomList();
+            }		
 	})
 	}
 	catch(e){
@@ -34,11 +36,10 @@ function setValidToken(newToken){
 	console.log(e);
 	getUrbaToken();
 	}
-	getRoomList();
-	
 }
 
 function getRoomList(){
+	if (request==0) url ='http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken;
 	try{
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
@@ -59,10 +60,10 @@ function fillRoomList(objJson) {
 		var allRoomList = [];
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":0};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":0};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			i++;
 			
@@ -123,10 +124,10 @@ function fillFreeRoomList(objJson){
 		var freeRoomList = [];
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":1};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "free":1};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			i++;
 			
