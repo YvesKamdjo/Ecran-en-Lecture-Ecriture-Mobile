@@ -171,19 +171,6 @@ function splitRoomList(freeRooms, busyRooms) {
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name);
 	}
-	
-	setTimeout(function(){
-	
-		$('.listes-salles-libres').remove();
-		$('.listes-salles-occupees').remove();
-		$('.salles-libres').remove();
-		$('.salles-occupees').remove();
-		
-		console.log("refresh");/*
-		ecranEnLecture.roomList.length=0;
-		ecranEnLecture.freeRoomList.length=0;
-		getUrbaToken();*/
-	},60000);
 }
 
 function creerListeSallesLibres(){
