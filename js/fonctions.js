@@ -161,15 +161,6 @@ function splitRoomList(freeRooms, busyRooms) {
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name);
 	}
-	afficheSallesLibres();
-	afficheSallesOccupees();
-	$('#listes-salles-libres').on('click', 'li', function() {
-       getNameFreeRoomDisplayed($(this).text()); 
-    });
-	$('#listes-salles-occupees').on('click', 'li', function() {
-       getNameBusyRoomDisplayed($(this).text()); 
-    });
-	
 }
 
 // Interface graphique En JQuery Mobile
@@ -184,16 +175,7 @@ $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occ
 $("a.occupee").css('color','red');
 $('ul').listview('refresh');
 }
-function afficheSallesLibres(){
-$.each(freeRoomList, function(key, value) {
-ajouterSalleLibre(value.name);
-});
-}
-function afficheSallesOccupees(){
-$.each(busyRoomList, function(key, value) {
-ajouterSalleOccupee(value.name);
-});
-}
+
 //Fin Interface graphique
 // Evenements sur les cliques des listes
 function getNameFreeRoomDisplayed(salle){
