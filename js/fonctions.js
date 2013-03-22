@@ -149,7 +149,9 @@ function compareRoomLists() {
 	var i,j=0;
 	for (i=0;i<freeRooms.length;i++) {
 		for (j=0;j<allRooms.length;j++) {
-			if (freeRooms[i].name==allRooms[j].name) allRooms.splice(i,1);
+			if (freeRooms[i].name==allRooms[j].name) {
+			allRooms.splice(j,1);
+			}
 		}
 	}
 	splitRoomList(freeRooms, allRooms);
