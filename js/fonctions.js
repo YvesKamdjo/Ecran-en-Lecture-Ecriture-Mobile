@@ -167,19 +167,22 @@ function splitRoomList(freeRooms, busyRooms) {
 	$('#listes-salles-occupees').on('click', 'li', function() {
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
+	//var h= $("");
+	//$("#greenBorder").css();
 	 
 }
 
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li></div>');
-$("a.libre").css('color','green');
+$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li>');
+//$("a.libre:even").css();
+$("a.libre").css({'color':'green', 'border-left':  '9px solid green',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
 $('ul').listview('refresh');
 }
 
 function ajouterSalleOccupee(nomSalle){
 $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html">'+nomSalle+'</a></li>');
-$("a.occupee").css('color','red');
+$("a.occupee").css({'color':'red', 'border-left':  '9px solid red',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
 $('ul').listview('refresh');
 }
 
