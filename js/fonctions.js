@@ -155,10 +155,10 @@ function compareRoomLists() {
 function splitRoomList(freeRooms, busyRooms) {
 
 	for (i=0;i<freeRooms.length;i++){
-			ajouterSalleLibre(freeRooms[i].name);
+			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id);
 	}
 	for (j=0;j<busyRooms.length;j++){
-			ajouterSalleOccupee(busyRooms[j].name);
+			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id );
 	}
 	
 	$('#listes-salles-libres').on('click', 'li', function() {
@@ -173,16 +173,19 @@ function splitRoomList(freeRooms, busyRooms) {
 }
 
 // Interface graphique En JQuery Mobile
-function ajouterSalleLibre(nomSalle){
-$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html">'+nomSalle+'</a></li>');
-//$("a.libre:even").css();
-$("a.libre").css({'color':'green', 'border-left':  '9px solid green',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
+function ajouterSalleLibre(nomSalle, idSalle){
+$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+$("li.une-salle-libre:odd").css('background','#D1DDFF');
+$("a.libre:odd").css({'color':'#32464d','border-left':  '9px solid green',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
+$("a.libre:even").css({'color':'#5e8894', 'border-left':  '9px solid green',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
 $('ul').listview('refresh');
 }
 
-function ajouterSalleOccupee(nomSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html">'+nomSalle+'</a></li>');
-$("a.occupee").css({'color':'red', 'border-left':  '9px solid red',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
+function ajouterSalleOccupee(nomSalle, idSalle){
+$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+$("li.une-salle-occupee:odd").css('background','#FFD1D1');
+$("a.occupee:odd").css({'color':'#32464d', 'border-left':  '9px solid red',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
+$("a.occupee:even").css({'color':'#5e8894', 'border-left':  '9px solid red',  'display':'inline','list-style': 'none',  'padding': '2px 5px 2px 5px', 'margin': '0 5px 0 0'});
 $('ul').listview('refresh');
 }
 
