@@ -8,22 +8,24 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>		
 		<script type="text/javascript" src="js/fonctions.js"></script>
-		<title> index </title>
+		<title> Occupation des salles </title>
 	</head>
 	<body>
+		<div data-role="page">
 		<div id="titre1">Occupation des Salles</div>
-		<div data-role="content"><!-- le contenue-->
-			<div id="toutesLibres">
+		<div data-role="content" class="contenu"><!-- le contenue-->
 			<ul id="listes-salles-libres" class="pour-les-salles" data-role="listview" >
 				<li data-role="list-divider" id="salles-libres">Salles Libres</li>
 			</ul>
-		<div id="separateur"></div>
 			<ul id="listes-salles-occupees" class="pour-les-salles" data-role="listview">
 				<li data-role="list-divider" id="salles-occupees">Salles Occupées</li>
 			</ul>
+		</div>
+		</div>
 		<script> 
                 setIdentification('hanae', 'hanae');
 				getDocumentReady();
+				
 		</script>
 	</body>
 	
