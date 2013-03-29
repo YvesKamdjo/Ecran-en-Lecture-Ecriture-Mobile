@@ -173,17 +173,26 @@ function splitRoomList(freeRooms, busyRooms) {
 function ajouterSalleLibre(nomSalle, idSalle){
 $("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
 $("li.une-salle-libre:odd").css({'background':'#d7f0db'});
+$("li.une-salle-libre:odd").mouseover(function() {
+	$(this).css('background','#C2D8C5');
+});
+$("li.une-salle-libre:odd").mouseout(function() {
+	$(this).css('background','#d7f0db');
+});
 $("a:even").css('color','#5e8894');
-$("li.une-salle-libre:even").css('background','#ffffff');
 $('#listes-salles-libres').listview('refresh');
 }
 
 function ajouterSalleOccupee(nomSalle, idSalle){
 $("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
 $("li.une-salle-occupee:odd").css('background','#fad2d3');
-$("li.une-salle-occupee:odd").css({'background':'#d7f0db'});
+$("li.une-salle-occupee:odd").mouseover(function() {
+	$(this).css('background','#E1BDBE');
+});
+$("li.une-salle-occupee:odd").mouseout(function() {
+	$(this).css('background','#fad2d3');
+});
 $("a:even").css('color','#5e8894');
-$("li.une-salle-occupee:even").css('background','#ffffff');
 $('ul').listview('refresh');
 }
 

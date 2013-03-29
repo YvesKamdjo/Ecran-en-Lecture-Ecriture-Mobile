@@ -6,15 +6,19 @@
 #salles-libres
 {
 color:#D7F0DB;
+height: 50px;
+vertical-align: middle;
 margin-top: 50px;
 font-size: 26px;
 background:#32464d;
 list-style: none;
 padding: 2px 10px 2px 2px;
 }
+
 #salles-occupees
 {
 color: #fad2d3;
+height: 50px;
 font-size: 26px;
 background:#32464d;
 list-style: none;
@@ -28,10 +32,15 @@ li:even
 #listes-salles-libres
 {
 border-left:  9px solid #3ab54a;
+margin-left: 20px;
+margin-right: 20px;
 }
 #listes-salles-occupees
 {
 border-left:  9px solid #ed1b24;
+margin-bottom: 20px;
+margin-left: 20px;
+margin-right: 20px;
 }
 .ui-listview .ui-li-icon {
     left: 0px;
@@ -56,23 +65,19 @@ text-shadow: 0 0px 0 #fff;
 .pour-les-salles
 {
 	text-shadow: 0px;
-	/*color: #d8f1dc;*/
 	font-size: 26px;
 	background:#2f464c;
-	/*list-style: none;*/
 	border-bottom: 4px solid #2f464c;
 	border-right:  4px solid #2f464c;
 }
 
 #titre1
 {
-/*background: #FFFFFF;*/
 color:#31464c;
 font-weight: bold;
 margin-top: 30px;
-/*margin-bottom: 10px;*/
+margin-left: 70px;
 width: 100%;
 font-size: 26px;
 text-shadow: 0px;
-/*height: 30px;*/
 }
