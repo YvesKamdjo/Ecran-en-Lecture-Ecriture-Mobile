@@ -271,9 +271,9 @@ function ajouterSalleLibre(nomSalle, idSalle, capacite){
 var ligne=[];
 ligne.push('<li class="une-salle-libre">');
 ligne.push('<a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle);
-ligne.push("(30 min)");
-//ligne.push('<p>Libre jusqu\'à ...</p>');
-ligne.push('<span class="ui-li-count">'+capacite+" places"+'</span></a></li>');
+ligne.push('<p><img src="clock.png"> Pendant...</p>');
+//ligne.push('<p>Libre pendant...</p>');
+ligne.push('<span class="ui-li-count"><img src="prestation.png">'+capacite+'</span></a></li>');
 $("#listes-salles-libres").append(ligne.join(''));
 $("li.une-salle-libre:odd").css({'background':'#d7f0db'});
 $("li.une-salle-libre:odd").mouseover(function() {
