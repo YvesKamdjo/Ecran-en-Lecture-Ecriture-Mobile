@@ -155,7 +155,7 @@ function fillRoomList(objJson) {
 		var allRoomList = [];
 		while (objJson[i]){
 			if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
 				j++;}
 			i++;
 			}
@@ -215,10 +215,10 @@ function fillFreeRoomList(objJson){
 		var freeRoomList = [];
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName,"capacity":objJson[i].capacity};
 				j++;}
 			i++;
 			
@@ -252,7 +252,7 @@ function compareRoomLists() {
 function splitRoomList(freeRooms, busyRooms) {
 
 	for (i=0;i<freeRooms.length;i++){
-			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id);
+			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity);
 	}
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id );
@@ -267,8 +267,13 @@ function splitRoomList(freeRooms, busyRooms) {
 }
 
 // Interface graphique En JQuery Mobile
-function ajouterSalleLibre(nomSalle, idSalle){
-$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+function ajouterSalleLibre(nomSalle, idSalle, capacite){
+var ligne=[];
+ligne.push('<li class="une-salle-libre">');
+ligne.push('<a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle);
+ligne.push('<p>Libre jusqu\'à ...</p>');
+ligne.push('<span class="ui-li-count">'+capacite+" places"+'</span></a></li>');
+$("#listes-salles-libres").append(ligne.join(''));
 $("li.une-salle-libre:odd").css({'background':'#d7f0db'});
 $("li.une-salle-libre:odd").mouseover(function() {
 	$(this).css('background','#C2D8C5');
