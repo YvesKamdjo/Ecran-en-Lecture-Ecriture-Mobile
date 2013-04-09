@@ -1,0 +1,186 @@
+
+* {
+    font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
+}
+
+body {
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+}
+
+.libre {
+	border-left:10px solid #38b54d;
+	background-color:#d7f0db;
+}
+
+.occupee {
+	border-left:10px solid #ed1b24;
+	background-color:#fad2d3;
+}
+
+
+#entete {
+	width:100%;
+	height:20%;
+	position:relative;
+	top:0;
+	font-size:10vmin;
+	background-color:#2f464c;
+	color:white;
+	font-weight:bold;
+	margin-bottom:3%;
+	vertical-align:middle;
+}
+
+#b_liste {
+	width:5%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	vertical-align:middle;
+	top:0;
+	left:0;
+	text-align:center;
+}
+
+a {
+	color:white;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#nom-salle {
+	width:60%;
+	height:100%;
+	position:relative;
+	display:inline-block;
+	top:0;
+	bottom:0;
+	left:0;
+}
+
+#hourPanel {
+	width:25%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	left:0;
+	top:0;
+	bottom:0;
+	text-align:right;
+}
+
+
+#info-salle {
+	width:100%;
+	height:30%;
+}
+
+#etat-occupee{
+	width:100%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:bottom;
+	font-size:8vmin;
+}
+
+#etat-libre{
+	width:40%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:bottom;
+	font-size:8vmin;
+}
+
+#etat-occupee #etat{
+	padding-left:15%;
+	width:100%;
+	height:70%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	font-size:18vmin;
+	font-weight:bold;
+	color:#ed1b24;
+}
+
+#etat-libre #etat{
+	padding-left:15%;
+	width:100%;
+	height:70%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	font-size:18vmin;
+	font-weight:bold;
+	color:#38b54d;
+}
+
+#temps {
+	padding-left:15%;
+	width:100%;
+	height:30%;
+	display:inline-block;
+	position:relative;
+	bottom:0;
+	left:0;
+	color:#2f464c
+}
+
+#bouton {
+	width:50%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	bottom:0;
+	vertical-align:50%;
+	margin-left:5%;
+}
+
+#b_res {
+	color:white;
+	background-color:#38b54d;
+	font-weight:bold;
+	width:100%;
+	height:100%;
+	font-size:12vmin;
+	border-radius: 10px;
+}
+
+
+#info-res {
+	padding-left:5%;
+	width:100%;
+	height:30%;
+	position:absolute;
+	bottom:0;
+	font-size:6vh;
+	color:#2f464c;
+	vertical-align:bottom;
+}
+
+#info-res-title {
+	font-weight:bold;
+	display:inline-block;
+}
+
+#info-res-horaires {
+}
+
+#info-res-owner {}
+
+#info-res-presta {}
+
+#link_list {
+	margin-top:30%;
+}

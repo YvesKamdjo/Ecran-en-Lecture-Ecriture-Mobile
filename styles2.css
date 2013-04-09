@@ -1,6 +1,6 @@
-.body
-{
 
+* {
+    font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
 
 #salles-libres
@@ -69,6 +69,15 @@ text-shadow: 0 0px 0 #fff;
 	background:#2f464c;
 	border-bottom: 4px solid #2f464c;
 	border-right:  4px solid #2f464c;
+}
+
+#contenu-details-salle {
+    height: 100%;
+}
+
+#contenu-details-salle-occupee{
+	border-right:  6px solid red;
+	border-left:  6px solid red;
 }
 
 #titre1

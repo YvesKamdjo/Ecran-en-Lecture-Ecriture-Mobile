@@ -1,5 +1,101 @@
 var ecranEnLecture= new Object();
 
+function createDate() {
+	var now= new Date();
+	var today=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T00:00:00";
+	return today;
+}
+
+function createStartDate() {
+	var now= new Date();
+	var hour = now.getHours(); 
+	var minute = now.getMinutes();
+	if (hour < 10) { hour = "0" + hour; } 
+	if (minute < 10) { minute = "0" + minute; }	
+	
+	var startDate=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+hour+":"+minute+":00";
+
+	return startDate;
+}
+
+function createEndDate() {
+	var now= new Date();
+	var later=addMinutes(now,30);
+	var hour = later.getHours(); 
+	var minute = later.getMinutes();
+	if (hour < 10) { hour = "0" + hour; } 
+	if (minute < 10) { minute = "0" + minute; }	
+	
+	var startDate=later.getFullYear()+"-"+(later.getMonth()+1)+"-"+later.getDate()+"T"+hour+":"+minute+":00";
+
+	return EndDate;
+}
+
+var jsonToSend={
+"date":createDate(),
+"startDate":createStartDate(),
+"endDate":createEndDate(),
+"fields":[
+{
+"displayName":"Qui",
+"value":"écran",
+"key":"Champ1"
+},{
+"displayName":"Organisateur",
+"value":"écran",
+"key":"Champ2"
+},{
+"displayName":"Téléphone",
+"value":null,
+"key":"Champ3"
+},{
+"displayName":"Objet",
+"value":"-- Salle réservée via écran --",
+"key":"Champ6"
+},{
+"displayName":"Commentaire",
+"value":null,
+"key":"Champ7"
+},{
+"displayName":"Disposition",
+"value":"disposition courante",
+"key":"Champ8"
+},{
+"displayName":"Nb participants",
+"value":"0",
+"key":"Champ9"
+}],
+"status":0,
+"owner":"écran",
+"creator":"écran",
+"EID":"040000008200E00074C7783",
+"resource":{
+"id":158,
+"displayName":"Salle Lazare",
+"url":"resources/158"
+}
+};
+
+
+function sendRes(){
+
+	console.log(jsonToSend);
+
+	//jsonToSend.date="2013-04-02T13:00:00";
+	//jsonToSend.startDate="2013-04-02T13:00:00";
+	//jsonToSend.endDate="2013-04-02T15:00:00";
+	
+
+	$.ajax({
+	type: "POST",
+	url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+ecranEnLecture.validToken,
+	data: jsonToSend
+	}).done(function( msg ) {
+	alert( "Data Saved: " + msg );
+	});
+
+}
+
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
 	ecranEnLecture.password=pass;
@@ -17,7 +113,8 @@ function getDocumentReady(){
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
-		success: function(jsonp) { 
+		success: function(jsonp) {
+				//sendRes();
                 getRoomList();
             }		
 	})
@@ -171,7 +268,7 @@ function splitRoomList(freeRooms, busyRooms) {
 
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle){
-$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
 $("li.une-salle-libre:odd").css({'background':'#d7f0db'});
 $("li.une-salle-libre:odd").mouseover(function() {
 	$(this).css('background','#C2D8C5');
@@ -184,7 +281,7 @@ $('#listes-salles-libres').listview('refresh');
 }
 
 function ajouterSalleOccupee(nomSalle, idSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow" href="details-salle-occupee.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+$("#listes-salles-occupees").append('<li class="une-salle-occupee"><a class="occupee" data-transition="flow"  data-ajax="false" href="details-salle-occupee.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
 $("li.une-salle-occupee:odd").css('background','#fad2d3');
 $("li.une-salle-occupee:odd").mouseover(function() {
 	$(this).css('background','#E1BDBE');
@@ -202,11 +299,11 @@ function getNameFreeRoomDisplayed(salle){
 	ecranEnLecture.nomSalle=salle;
 }
 function setNameFreeRoomDisplayed(){
-	$("#text-salle-libre").html("Salle "+ecranEnLecture.nomSalle);
+	$("#nom-salle").html(ecranEnLecture.nomSalle);
 }
 function getNameBusyRoomDisplayed(salle){
 	ecranEnLecture.nomSalle=salle;
 }
 function setNameBusyRoomDisplayed(){
-	$("#text-salle-occupee").html("Salle "+ecranEnLecture.nomSalle);
+	$("#nom-salle").html(ecranEnLecture.nomSalle);
 }
