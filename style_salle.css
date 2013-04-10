@@ -76,11 +76,11 @@ body {
 
 #etat-libre{
 	width:40%;
-	height:100%;
+	height:40%;
 	display:inline-block;
-	position:relative;
-	top:0;
-	left:0;
+	position:absolute;
+	top:30vmin;
+	left:2vmin;
 	vertical-align:bottom;
 	font-size:8vmin;
 }
@@ -88,11 +88,12 @@ body {
 #etat-occupee #etat{
 	padding-left:15%;
 	width:100%;
-	height:70%;
+	height:60%;
 	display:inline-block;
 	position:relative;
 	top:0;
 	left:0;
+	vertical-align:middle;
 	font-size:18vmin;
 	font-weight:bold;
 	color:#ed1b24;
@@ -101,7 +102,7 @@ body {
 #etat-libre #etat{
 	padding-left:15%;
 	width:100%;
-	height:70%;
+	height:60%;
 	display:inline-block;
 	position:relative;
 	top:0;
@@ -114,7 +115,7 @@ body {
 #temps {
 	padding-left:15%;
 	width:100%;
-	height:30%;
+	height:40%;
 	display:inline-block;
 	position:relative;
 	bottom:0;
@@ -123,21 +124,21 @@ body {
 }
 
 #bouton {
-	width:50%;
-	height:100%;
+	width:60%;
+	height:50%;
 	display:inline-block;
-	position:relative;
-	bottom:0;
+	position:absolute;
+	top:35vmin;
+	right:0;
 	vertical-align:50%;
-	margin-left:5%;
 }
 
 #b_res {
 	color:white;
 	background-color:#38b54d;
 	font-weight:bold;
-	width:100%;
-	height:100%;
+	width:80%;
+	height:50%;
 	font-size:12vmin;
 	border-radius: 10px;
 }
@@ -146,7 +147,7 @@ body {
 #info-res {
 	padding-left:5%;
 	width:100%;
-	height:30%;
+	height:auto%;
 	position:absolute;
 	bottom:0;
 	font-size:6vh;
@@ -182,4 +183,25 @@ body {
 	top:0;
 	left:0;
 	vertical-align:center;
+}
+
+ul {
+	padding:0;
+	margin:0;
+}
+
+li {
+	list-style-type: none;
+	text-align:center;
+}
+
+#sub {
+	margin-left:30%;
+	width:60%;
+}
+
+#sub li {
+	font-size:5vmin;
+	background-color:white;
+	border: 1px solid #38b54d;
 }

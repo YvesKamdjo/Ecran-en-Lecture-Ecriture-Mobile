@@ -1,5 +1,6 @@
 var ecranEnLecture= new Object();
 var refresh=false;
+var bResPushed=false;
 
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
@@ -94,22 +95,10 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 }
 
 function getDocumentReady(){
+	$("#sub").hide();
 	$(document).ready(function() {
 		getUrbaToken();
 	});
-}
-
-function refreshScreen(){
-	try{
-	if (!refresh) {
-		getUrbaToken();
-		refresh=true;
-	}
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}
 }
 
  function getUrbaToken(){
@@ -246,11 +235,11 @@ function fillResInfos(objJson) {
 	if (!resFound) {$("#info-res-title").html("Pas de réservation prévue aujourd'hui");}
 }
 
-function testbutton(){
-	var jsonToSend={
-		"date":createDate(),
-		"startDate":createStartDate(),
-		"endDate":createEndDate(),
+function createJsonRes(){
+	/*var jsonToSend={
+		"date":"2013-04-10T00:00:00",
+		"startDate":"2013-04-10T10:00:00",
+		"endDate":"2013-04-10T11:00:00",
 		"fields":[
 			{
 			"displayName":"Qui",
@@ -290,28 +279,59 @@ function testbutton(){
 			"displayName":"Salle Lazare",
 			"url":"resources/158"
 		}
-	};
+	};*/
+	jsonToSend = '{"id":0,"date":"2013-04-10T00:00:00","startDate":"2013-04-10T11:00:00","endDate":"2013-04-10T14:00:00","fields":[{"name":"toto","value":"Guillaume","key":"Champ1"},{"name":null,"value":"Guillaume","key":"Champ2"},{"name":null,"value":"Guillaume","key":"Champ3"},{"name":null,"value":"Guillaume","key":"Champ4"},{"name":null,"value":"Guillaume","key":"Champ5"},{"name":null,"value":"Guillaume","key":"Champ6"},{"name":null,"value":"Guillaume","key":"Champ7"},{"name":null,"value":"Guillaume","key":"Champ9"},{"name":null,"value":"test","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"2013-04-10T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":158}}'
 	
-	var jsonString="";
-	jsonString+=jsonToSend;
-	console.log(jsonString);
+	return jsonToSend;
+}
+
+ function getTokenWrite(){
+ try{
+ $.ajax({
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
+		dataType : 'jsonp',
+		jsonpCallback: 'setValidTokenWrite',			
+	})
+	}
+	catch(e){
+	console.log(e);
+	getUrbaToken();
+	}	
+}
+
+function setValidTokenWrite(newToken){
+	try { 
+	ecranEnLecture.validToken= newToken.Token;
+	}
+	catch(e){
+	console.log(e);
+	getUrbaToken();
+	}
+	sendRes();
 }
 
 function sendRes(){
-
-	console.log(jsonToSend);
-
-	//jsonToSend.date="2013-04-02T13:00:00";
-	//jsonToSend.startDate="2013-04-02T13:00:00";
-	//jsonToSend.endDate="2013-04-02T15:00:00";
-	
+	var jsonRes=createJsonRes()
+	console.log(jsonRes);
 
 	$.ajax({
-	type: "POST",
-	url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+ecranEnLecture.validToken,
-	data: jsonToSend
-	}).done(function( msg ) {
-	alert( "Data Saved: " + msg );
+		type: "POST",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +ecranEnLecture.validToken,
+		contentType: 'application/json; charset=utf-8',
+		data: jsonRes
+		}).done(function( msg ) {
+		alert( "Data Saved: " + msg );
 	});
 
+}
+
+function button_res() {
+	if (bResPushed) {
+		$("#sub").hide();
+		bResPushed=false;
+	}
+	else {
+		$("#sub").show();
+		bResPushed=true;
+	}
 }
