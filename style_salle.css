@@ -23,7 +23,7 @@ body {
 
 #entete {
 	width:100%;
-	height:20%;
+	height:15vmin;
 	position:relative;
 	top:0;
 	font-size:10vmin;
@@ -32,44 +32,29 @@ body {
 	font-weight:bold;
 	margin-bottom:3%;
 	vertical-align:middle;
-}
-
-#b_liste {
-	width:5%;
-	height:100%;
-	display:inline-block;
-	position:relative;
-	vertical-align:middle;
-	top:0;
-	left:0;
-	text-align:center;
-}
-
-a {
-	color:white;
-	font-weight:bold;
-	text-decoration:none;
+	padding-top:2vmin;
 }
 
 #nom-salle {
-	width:60%;
+	width:50%;
 	height:100%;
-	position:relative;
+	position:absolute;
 	display:inline-block;
-	top:0;
+	top:10%;
 	bottom:0;
-	left:0;
+	vertical-align:center;
 }
 
 #hourPanel {
-	width:25%;
+	width:auto;
 	height:100%;
 	display:inline-block;
-	position:relative;
-	left:0;
-	top:0;
-	bottom:0;
+	position:absolute;
+	right:0;
+	top:10%;
+	padding-right:15px;
 	text-align:right;
+	vertical-align:center;
 }
 
 
@@ -181,6 +166,20 @@ a {
 
 #info-res-presta {}
 
-#link_list {
-	margin-top:30%;
+#link_img {
+	height:80%;
+	width:auto;
+	display:inline;
+	position:relative;
+	left:0;
+	vertical-align:center;
+}
+
+#link_back {
+	height:100%;
+	display:inline;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:center;
 }

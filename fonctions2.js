@@ -1,111 +1,15 @@
 var ecranEnLecture= new Object();
 
-function createDate() {
-	var now= new Date();
-	var today=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T00:00:00";
-	return today;
-}
-
-function createStartDate() {
-	var now= new Date();
-	var hour = now.getHours(); 
-	var minute = now.getMinutes();
-	if (hour < 10) { hour = "0" + hour; } 
-	if (minute < 10) { minute = "0" + minute; }	
-	
-	var startDate=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+hour+":"+minute+":00";
-
-	return startDate;
-}
-
-function createEndDate() {
-	var now= new Date();
-	var later=addMinutes(now,30);
-	var hour = later.getHours(); 
-	var minute = later.getMinutes();
-	if (hour < 10) { hour = "0" + hour; } 
-	if (minute < 10) { minute = "0" + minute; }	
-	
-	var startDate=later.getFullYear()+"-"+(later.getMonth()+1)+"-"+later.getDate()+"T"+hour+":"+minute+":00";
-
-	return EndDate;
-}
-
-var jsonToSend={
-"date":createDate(),
-"startDate":createStartDate(),
-"endDate":createEndDate(),
-"fields":[
-{
-"displayName":"Qui",
-"value":"écran",
-"key":"Champ1"
-},{
-"displayName":"Organisateur",
-"value":"écran",
-"key":"Champ2"
-},{
-"displayName":"Téléphone",
-"value":null,
-"key":"Champ3"
-},{
-"displayName":"Objet",
-"value":"-- Salle réservée via écran --",
-"key":"Champ6"
-},{
-"displayName":"Commentaire",
-"value":null,
-"key":"Champ7"
-},{
-"displayName":"Disposition",
-"value":"disposition courante",
-"key":"Champ8"
-},{
-"displayName":"Nb participants",
-"value":"0",
-"key":"Champ9"
-}],
-"status":0,
-"owner":"écran",
-"creator":"écran",
-"EID":"040000008200E00074C7783",
-"resource":{
-"id":158,
-"displayName":"Salle Lazare",
-"url":"resources/158"
-}
-};
-
-
-function sendRes(){
-
-	console.log(jsonToSend);
-
-	//jsonToSend.date="2013-04-02T13:00:00";
-	//jsonToSend.startDate="2013-04-02T13:00:00";
-	//jsonToSend.endDate="2013-04-02T15:00:00";
-	
-
-	$.ajax({
-	type: "POST",
-	url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+ecranEnLecture.validToken,
-	data: jsonToSend
-	}).done(function( msg ) {
-	alert( "Data Saved: " + msg );
-	});
-
-}
-
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
 	ecranEnLecture.password=pass;
 }
 
 function getDocumentReady(){
-					$(document).ready(function() {
-						getUrbaToken();
-					});
-				}
+	$(document).ready(function() {
+		getUrbaToken();
+	});
+}
 				
  function getUrbaToken(){
 	try{
@@ -155,7 +59,7 @@ function fillRoomList(objJson) {
 		var allRoomList = [];
 		while (objJson[i]){
 			if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
+				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			i++;
 			}
@@ -215,10 +119,10 @@ function fillFreeRoomList(objJson){
 		var freeRoomList = [];
 		while (objJson[i]){
 			if (objJson[i].location.id==85) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			else if (objJson[i].location.id==89) {
-				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName,"capacity":objJson[i].capacity};
+				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName};
 				j++;}
 			i++;
 			
@@ -252,7 +156,7 @@ function compareRoomLists() {
 function splitRoomList(freeRooms, busyRooms) {
 
 	for (i=0;i<freeRooms.length;i++){
-			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity);
+			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id);
 	}
 	for (j=0;j<busyRooms.length;j++){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id );
@@ -267,14 +171,8 @@ function splitRoomList(freeRooms, busyRooms) {
 }
 
 // Interface graphique En JQuery Mobile
-function ajouterSalleLibre(nomSalle, idSalle, capacite){
-var ligne=[];
-ligne.push('<li class="une-salle-libre">');
-ligne.push('<a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle);
-ligne.push('<p><img src="clock.png"> Pendant...</p>');
-//ligne.push('<p>Libre pendant...</p>');
-ligne.push('<span class="ui-li-count"><img src="prestation.png">'+capacite+'</span></a></li>');
-$("#listes-salles-libres").append(ligne.join(''));
+function ajouterSalleLibre(nomSalle, idSalle){
+$("#listes-salles-libres").append('<li class="une-salle-libre"><a class="libre" data-transition="flow"  data-ajax="false" href="details-salle-libre.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
 $("li.une-salle-libre:odd").css({'background':'#d7f0db'});
 $("li.une-salle-libre:odd").mouseover(function() {
 	$(this).css('background','#C2D8C5');

@@ -245,59 +245,73 @@ function fillResInfos(objJson) {
 	});
 	if (!resFound) {$("#info-res-title").html("Pas de réservation prévue aujourd'hui");}
 }
-/*
-function displayNewJson(SortedJson){
-	var ligne=0;
-	var items = [];
-	var today= new Date();
-	now=getTime();
-	$('.refresh').remove();
-	$('#entete').show();
-	$.each(SortedJson, function(key, value) {
-		if (ligne%2==0) p=1;
-		if (ligne%2==1) p=2;
-		var h=(SortedJson[ligne].heuresDeResa).split(":");
-		items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
-		items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
-		items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
-		if (!compareTime(SortedJson[ligne].heuresDeResa,now)) items.push('<td class="debut">en cours</td>');
-		else items.push('<td class="debut"></td>');		
-		$('<tr>', {
-		   'class': 'ligne'+p+' refresh',
-		   'id': ligne,
-		   html: items.join('')
-		   }).appendTo('table');
-		   items.length = 0;
-		   ligne++;
-		});
-	
-	refresh=false;
-	
-	if (ligne==0) {
-		$('#entete').hide();
-		items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
-		ligne=1;		
-		$('<tr>', {
-		   'class': 'ligne1 refresh',
-		   html: items.join('')
-		   }).appendTo('table');
-		   items.length = 0;
-		   setTimeout("refreshScreen();", 300000)
-	}
 
-	if (ligne<=8){
-		for (i=ligne; i<8; i++) {
-		items.push('<td colspan="4">&nbsp;</td>');
-		$('<tr>', {
-		   'class': 'ligne1 refresh',
-		   html: items.join('')
-		   }).appendTo('table');
-		   items.length = 0;
+function testbutton(){
+	var jsonToSend={
+		"date":createDate(),
+		"startDate":createStartDate(),
+		"endDate":createEndDate(),
+		"fields":[
+			{
+			"displayName":"Qui",
+			"value":"écran",
+			"key":"Champ1"
+			},{
+			"displayName":"Organisateur",
+			"value":"écran",
+			"key":"Champ2"
+			},{
+			"displayName":"Téléphone",
+			"value":null,
+			"key":"Champ3"
+			},{
+			"displayName":"Objet",
+			"value":"-- Salle réservée via écran --",
+			"key":"Champ6"
+			},{
+			"displayName":"Commentaire",
+			"value":null,
+			"key":"Champ7"
+			},{
+			"displayName":"Disposition",
+			"value":"disposition courante",
+			"key":"Champ8"
+			},{
+			"displayName":"Nb participants",
+			"value":"0",
+			"key":"Champ9"
+		}],
+		"status":0,
+		"owner":"écran",
+		"creator":"écran",
+		"EID":"040000008200E00074C7783",
+		"resource":{
+			"id":158,
+			"displayName":"Salle Lazare",
+			"url":"resources/158"
 		}
-		setTimeout("refreshScreen();", 300000);
-	}
-	else if(ligne>8){
-		var nbCycles=Math.round(150/(5*(ligne-8)));
-		showFirstHideNext(ligne, nbCycles);
-	}
-}*/
+	};
+	
+	var jsonString="";
+	jsonString+=jsonToSend;
+	console.log(jsonString);
+}
+
+function sendRes(){
+
+	console.log(jsonToSend);
+
+	//jsonToSend.date="2013-04-02T13:00:00";
+	//jsonToSend.startDate="2013-04-02T13:00:00";
+	//jsonToSend.endDate="2013-04-02T15:00:00";
+	
+
+	$.ajax({
+	type: "POST",
+	url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+ecranEnLecture.validToken,
+	data: jsonToSend
+	}).done(function( msg ) {
+	alert( "Data Saved: " + msg );
+	});
+
+}
