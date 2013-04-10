@@ -2,6 +2,17 @@ var ecranEnLecture= new Object();
 var refresh=false;
 var bResPushed=false;
 
+function resizeFont() {
+var w2=h2=0;
+var w= document.body.offsetWidth;
+var h=document.body.offsetHeight;
+    //console.log("I'm done resizing for the moment");
+	console.log("w/h="+w/h+" et h="+h);
+ w2=w;
+
+};
+
+
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
 	ecranEnLecture.password=pass;
@@ -93,12 +104,28 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 	var hhmm= t[1].split(":");
 	return ""+hhmm[0]+":"+hhmm[1]; // l'heure au format hh:mm
 }
+function createButton(){
+$('#bouton').append('<a href="#" data-role="button" data-icon="img-but" data-iconpos="bottom" >Réserver<!--mg src="d-arrow2.png" id="link_list"--></a>');
 
+$('#bouton').css({"display":"inline-block"})
+}
+function createHeader(){
+$('#entete').append('<div id="back-button"><a href="detail-salles.html" ><img src="l-arrow.png" width="65vmin"></a></div>');
+$('#entete').append('<div id="nom-salle"></div><div id="hourPanel"></div>');
+//$('#entete').append('<!--a ="" href="detail-salles.html"--><img src="l-arrow.png" width="100%" id="link_list"><!--/a-->');
+//data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="c" data-inline="true"
+}
 function getDocumentReady(){
-	$("#sub").hide();
+	createButton();
+	createHeader();
 	$(document).ready(function() {
 		getUrbaToken();
 	});
+	/*var resizeTimer;// adapter la taille de la police à la taille de la fenetre
+$(window).resize(function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeFont, 100);
+});*/
 }
 
  function getUrbaToken(){
@@ -234,6 +261,7 @@ function fillResInfos(objJson) {
 	});
 	if (!resFound) {$("#info-res-title").html("Pas de réservation prévue aujourd'hui");}
 }
+
 
 function createJsonRes(){
 	/*var jsonToSend={
