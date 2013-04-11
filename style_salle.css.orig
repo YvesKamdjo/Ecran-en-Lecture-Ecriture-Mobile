@@ -1,0 +1,314 @@
+
+* {
+    font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
+}
+
+body {
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+}
+
+.libre {
+	border-left:10px solid #38b54d;
+	background-color:#d7f0db;
+}
+
+.occupee {
+	border-left:10px solid #ed1b24;
+	background-color:#fad2d3;
+}
+
+#contenu
+{
+border-left: 10px solid #38b54d;
+margin:0px;
+padding: 0px;
+}
+/*
+#entete {
+	width:100%;
+	height:15vmin;
+	position:relative;
+	top:0;
+	font-size:300%;
+	background-color:#2f464c;
+	color:white;
+	font-weight:bold;
+	margin-bottom:3%;
+	vertical-align:middle;
+<<<<<<< HEAD
+	padding-top:2vmin;
+}
+
+#nom-salle {
+	width:50%;
+	height:100%;
+	position:absolute;
+	display:inline-block;
+	top:10%;
+	bottom:0;
+	vertical-align:center;
+}
+
+#hourPanel {
+	width:auto;
+	height:100%;
+	display:inline-block;
+	position:absolute;
+	right:0;
+	top:10%;
+	padding-right:15px;
+	text-align:right;
+	vertical-align:center;
+=======
+}
+*/
+#b_liste {
+	width:5%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	vertical-align:middle;
+	top:0;
+	left:0;
+	text-align:center;
+}
+
+a {
+	color:white;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#nom-salle {
+	width:10vmin;
+	/*height:100%;*/
+	position:relative;
+	display:inline-block;
+	top:0px;
+	bottom:0;
+	left:60px;
+	font-size:10vmin;
+}
+
+#hourPanel {
+	width:5%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	left:70%;
+	top:-10px;
+	bottom:0;
+	text-align:right;
+	right:0%;
+	font-size:10vmin;
+>>>>>>> journée du 10/04
+}
+
+#back-button
+{
+	width: 5vmin; /*40px;*/
+	height: 10px;
+	position:relative;
+	margin-right: 0px;
+	top:0px;
+	background:#2f464c;
+}
+
+#info-salle {
+	width:100%;
+	height:30%;
+}
+
+#etat-occupee{
+	width:100%;
+	height:100%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:bottom;
+	font-size:8vmin;
+}
+
+#etat-libre{
+	width:40%;
+	height:40%;
+	display:inline-block;
+	position:absolute;
+	top:30vmin;
+	left:2vmin;
+	vertical-align:bottom;
+	font-size:8vmin;
+}
+
+#etat-occupee #etat{
+	padding-left:15%;
+	width:100%;
+	height:60%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:middle;
+	font-size:18vmin;
+	font-weight:bold;
+	color:#ed1b24;
+}
+
+#etat-libre #etat{
+	padding-left:15%;
+	width:100%;
+	height:60%;
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:0;
+	font-size:18vmin;
+	font-weight:bold;
+	color:#38b54d;
+}
+
+#temps {
+	padding-left:15%;
+	width:100%;
+	height:40%;
+	display:inline-block;
+	position:relative;
+	bottom:0;
+	left:0;
+	color:#2f464c
+}
+
+#bouton {
+<<<<<<< HEAD
+	width:60%;
+	height:50%;
+	display:inline-block;
+	position:absolute;
+	top:35vmin;
+	right:0;
+	vertical-align:50%;
+=======
+	position:relative;
+	vertical-align:50%;
+	margin-left:70%;
+	/*left:10px;*/
+>>>>>>> journée du 10/04
+}
+
+.ui-icon-img-but
+ { 
+	background-image:url(d-arrow.png);
+	background-position:0px;
+	background-color:#38b54d;
+	height:50%;
+	width:20%;
+}
+.ui-btn-icon-bottom .ui-icon
+{
+bottom: -10px;
+top: auto;
+left: 50%;
+}
+.ui-btn-inner
+{
+font-size: 12vmin;
+width: 50vmin;
+height: 40%;
+background:#38b54d;
+position:relative;
+}
+.ui-btn-icon-left > .ui-btn-inner > .ui-icon, .ui-btn-icon-right > .ui-btn-inner > .ui-icon
+{
+	top: 30%;
+}
+.ui-btn-up-c
+{
+	text-shadow:0px 0px 0px;
+	color: #ffffff;
+}
+.ui-body-c, .ui-overlay-c
+{
+	color:#ffffff;
+}
+.ui-bar-a
+{
+background:#2f464c; /* repeat scroll 0 0 #111111;*/
+color:#ffffff;
+font-size: 5vmin;/*80px;*/
+}
+#b_res {
+	color:white;
+	background-color:#38b54d;
+	font-weight:bold;
+	width:80%;
+	height:50%;
+	font-size:12vmin;
+	border-radius: 10px;
+}
+
+
+#info-res {
+	padding-left:5%;
+	width:100%;
+	height:auto%;
+	position:absolute;
+	bottom:0;
+	font-size:6vh;
+	color:#2f464c;
+	vertical-align:bottom;
+}
+
+#info-res-title {
+	font-weight:bold;
+	display:inline-block;
+}
+
+#info-res-horaires {
+}
+
+#info-res-owner {}
+
+#info-res-presta {}
+
+#link_img {
+	height:80%;
+	width:auto;
+	display:inline;
+	position:relative;
+	left:0;
+	vertical-align:center;
+}
+
+#link_back {
+	height:100%;
+	display:inline;
+	position:relative;
+	top:0;
+	left:0;
+	vertical-align:center;
+}
+
+ul {
+	padding:0;
+	margin:0;
+}
+
+li {
+	list-style-type: none;
+	text-align:center;
+}
+
+#sub {
+	margin-left:30%;
+	width:60%;
+}
+
+#sub li {
+	font-size:5vmin;
+	background-color:white;
+	border: 1px solid #38b54d;
+}
