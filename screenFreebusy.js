@@ -1,4 +1,5 @@
 var ecranEnLecture= new Object();
+var blockedRoom=[];
 
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
@@ -51,16 +52,24 @@ function getRoomList(){
 	getRoomList();
 	}
 }
-
+function addRoomNotDisplay(roomID){
+blockedRoom.push(roomID);
+}
 function fillRoomList(objJson) {
 	console.log(objJson);
+	addRoomNotDisplay(654);
+	addRoomNotDisplay(655);
 	try {
 		var i=0;
 		var j=0;
+		var id;
 		var allRoomList = [];
 		while (objJson[i]){
 			if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
-				allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
+			id=objJson[i].id;
+				//if (jQuery.inArray(id, blockedRoom)!=-1){
+				allRoomList[j]={"id":id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
+				//}
 				j++;}
 			i++;
 			}
@@ -114,6 +123,7 @@ function getFreeRoomList(){
 }
 
 function fillFreeRoomList(objJson){
+console.log(blockedRoom[1]);
 	try {
 		var i=0;
 		var j=0;
@@ -125,6 +135,7 @@ function fillFreeRoomList(objJson){
 			else if (objJson[i].location.id==89) {
 				freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
 				j++;}
+				
 			i++;
 			
 		}
@@ -157,10 +168,14 @@ function compareRoomLists() {
 function splitRoomList(freeRooms, busyRooms) {
 
 	for (i=0;i<freeRooms.length;i++){
+			if ($.inArray(freeRooms[i].id,blockedRoom)!=-1){
 			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity);
+			}
 	}
 	for (j=0;j<busyRooms.length;j++){
+			if ($.inArray(busyRooms[j].id,blockedRoom)!=-1){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].capacity );
+			}
 	}
 	
 	$('#listes-salles-libres').on('click', 'li', function() {
