@@ -164,7 +164,7 @@ function getResInfo() {
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+ecranEnLecture.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillResInfos',		
+			jsonpCallback: 'fillResListforRoom',		
 		})
 		}
 	catch(e){
@@ -173,10 +173,10 @@ function getResInfo() {
 	}
 }
 
-function fillResInfos(objJson) {
+function fillResListforRoom(objJson) {
 	var ligne=0;
-	var resFound=false;
 	var roomID=getRoomID();
+	var resList=[];
 	
 	$.each(objJson, function(key, value) {
 			if (objJson[ligne].resource.id==roomID) {
@@ -190,49 +190,73 @@ function fillResInfos(objJson) {
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
 				
-				if (compareTime(end,now)) {
-					if (compareTime(start,now)) {
-						var temps="jusqu'à "+start;
-						$("body").css({"background-color":"#d7f0db"});
-						$("body").css({"border-left":"10px solid #38b54d"});
-						$("#nom-salle").css({"color":"#d7f0db"});
-						$("#etat").append("Libre");
-						$("#etat").css({"color":"#38b54d"});
-						$("#etat-libre").css({"left":"2%"});
-						$("#temps").html(temps);
-						$("#bouton").show();
-						$("#info-res-title").html("Prochaine réunion :");
-					}
-					else {
-						var temps="jusqu'à "+end;
-						$("body").css({"background-color":"#fad2d3"});
-						$("body").css({"border-left":"10px solid #ed1b24"});
-						$("#nom-salle").css({"color":"#fad2d3"});
-						$("#etat").append("Occupée");
-						$("#etat-libre").css({"left":"20%"});
-						$("#etat").css({"color":"#ed1b24"});
-						$("#temps").html(temps);
-						//$("#b_conf").show();
-						$("#info-res-title").html("Réunion actuelle:");
-					}
-					
-					var sujet="";
-					if(objJson[ligne].fields[3].value) {sujet=' - '+'"'+objJson[ligne].fields[3].value+'"';}
-					var duree="De "+start+" à "+end+sujet;
-					$("#info-res-horaires").html(duree);
-					
+				if (compareTime(end,now)) {					
+					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
-					var ownerPhone="";
-					if(objJson[ligne].fields[2].value) var ownerPhone=" - "+objJson[ligne].fields[2].value;
-					var ownerInfo=owner+ownerPhone;
-					$("#info-res-owner").html(ownerInfo);
-					
-					resFound=true;
+					var ownerPhone=objJson[ligne].fields[2].value;
+					resList[ligne]=[start,end,owner,ownerPhone,subject]
 				}
 			}
 		ligne++;
 	});
-	if (!resFound) {
+	sortResList(resList);
+}
+
+function sortResList(list) {
+	if (list.length>1) {
+		list = list.sort(function(a, b) {
+			var A=a[0].split(":");
+			var B=b[0].split(":");
+			var x="";
+			var y="";
+			x=A[0]+""+A[1];
+			y=B[0]+""+B[1];
+			return parseInt(x, 10)-parseInt(y, 10);
+		});
+	}
+	fillResInfos(list);
+}
+
+function fillResInfos(list) {	
+	if (list.length>0) {
+		res=list[0];
+		if (compareTime(res[0],now)) {
+			var temps="jusqu'à "+start;
+			$("body").css({"background-color":"#d7f0db"});
+			$("body").css({"border-left":"10px solid #38b54d"});
+			$("#nom-salle").css({"color":"#d7f0db"});
+			$("#etat").append("Libre");
+			$("#etat").css({"color":"#38b54d"});
+			$("#etat-libre").css({"left":"2%"});
+			$("#temps").html(temps);
+			$("#bouton").show();
+			$("#info-res-title").html("Prochaine réunion :");
+		}
+		else {
+			var temps="jusqu'à "+end;
+			$("body").css({"background-color":"#fad2d3"});
+			$("body").css({"border-left":"10px solid #ed1b24"});
+			$("#nom-salle").css({"color":"#fad2d3"});
+			$("#etat").append("Occupée");
+			$("#etat-libre").css({"left":"20%"});
+			$("#etat").css({"color":"#ed1b24"});
+			$("#temps").html(temps);
+			//$("#b_conf").show();
+			$("#info-res-title").html("Réunion actuelle:");
+		}
+		
+		var sujet="";
+		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		var duree="De "+res[0]+" à "+res[1]+sujet;
+		$("#info-res-horaires").html(duree);
+		
+		var owner=res[2];
+		var ownerPhone="";
+		if(res[3]) var ownerPhone=" - "+res[3];
+		var ownerInfo=owner+ownerPhone;
+		$("#info-res-owner").html(ownerInfo);
+	}
+	else {
 		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
 		$("body").css({"background-color":"#d7f0db"});
 		$("body").css({"border-left":"10px solid #38b54d"});
