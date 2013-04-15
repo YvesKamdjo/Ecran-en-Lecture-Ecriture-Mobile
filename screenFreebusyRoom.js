@@ -125,18 +125,35 @@ function createEndDate() {
 	return endDate;
 }
 
-function getRoomID() {
+/*function getRoomID() {
 	var url=document.location.href;
 	var temp=[];
 	var temp=url.split("resource=");
 	return temp[1];
+}*/
+function getUrlParameters(){
+	var url=document.location.href;
+	var allArg=[];
+	allArg= url.split("?");
+	console.log(url);
+	var t=[];
+	t=allArg[1].split("=");
+	ecranEnLecture.roomID= t[1];
+	if (allArg.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	t=allArg[2].split("=");
+	ecranEnLecture.hideOwner= t[1];
+	t=allArg[3].split("=");
+	ecranEnLecture.hidePhone=t[1];
+	t=allArg[4].split("=");
+	ecranEnLecture.hideSubject=t[1];
+	}
 }
 
 function getRoomName(){
+	getUrlParameters();
 	try{
-	var roomID=getRoomID();
 	$.ajax({
-			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+ecranEnLecture.validToken,
+			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+ecranEnLecture.roomID+'?Token='+ecranEnLecture.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomName',		
 		})
@@ -178,11 +195,12 @@ function getResInfo() {
 
 function fillResListforRoom(objJson) {
 	var ligne=0;
-	var roomID=getRoomID();
+	//var roomID=getRoomID();
+	//console.log(ecranEnLecture.roomID);
 	var resList=[];
 	
 	$.each(objJson, function(key, value) {
-			if (objJson[ligne].resource.id==roomID) {
+			if (objJson[ligne].resource.id==ecranEnLecture.roomID) {
 				console.log(objJson[ligne]);
 				var now=getTime();
 				
@@ -191,13 +209,13 @@ function fillResListforRoom(objJson) {
 				var start=""+startHour[0]+":"+startHour[1];
 				var eD=(objJson[ligne].endDate).split("T");
 				var endHour=(eD[1]).split(":");
-				var end=""+endHour[0]+":"+endHour[1];
+				ecranEnLecture.end=""+endHour[0]+":"+endHour[1];
 				
-				if (compareTime(end,now)) {					
+				if (compareTime(ecranEnLecture.end,now)) {					
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
-					resList[ligne]=[start,end,owner,ownerPhone,subject]
+					resList[ligne]=[start,ecranEnLecture.end,owner,ownerPhone,subject]
 				}
 			}
 		ligne++;
@@ -218,9 +236,11 @@ function sortResList(list) {
 		});
 	}
 	fillResInfos(list);
+	
 }
 
-function fillResInfos(list) {	
+function fillResInfos(list) {
+	var now= getTime();	
 	if (list.length>0) {
 		res=list[0];
 		if (compareTime(res[0],now)) {
@@ -236,7 +256,7 @@ function fillResInfos(list) {
 			$("#info-res-title").html("Prochaine réunion :");
 		}
 		else {
-			var temps="jusqu'à "+end;
+			var temps="jusqu'à "+ecranEnLecture.end;
 			$("body").css({"background-color":"#fad2d3"});
 			$("body").css({"border-left":"10px solid #ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
@@ -249,13 +269,22 @@ function fillResInfos(list) {
 		}
 		
 		var sujet="";
+		if(ecranEnLecture.hideSubject=="false"){
 		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		
-		var owner=res[2];
+		}
+		var owner="";
 		var ownerPhone="";
+		console.log(ecranEnLecture.hideOwner);
+		if (ecranEnLecture.hideOwner=="false"){
+		console.log(ecranEnLecture.hideOwner);
+		 owner=res[2];
+		}
+		if(ecranEnLecture.hidePhone=="false"){
+		console.log(ecranEnLecture.hidePhone);
 		if(res[3]) var ownerPhone=" - "+res[3];
+		}
 		var ownerInfo=owner+ownerPhone;
 		$("#info-res-owner").html(ownerInfo);
 	}
@@ -290,7 +319,6 @@ function createStartTime(){
 	var startTime=""+t[0]+":"+m+":00";
 	return startTime;
 }
-
 function createEndTime() {
 	var now=createStartTime();	
 	var endTime=addTime(now,timeRes)+":00";
@@ -299,7 +327,7 @@ function createEndTime() {
 }
 
 function createJsonRes(){
-	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"écran","key":"Champ1"},{"name":null,"value":"écran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+getRoomID()+'}}'
+	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"écran","key":"Champ1"},{"name":null,"value":"écran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+ecranEnLecture.roomID+'}}'
 	
 	return jsonToSend;
 }

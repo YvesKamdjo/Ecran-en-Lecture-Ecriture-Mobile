@@ -172,9 +172,22 @@ function splitRoomList(freeRooms, busyRooms) {
 }
 
 // Interface graphique En JQuery Mobile
+function setHideParameters(ho,hp,hs){
+ecranEnLecture.hideOw=ho;
+ecranEnLecture.hidePh=hp;
+ecranEnLecture.hideSub=hs;
+}
 function ajouterSalleLibre(nomSalle, idSalle, nBseats){
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">30min</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
-$("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
+setHideParameters(false,true,true);
+var html=[];
+html.push('<li class="une-salle-libre" data-icon="custom_arrow">');
+html.push('<a class="libre" data-transition="flow"  data-ajax="false" ');
+html.push('href="screenFreebusyRoom.html?resource='+idSalle+'">');
+//?hideOwner='+ecranEnLecture.hideOw+'?hidePhone='+ecranEnLecture.hidePh+'?hideSubject='+ecranEnLecture.hideSub+'">');
+html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
+html.push('<div class="duree"><img src="icon-duree-dark.png" class="icon">30min</div><div class="seats">');
+html.push('<img src="icon-seats-dark.png" class="icon">'+nBseats+' places</div></div></div></a></li>');
+$("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});
 $("li.une-salle-libre:even").css({'background-color':'white'});
 
@@ -201,7 +214,7 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'?hideOwner='+ecranEnLecture.hideOw+'?hidePhone='+ecranEnLecture.hidePh+'?hideSubject='+ecranEnLecture.hideSub+'">'+nomSalle+'</a></li>');
 $("li.une-salle-occupee:odd").css('background','#fad2d3');
 $("li.une-salle-occupee:odd").mouseover(function() {
 	$(this).css('background','#E1BDBE');
