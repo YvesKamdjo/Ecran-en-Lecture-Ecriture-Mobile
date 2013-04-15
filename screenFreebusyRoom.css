@@ -1,0 +1,163 @@
+
+* {
+    font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
+}
+
+body, html{
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+}
+
+#entete {
+	width:100%;
+	position:absolute;
+	top:0;
+	background-color:#2f464c;
+	color:white;
+	font-weight:600;
+}
+
+#nom-salle {
+	width:auto;
+	height:18.7%;
+	display:inline-block;
+	position:absolute;
+}
+
+#hourPanel {
+	width:auto;
+	height:18.7%;
+	position:absolute;
+	right:5%;
+	display:inline-block;
+}
+
+#etat-libre{
+	display:inline-block;
+	position:absolute;
+	top:27%;
+	font-weight:600;
+}
+
+#etat-libre #etat{
+	padding-left:15%;
+	font-size:450%;
+	display:inline-block;
+	position:relative;
+	top:20%;
+	left:0;
+	font-weight:bold;
+}
+
+#temps {
+	padding-left:15%;
+	display:inline-block;
+	position:relative;
+	left:0;
+	font-size:180%;
+	color:#2f464c
+}
+
+#bouton {
+	display:inline-block;
+	position:absolute;
+	top:31%;
+	right:5%;
+	width:50%;
+	height:40%;
+}
+
+#b_res {
+	color:white;
+	width:100%;
+	height:45%;
+	min-width:250px;
+	font-size:250%;
+	background-color:#38b54d;
+	border:2px solid #049948;
+	font-weight:bold;
+	text-align:center;
+	padding-bottom:8px;
+	border-radius: 8px;
+	-moz-box-shadow: 2px 2px 1px #888;
+	-webkit-box-shadow: 2px 2px 1px #888;
+	box-shadow: 2px 2px 1px #888;
+}
+
+#b_conf {
+	color:white;
+	background-color:grey;
+	font-weight:bold;
+	width:40%;
+	height:20%;
+	position:absolute;
+	right:5%;
+	bottom:5%;
+	border-radius: 10px;
+}
+
+
+#info-res {
+	padding-left:5%;
+	width:90%;
+	height:auto;
+	position:absolute;
+	bottom:15px;
+	font-size:170%;
+	font-weight:600;
+	color:#2f464c;
+}
+
+#b_res_arrow {
+	margin-left:30px;
+}
+
+#info-res-title {
+	font-weight:800;
+	display:inline-block;
+}
+
+#info-res-horaires {
+}
+
+#info-res-owner {}
+
+#info-res-presta {}
+
+#link_img {
+	height:100%;
+	width:auto;
+	position:relative;
+	left:0;
+}
+
+#link_back {
+	display:inline-block;
+	position:relative;
+	top:0;
+	left:10px;
+	margin-right:25px;
+}
+
+ul {
+	padding:0;
+	margin:0;
+}
+
+li {
+	list-style-type: none;
+	text-align:center;
+}
+
+#sub {
+	margin-left:30%;
+	width:60%;
+}
+
+#sub li {
+	font-size:5vmin;
+	background-color:white;
+	border: 1px solid #38b54d;
+}

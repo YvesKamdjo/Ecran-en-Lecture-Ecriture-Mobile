@@ -1,0 +1,35 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+		<link rel="stylesheet" href="screenFreebusy.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>		
+		<script type="text/javascript" src="screenFreebusy.js"></script>
+		<title> Occupation des salles </title>
+	</head>
+	<body>
+		<div data-role="page">
+		<div id="titre1">Occupation des Salles</div>
+		<div data-role="content" class="contenu"><!-- le contenue-->
+			<ul id="listes-salles-libres" class="pour-les-salles" data-role="listview" >
+				<li data-role="list-divider" id="salles-libres">Salles Libres</li>
+			</ul>
+			<ul id="listes-salles-occupees" class="pour-les-salles" data-role="listview">
+				<li data-role="list-divider" id="salles-occupees">Salles Occupées</li>
+			</ul>
+		</div>
+		</div>
+
+		<script> 
+                setIdentification('hanae', 'hanae');
+				getDocumentReady();
+				
+		</script>
+	</body>
+	
+</html>
+
+

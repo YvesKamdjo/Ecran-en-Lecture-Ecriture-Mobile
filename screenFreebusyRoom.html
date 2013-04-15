@@ -1,0 +1,56 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="initial-scale=1.0">
+	<head>
+		<script type="text/javascript" src="screenFreebusyRoom.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600,700,800,900">
+		<link rel="stylesheet" href="screenFreebusyRoom.css">
+	<title> Détails de la salle </title>
+	</head>
+	
+	<body onload="showTime();">
+
+		<div id="entete">
+			<a id="link_back" href="screenFreebusy.html"><img src="l-arrow.png" id="link_img"></a>
+			<div id="nom-salle"></div>
+			<div id="hourPanel"></div>
+		</div>
+		
+		<div id="info-salle">
+			<div id="etat-libre">
+				<div id="etat"></div>
+				<div id="temps"></div>
+			</div>
+			<div id="bouton">
+				<ul id="top-menu">
+					<li>
+						<button type="button" id="b_res" onClick="button_res()"> Réserver    <img src="arrow_d.png" id="b_res_arrow"> </button>
+						<ul id="sub">
+							<li><div type="button" id="b_res30" onClick="res_demand(30)"> 30 minutes </div></li>
+							<li><div type="button" id="b_res60" onClick="res_demand(60)"> 60 minutes </div></li>
+							<li><div type="button" id="b_res90" onClick="res_demand(90)"> 90 minutes </div></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="info-res">
+			<div id="info-res-title"></div>
+			<div id="info-res-horaires"></div>
+			<div id="info-res-owner"></div>			
+			<!--<div id="info-res-presta"><img src="prestation.png" style="width:8vmin;vertical-align:middle"></div>-->
+		</div>
+		
+		<button type="button" id="b_conf" onClick=""> Confirmer ma présence </button>
+		
+		<script> 
+        setIdentification('hanae', 'hanae');
+        $(document).ready(function() {
+          initDocument();
+        });
+				
+		</script>
+	</body>
+</html>
