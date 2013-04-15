@@ -107,7 +107,7 @@ text-shadow: 0px;
 	bottom:0;
 }
 
-.icon {
+.duree-icon, .seats-icon {
 	vertical-align:-5px;
 	margin-right:5px;
 	height:20px;
@@ -146,5 +146,14 @@ a {
 }
 /*
 .une-salle-libre {
+	background:none;
+	border:none;
+}
+
+.salle-libre-light{
 	background-color:white !important;
+}
+
+.salle-libre-dark{
+	background-color:#d7f0db !important;
 }*/

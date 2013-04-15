@@ -173,13 +173,11 @@ function splitRoomList(freeRooms, busyRooms) {
 
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats){
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img src="icon-duree-dark.png" class="icon">30min</div><div class="seats"><img src="icon-seats-dark.png" class="icon">'+nBseats+' places</div></div></div></a></li>');
-$("li.une-salle-libre:odd").css({'background':'none'});
-$("li.une-salle-libre:even").css({'background':'none'});
-$("li.une-salle-libre:odd").css({'border':'none'});
-$("li.une-salle-libre:even").css({'border':'none'});
+$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">30min</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
+$("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
 $("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});
 $("li.une-salle-libre:even").css({'background-color':'white'});
+
 $("li.une-salle-libre:odd").mouseover(function() {
 	$(this).css('background','#C2D8C5');
 });
@@ -192,9 +190,15 @@ $("li.une-salle-libre:even").mouseover(function() {
 $("li.une-salle-libre:even").mouseout(function() {
 	$(this).css('background','white');
 });
+
+$(".duree-icon:even").attr('src','icon-duree-light.png');
+$(".seats-icon:even").attr('src','icon-seats-light.png');
+$(".duree-icon:odd").attr('src','icon-duree-dark.png');
+$(".seats-icon:odd").attr('src','icon-seats-dark.png');
 $("a:even").css('color','#5e8894');
 $('#listes-salles-libres').listview('refresh');
 }
+
 
 function ajouterSalleOccupee(nomSalle, idSalle){
 $("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
