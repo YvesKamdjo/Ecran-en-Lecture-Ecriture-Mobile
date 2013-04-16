@@ -125,27 +125,21 @@ function createEndDate() {
 	return endDate;
 }
 
-/*function getRoomID() {
-	var url=document.location.href;
-	var temp=[];
-	var temp=url.split("resource=");
-	return temp[1];
-}*/
 function getUrlParameters(){
-	var url=document.location.href;
-	var allArg=[];
-	allArg= url.split("?");
-	console.log(url);
+	var allArg;
+	allArg= document.location.search;//récupération de la requete contenue dans l'URL
 	var t=[];
-	t=allArg[1].split("=");
-	ecranEnLecture.roomID= t[1];
-	if (allArg.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
-	t=allArg[2].split("=");
-	ecranEnLecture.hideOwner= t[1];
-	t=allArg[3].split("=");
-	ecranEnLecture.hidePhone=t[1];
-	t=allArg[4].split("=");
-	ecranEnLecture.hideSubject=t[1];
+	var t1=[];
+	t=allArg.split("&");
+	t1=t[0].split("=");
+	ecranEnLecture.roomID= t1[1];
+	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	t1=t[1].split("=");
+	ecranEnLecture.hideOwner= t1[1];
+	t1=t[2].split("=");
+	ecranEnLecture.hidePhone=t1[1];
+	t1=t[3].split("=");
+	ecranEnLecture.hideSubject=t1[1];
 	}
 }
 
@@ -271,9 +265,10 @@ function fillResInfos(list) {
 		var sujet="";
 		if(ecranEnLecture.hideSubject=="false"){
 		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		}
+		
 		var owner="";
 		var ownerPhone="";
 		console.log(ecranEnLecture.hideOwner);

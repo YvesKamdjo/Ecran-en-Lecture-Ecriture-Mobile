@@ -36,6 +36,7 @@ function setValidToken(newToken){
 	catch(e){
 	console.log(e);
 	getUrbaToken();
+	
 	}
 }
 
@@ -52,13 +53,28 @@ function getRoomList(){
 	getRoomList();
 	}
 }
-function addRoomNotDisplay(roomID){
+function addRoomToDisplay(roomID){
 blockedRoom.push(roomID);
+}
+function getRoomForDisplaying(){
+var query= document.location.search;
+console.log(document.location.search);
+var tmp1;
+var tmp=[];
+tmp= query.split("=");
+	if (tmp.lenght>0){
+		tmp1= tmp[1].split("=");
+		tmp1=tmp1+"";
+		console.log(tmp1);
+		blockedRoom = tmp1.split("_");
+		console.log(blockedRoom[0]);
+	}
 }
 function fillRoomList(objJson) {
 	console.log(objJson);
-	addRoomNotDisplay(654);
-	addRoomNotDisplay(655);
+	//addRoomNotDisplay(654);
+	//addRoomNotDisplay(655);
+	
 	try {
 		var i=0;
 		var j=0;
@@ -67,9 +83,7 @@ function fillRoomList(objJson) {
 		while (objJson[i]){
 			if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
 			id=objJson[i].id;
-				//if (jQuery.inArray(id, blockedRoom)!=-1){
 				allRoomList[j]={"id":id, "name":objJson[i].displayName, "capacity":objJson[i].capacity};
-				//}
 				j++;}
 			i++;
 			}
@@ -109,6 +123,8 @@ function createDuration(){
 
 
 function getFreeRoomList(){
+getRoomForDisplaying();
+console.log(blockedRoom.length);
 	try{
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+ecranEnLecture.validToken,
@@ -123,7 +139,7 @@ function getFreeRoomList(){
 }
 
 function fillFreeRoomList(objJson){
-console.log(blockedRoom[1]);
+
 	try {
 		var i=0;
 		var j=0;
@@ -162,20 +178,30 @@ function compareRoomLists() {
 		}
 	}
 	splitRoomList(freeRooms, allRooms);
+	//
 }
 
 
 function splitRoomList(freeRooms, busyRooms) {
-
+var tmp= blockedRoom.join(' ');
 	for (i=0;i<freeRooms.length;i++){
-			if ($.inArray(freeRooms[i].id,blockedRoom)!=-1){
+			if (blockedRoom.length>0){
+				console.log(blockedRoom[0]+" "+freeRooms[i].id+" "+tmp.indexOf(freeRooms[i].id));
+				if (tmp.indexOf(freeRooms[i].id)!=-1){//if (jQuery.inArray(freeRooms[i].id,blockedRoom)!=-1){
 			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity);
 			}
+		}
+		else
+			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity);
 	}
 	for (j=0;j<busyRooms.length;j++){
-			if ($.inArray(busyRooms[j].id,blockedRoom)!=-1){
+		if (blockedRoom.length>0){
+			if (tmp.indexOf(freeRooms[j].id)!=-1){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].capacity );
 			}
+		}
+		else
+			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].capacity );
 	}
 	
 	$('#listes-salles-libres').on('click', 'li', function() {
@@ -229,7 +255,10 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'?hideOwner='+ecranEnLecture.hideOw+'?hidePhone='+ecranEnLecture.hidePh+'?hideSubject='+ecranEnLecture.hideSub+'">'+nomSalle+'</a></li>');
+var html=[];
+html.push('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false"');
+html.push('href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+ecranEnLecture.hideOw+'&hidePhone='+ecranEnLecture.hidePh+'&hideSubject='+ecranEnLecture.hideSub+'">'+nomSalle+'</a></li>');
+$("#listes-salles-occupees").append(html.join(''));
 $("li.une-salle-occupee:odd").css('background','#fad2d3');
 $("li.une-salle-occupee:odd").mouseover(function() {
 	$(this).css('background','#E1BDBE');
