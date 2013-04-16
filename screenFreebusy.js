@@ -62,7 +62,7 @@ console.log(document.location.search);
 var tmp1;
 var tmp=[];
 tmp= query.split("=");
-	if (tmp.lenght>0){
+	if (tmp!=""){
 		tmp1= tmp[1].split("=");
 		tmp1=tmp1+"";
 		console.log(tmp1);
