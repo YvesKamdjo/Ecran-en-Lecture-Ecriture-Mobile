@@ -10,49 +10,73 @@ body, html{
 	padding:0;
 }
 
-#entete {
-	width:100%;
+#screenBorder {
+	width:10px;
+	height:100%;
+	margin:0;
+	padding:0;
 	position:absolute;
 	top:0;
+	left:0;
+	z-index:0;
+}
+
+#entete {
+	width:100%;
+	position:relative;
+	top:0;
+	left:0;
 	background-color:#2f464c;
 	color:white;
 	font-weight:600;
+	font-size:300%;
+}
+
+#info-salle {
+	display:block;
+	position:relative;
+	top:1%;
 }
 
 #nom-salle {
 	width:auto;
 	height:18.7%;
 	display:inline-block;
-	position:absolute;
+	position:relative;
+	left:5px;
+	font-weight:600;
 }
 
 #hourPanel {
 	width:auto;
 	height:18.7%;
-	position:absolute;
-	right:5%;
+	position:relative;
 	display:inline-block;
+	color:white;
+	font-weight:600;
 }
 
 #etat-libre{
 	display:inline-block;
-	position:absolute;
-	top:27%;
+	width:40%;
+	float:left;
 	font-weight:600;
 }
 
 #etat-libre #etat{
 	padding-left:15%;
 	font-size:450%;
+	width:100%;
 	display:inline-block;
 	position:relative;
-	top:20%;
+	top:0;
 	left:0;
 	font-weight:bold;
 }
 
 #temps {
 	padding-left:15%;
+	width:100%;
 	display:inline-block;
 	position:relative;
 	left:0;
@@ -61,22 +85,24 @@ body, html{
 }
 
 #bouton {
+	margin-top:3%;
 	display:inline-block;
-	position:absolute;
-	top:31%;
-	right:5%;
-	width:50%;
+	position:relative;
 	height:40%;
+	width:50%;
+	float:right;
+	right:5%;
 }
 
 #b_res {
 	color:white;
+	display:block;
+	padding-right:0;
+	padding-left:0;
+	height:50%;
 	width:100%;
-	height:45%;
-	min-width:250px;
 	font-size:250%;
 	background-color:#38b54d;
-	border:2px solid #049948;
 	font-weight:bold;
 	text-align:center;
 	padding-bottom:8px;
@@ -88,26 +114,31 @@ body, html{
 
 #b_conf {
 	color:white;
-	background-color:grey;
+	background-color:darkred;
 	font-weight:bold;
+	font-size:200%;
 	width:40%;
 	height:20%;
 	position:absolute;
 	right:5%;
-	bottom:5%;
-	border-radius: 10px;
+	bottom:25%;
+	border-radius: 8px;
+	-moz-box-shadow: 2px 2px 1px #888;
+	-webkit-box-shadow: 2px 2px 1px #888;
+	box-shadow: 2px 2px 1px #888;
 }
 
 
 #info-res {
 	padding-left:5%;
-	width:90%;
+	width:100%;
 	height:auto;
 	position:absolute;
-	bottom:15px;
+	top:55%;
 	font-size:170%;
 	font-weight:600;
 	color:#2f464c;
+	z-index:-1;
 }
 
 #b_res_arrow {
@@ -135,10 +166,6 @@ body, html{
 
 #link_back {
 	display:inline-block;
-	position:relative;
-	top:0;
-	left:10px;
-	margin-right:25px;
 }
 
 ul {
@@ -152,12 +179,30 @@ li {
 }
 
 #sub {
-	margin-left:30%;
-	width:60%;
+	margin-left:25%;
+	width:75%;
 }
 
 #sub li {
-	font-size:5vmin;
+	height:30%;
 	background-color:white;
 	border: 1px solid #38b54d;
+	
+}
+
+.menu_hour {
+	width:100%;
+	height:100%;
+	font-size:200%;
+}
+
+#frise {
+	display:inline-block;
+	position:absolute;
+	bottom:0;
+	right:0;
+	width:100%;
+	height:20%;
+	background-color:grey;
+	z-index:1;
 }

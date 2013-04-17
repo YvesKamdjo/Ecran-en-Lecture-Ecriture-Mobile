@@ -10,12 +10,18 @@
 	</head>
 	
 	<body onload="showTime();">
-
-		<div id="entete">
-			<a id="link_back" href="screenFreebusy.html"><img src="l-arrow.png" id="link_img"></a>
-			<div id="nom-salle"></div>
-			<div id="hourPanel"></div>
+	
+		<div id="entete" >
+			<table>
+				<tr valign="middle" >
+					<th width="5%"><a id="link_back" href="screenFreebusy.html"><img src="l-arrow.png" id="link_img"></a><th>
+					<th width="85%" align="left"><div id="nom-salle"></div></th>
+					<th width="10%"><div id="hourPanel"></div></th>
+				</tr>
+			</table>
 		</div>
+		
+		<div id="screenBorder"></div>
 		
 		<div id="info-salle">
 			<div id="etat-libre">
@@ -25,11 +31,11 @@
 			<div id="bouton">
 				<ul id="top-menu">
 					<li>
-						<button type="button" id="b_res" onClick="button_res()"> Réserver    <img src="arrow_d.png" id="b_res_arrow"> </button>
+						<button type="button" id="b_res" onClick="button_res()"> Réserver <img src="arrow_d.png" id="b_res_arrow"> </button>
 						<ul id="sub">
-							<li><div type="button" id="b_res30" onClick="res_demand(30)"> 30 minutes </div></li>
-							<li><div type="button" id="b_res60" onClick="res_demand(60)"> 60 minutes </div></li>
-							<li><div type="button" id="b_res90" onClick="res_demand(90)"> 90 minutes </div></li>
+							<li><div type="button" id="b_res30" class="menu_hour" onClick="res_demand(30)"> 30 minutes </div></li>
+							<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>
+							<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>
 						</ul>
 					</li>
 				</ul>
@@ -44,6 +50,8 @@
 		</div>
 		
 		<button type="button" id="b_conf" onClick=""> Confirmer ma présence </button>
+		
+		<div id="frise"></div>
 		
 		<script> 
         setIdentification('hanae', 'hanae');
