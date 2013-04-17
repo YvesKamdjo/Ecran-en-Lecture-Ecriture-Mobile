@@ -1,11 +1,9 @@
-var ecranEnLecture= new Object();
-var refresh=false;
-var bResPushed=false;
-var timeRes="";
+var FreebusyRoom= new Object();
+
 
 function setIdentification(log, pass){
-	ecranEnLecture.login=log;
-	ecranEnLecture.password=pass;
+	FreebusyRoom.login=log;
+	FreebusyRoom.password=pass;
 	}
 
 function getTime(){
@@ -58,6 +56,9 @@ function compareTime(time, ref) {
 }
 
 function initDocument(){
+	FreebusyRoom.refresh=false;
+	FreebusyRoom.bResPushed=false;
+	FreebusyRoom.timeRes="";
 	$("#sub").hide();
 	$("#bouton").hide();
 	$("#b_conf").hide();
@@ -82,14 +83,14 @@ function initDocument(){
 
  function getUrbaToken(){
  $.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',			
 	});	
 }
 
 function setValidToken(newToken){
-	ecranEnLecture.validToken= newToken.Token;
+	FreebusyRoom.validToken= newToken.Token;
 	getRoomName();
 }
 
@@ -115,7 +116,7 @@ function getRoomID() {
 function getRoomName(){
 	var roomID=getRoomID();
 	$.ajax({
-			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+ecranEnLecture.validToken,
+			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomName',		
 		});
@@ -131,7 +132,7 @@ function getResInfo() {
 	var endDate=createEndDate();
 	//var roomID=getRoomID();
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+ecranEnLecture.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom',		
 		});
@@ -252,7 +253,7 @@ function createStartTime(){
 
 function createEndTime() {
 	var now=createStartTime();	
-	var endTime=addTime(now,timeRes)+":00";
+	var endTime=addTime(now,FreebusyRoom.timeRes)+":00";
 	console.log(endTime);
 	return endTime;
 }
@@ -265,14 +266,14 @@ function createJsonRes(){
 
  function getTokenWrite(){
  $.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidTokenWrite',			
 	});	
 }
 
 function setValidTokenWrite(newToken){
-	ecranEnLecture.validToken= newToken.Token;
+	FreebusyRoom.validToken= newToken.Token;
 	sendRes();
 }
 
@@ -283,7 +284,7 @@ function sendRes(){
 
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +ecranEnLecture.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -293,20 +294,20 @@ function sendRes(){
 }
 
 function button_res() {
-	if (bResPushed) {
+	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
-		bResPushed=false;
+		FreebusyRoom.bResPushed=false;
 		document.getElementById("b_res_arrow").src = "arrow_d.png";
 	}
 	else {
 		document.getElementById("b_res_arrow").src = "arrow_u.png";
 		$("#sub").show();
-		bResPushed=true;
+		FreebusyRoom.bResPushed=true;
 	}
 }
 
 function res_demand(minutes) {
 		$("#b_res"+minutes).css({"background-color":"#38b54d"});
-		timeRes=Math.floor(minutes/60)+":"+minutes%60;
+		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		getTokenWrite();
 }
