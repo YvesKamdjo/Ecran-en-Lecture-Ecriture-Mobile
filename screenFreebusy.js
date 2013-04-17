@@ -39,7 +39,7 @@ function substractTime(t1, t2) {
 	
 	var minutes3=minutes1-minutes2;
 	var min=minutes3%60;
-	if (min<10) t3[1]="0"+t3[1];
+	if (min<10) min="0"+min;
 	var duree=Math.floor(minutes3/60)+":"+min;
 	return duree;
 }

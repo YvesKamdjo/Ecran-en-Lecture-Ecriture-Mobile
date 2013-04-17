@@ -57,7 +57,7 @@ function substractTime(t1, t2) {
 	
 	var minutes3=minutes1-minutes2;
 	var min=minutes3%60;
-	if (min<10) t3[1]="0"+t3[1];
+	if (min<10) min="0"+min;
 	var duree=Math.floor(minutes3/60)+":"+min;
 	return duree;
 }
@@ -178,7 +178,6 @@ function fillResListforRoom(objJson) {
 			}
 		ligne++;
 	});
-	console.log(resList);
 	sortResList(resList);
 }
 
@@ -199,19 +198,19 @@ function sortResList(list) {
 
 function fillResInfos(list) {	
 	var now=getTime();
-	console.log("test");
+	var nowPlusTemp=addTime(now,"0:30");
+	console.log(nowPlusTemp);
 	if (list.length>0) {
 		res=list[0];
-		if (compareTime(res[0],now)) {
+		console.log(res[0]);
+		console.log("comp"+compareTime(res[0],nowPlusTemp));
+		if (compareTime(res[0],nowPlusTemp)) {
 			var temps="jusqu'à "+res[0];
 			var dureeLibre=substractTime(res[0],now);
-			console.log(dureeLibre);
 			if (compareTime(dureeLibre,"1:00")) {
-				console.log(">1h");
 				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
 			}
 			if (compareTime(dureeLibre,"1:30")) {
-				console.log(">1h30");
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 			}
 			//$("body").className("bodyRed");
@@ -283,7 +282,6 @@ function createStartTime(){
 function createEndTime() {
 	var now=createStartTime();	
 	var endTime=addTime(now,FreebusyRoom.timeRes)+":00";
-	console.log(endTime);
 	return endTime;
 }
 
@@ -308,8 +306,6 @@ function setValidTokenWrite(newToken){
 
 function sendRes(){
 	var jsonRes=createJsonRes();
-	console.log(getRoomID());
-	console.log(jsonRes);
 
 	$.ajax({
 		type: "POST",
