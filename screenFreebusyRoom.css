@@ -37,7 +37,13 @@ body, html{
 	position:relative;
 	top:1%;
 }
-
+#pied
+{
+	width:100%;
+	position:absolute;
+	bottom:0;
+	background-color:#2f464c;
+}
 #nom-salle {
 	width:auto;
 	display:inline-block;
@@ -146,6 +152,7 @@ body, html{
 #info-res-title {
 	font-weight:800;
 	display:inline-block;
+	bottom: 50px;
 }
 
 #info-res-horaires {
