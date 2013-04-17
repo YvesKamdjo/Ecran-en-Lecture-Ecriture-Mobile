@@ -67,7 +67,7 @@ function initDocument(){
 	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em");
 	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em");
+	$("#link_img").css("height", ((w*h/500000)+2)+"em");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
@@ -75,7 +75,7 @@ function initDocument(){
 		$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em");
 		$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
 		$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-		$("#link_img").css("height", ((w*h/1000000)+2)+"em");
+		$("#link_img").css("height", ((w*h/500000)+2)+"em");
 	});
 	getUrbaToken();
 }
