@@ -199,16 +199,20 @@ function sortResList(list) {
 
 function fillResInfos(list) {	
 	var now=getTime();
+	console.log("test");
 	if (list.length>0) {
 		res=list[0];
 		if (compareTime(res[0],now)) {
 			var temps="jusqu'à "+res[0];
 			var dureeLibre=substractTime(res[0],now);
+			console.log(dureeLibre);
 			if (compareTime(dureeLibre,"1:00")) {
-				("#sub").append("<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>");
+				console.log(">1h");
+				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
 			}
 			if (compareTime(dureeLibre,"1:30")) {
-				("#sub").append("<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>");
+				console.log(">1h30");
+				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 			}
 			//$("body").className("bodyRed");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
@@ -243,6 +247,8 @@ function fillResInfos(list) {
 		$("#info-res-owner").html(ownerInfo);
 	}
 	else {
+		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
+		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
 		$("body").css({"background-color":"#d7f0db"});
 		$("#screenBorder").css({"background-color":"#38b54d"});
