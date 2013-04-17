@@ -115,10 +115,10 @@ function fillFreeRoomList(objJson){
 	var freeRoomList = [];
 	while (objJson[i]){
 		if (objJson[i].location.id==85) {
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity};
+			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":" la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;}
 		else if (objJson[i].location.id==89) {
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity};
+			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":"la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;}
 		i++;
 		
