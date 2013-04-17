@@ -45,6 +45,22 @@ function addTime(time1, time2) {
 	time3=t3[0]+":"+t3[1];
 	return time3;
 }
+
+function substractTime(t1, t2) {
+	var time1=[];
+	var time2=[];
+	var time1=t1.split(":");
+	var time2=t2.split(":");
+	
+	var minutes1=60*parseInt(time1[0],10)+parseInt(time1[1],10);
+	var minutes2=60*parseInt(time2[0],10)+parseInt(time2[1],10);
+	
+	var minutes3=minutes1-minutes2;
+	var min=minutes3%60;
+	if (min<10) t3[1]="0"+t3[1];
+	var duree=Math.floor(minutes3/60)+":"+min;
+	return duree;
+}
 		  
 function compareTime(time, ref) {
 	var r=ref.split(":");
@@ -187,6 +203,13 @@ function fillResInfos(list) {
 		res=list[0];
 		if (compareTime(res[0],now)) {
 			var temps="jusqu'à "+res[0];
+			var dureeLibre=substractTime(res[0],now);
+			if (compareTime(dureeLibre,"1:00")) {
+				("#sub").append("<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>");
+			}
+			if (compareTime(dureeLibre,"1:30")) {
+				("#sub").append("<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>");
+			}
 			//$("body").className("bodyRed");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
