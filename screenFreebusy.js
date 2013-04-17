@@ -28,6 +28,20 @@ function compareTime(time, ref) {
 	
 }
 
+function substractTime(t1, t2) {
+	var time1=[];
+	var time2=[];
+	var time1=t1.split(":");
+	var time2=t2.split(":");
+	
+	var minutes1=60*parseInt(time1[0],10)+parseInt(time1[1],10);
+	var minutes2=60*parseInt(time2[0],10)+parseInt(time2[1],10);
+	
+	var minutes3=minutes1-minutes2;
+	var duree=Math.floor(minutes3/60)+":"+minutes3%60;
+	return duree;
+}
+
 function getDocumentReady(){
 	$(document).ready(function() {
 		getUrbaToken();
@@ -115,10 +129,10 @@ function fillFreeRoomList(objJson){
 	var freeRoomList = [];
 	while (objJson[i]){
 		if (objJson[i].location.id==85) {
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":" la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
+			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":"jusqu'à la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;}
 		else if (objJson[i].location.id==89) {
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":"la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
+			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":"jusqu'à la fin de la journée"/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;}
 		i++;
 		
@@ -185,6 +199,7 @@ function fillResListforRoom(objJson) {
 
 function selectNextResForEachRoom(list) {
 	var startTimes=[];
+	var now=getTime();
 	
 	for (i=0;i<ecranEnLecture.freeRoomList.length;i++) {
 		var k=0
@@ -200,10 +215,12 @@ function selectNextResForEachRoom(list) {
 		}
 		
 		if (k==1){
-			ecranEnLecture.freeRoomList[i].time=startTimes[0];
+			var duree=substractTime(startTimes[0], now);
+			ecranEnLecture.freeRoomList[i].time="pendant "+duree;
 			}
 		else if (k>1) {
-			ecranEnLecture.freeRoomList[i].time=smallestStartTime(startTimes);
+			var duree=substractTime(smallestStartTime(startTimes), now);
+			ecranEnLecture.freeRoomList[i].time="pendant "+duree;
 		}
 	}
 	
@@ -257,7 +274,7 @@ function splitRoomList(freeRooms, busyRooms) {
 
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, time){
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">jusqu\'à '+time+'</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
+$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">'+time+'</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
 $("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
 $("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});
 $("li.une-salle-libre:even").css({'background-color':'white'});
