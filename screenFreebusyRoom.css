@@ -40,7 +40,6 @@ body, html{
 
 #nom-salle {
 	width:auto;
-	height:18.7%;
 	display:inline-block;
 	position:relative;
 	left:5px;
@@ -49,7 +48,6 @@ body, html{
 
 #hourPanel {
 	width:auto;
-	height:18.7%;
 	position:relative;
 	display:inline-block;
 	color:white;
