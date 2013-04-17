@@ -158,10 +158,9 @@ body, html{
 #info-res-presta {}
 
 #link_img {
-	height:100%;
 	width:auto;
 	position:relative;
-	left:0;
+	left:2%;
 }
 
 #link_back {
