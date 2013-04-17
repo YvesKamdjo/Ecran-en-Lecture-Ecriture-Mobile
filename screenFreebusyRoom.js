@@ -1,6 +1,5 @@
 var FreebusyRoom= new Object();
 
-
 function setIdentification(log, pass){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
@@ -156,12 +155,13 @@ function getResInfo() {
 
 function fillResListforRoom(objJson) {
 	var ligne=0;
+	var j=0;
+	var jsonLocal=[];
 	var roomID=getRoomID();
 	var resList=[];
 	$.each(objJson, function(key, value) {
 			if (objJson[ligne].resource.id==roomID) {
 				var now=getTime();
-				
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
 				var start=""+startHour[0]+":"+startHour[1];
@@ -173,12 +173,18 @@ function fillResListforRoom(objJson) {
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
+					jsonLocal[j]={startH:start,endH:end};// récupération de l'heure de début et de fin dans un JSON
+					j++;
 					resList[ligne]=[start,end,owner,ownerPhone,subject]
 				}
 			}
 		ligne++;
 	});
+	construireLaFrise();
+	remplirLaFrise(jsonLocal);
+	
 	sortResList(resList);
+	
 }
 
 function sortResList(list) {
@@ -195,7 +201,6 @@ function sortResList(list) {
 	}
 	fillResInfos(list);
 }
-
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
@@ -335,4 +340,84 @@ function res_demand(minutes) {
 		$("#b_res"+minutes).css({"background-color":"#38b54d"});
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		getTokenWrite();
+}
+function construireLaFrise(){
+	var i;
+	var tmp1, tmp2;
+	var startH, startMin;
+	var endH, endMin;
+	for (i=8;i<20;i++){
+	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
+	$("#ligne2").append('<td width="8.33%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+	for(var j=1; j<=4; j++){
+	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
+	$("#case"+i+""+j).css('background','white');
+	}
+}
+}
+function remplirLaFrise(json){
+	$.each(json, function(key, value){
+		var all=[];
+		all= value.startH.split(":");
+		var starth= all[0];
+		var startm=all[1];
+		all=value.endH.split(":");
+		var endh=all[0];
+		var endm=all[1];
+		//console.log(endh);
+		if(starth==endh){//si c'est dans la même heure
+			
+				var quartHeure;
+				if(endm!="00")
+					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
+				else
+					quartHeure=1;
+				var l;
+				var deb;
+				if (startm!="00")
+				deb=1+startm/15;
+				else
+				deb=1;
+				console.log(quartHeure);
+				for(l=deb;l<=quartHeure;l++){
+				var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
+				$("#"+idcasedebut).css('background','red');
+				}
+			}
+		else{
+		//console.log(starth);
+		
+		var k;
+		for(k=starth;k<=endh;k++){
+				if (k==endh){
+					var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
+					console.log(endm);
+					if(endm!="00"){
+					
+						quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
+						}
+					else
+						quartHeure=1;
+					var l;
+					console.log(quartHeure);
+					for(l=1;l<=quartHeure;l++){
+					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+					$("#"+idcasedebut).css('background','red');
+					}
+				}
+				else{
+					var l;
+					var deb;
+					if(startm!="00")
+						deb=1+startm/15;
+					else
+						deb=1;
+					for(l=deb;l<=4;l++){
+					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+					$("#"+idcasedebut).css('background','red');
+					}
+			}
+		}
+	}
+	});
 }

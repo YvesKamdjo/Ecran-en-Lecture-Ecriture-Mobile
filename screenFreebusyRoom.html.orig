@@ -2,19 +2,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="initial-scale=1.0">
 	<head>
+		<script type="text/javascript" src="screenFreebusyRoom.js"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600,700,800,900">
 		<link rel="stylesheet" href="screenFreebusyRoom.css">
-		<script type="text/javascript" src="screenFreebusyRoom.js"></script>
 	<title> Détails de la salle </title>
 	</head>
 	
 	<body onload="showTime();">
 	
 		<div id="entete" >
-			<table width="100%">
-				<tr valign="middle" width="100%">
-					<th width="5%"><a id="link_back" href="screenFreebusy.html"><img src="btn-home.png" id="link_img"></a></th>
+			<table>
+				<tr valign="middle" >
+					<th width="5%"><a id="link_back" href="screenFreebusy.html"><img src="l-arrow.png" id="link_img"></a><th>
 					<th width="85%" align="left"><div id="nom-salle"></div></th>
 					<th width="10%"><div id="hourPanel"></div></th>
 				</tr>
@@ -34,8 +34,8 @@
 						<button type="button" id="b_res" onClick="button_res()"> Réserver <img src="arrow_d.png" id="b_res_arrow"> </button>
 						<ul id="sub">
 							<li><div type="button" id="b_res30" class="menu_hour" onClick="res_demand(30)"> 30 minutes </div></li>
-							<!--<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>
-							<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>-->
+							<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>
+							<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>
 						</ul>
 					</li>
 				</ul>
@@ -51,23 +51,13 @@
 		
 		<button type="button" id="b_conf" onClick=""> Confirmer ma présence </button>
 		
-		<div id="frise">
-			<table border="0px #2f464c" width="100%"  cellpadding="0">
-				<tr id="ligne1" class="ligne">
-				</tr>
-				<tr id="ligne2" class="ligne">
-				</tr>
-				<tr id="ligne3" class="ligne">
-				</tr>
-			</table>
-		</div>
+		<div id="frise"></div>
 		<script> 
         setIdentification('hanae', 'hanae');
         $(document).ready(function() {
           initDocument();
-		  //construireLaFrise();
         });
-			
+				
 		</script>
 	</body>
 </html>
