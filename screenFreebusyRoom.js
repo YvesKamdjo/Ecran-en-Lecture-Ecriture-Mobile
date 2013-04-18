@@ -220,6 +220,7 @@ function fillResInfos(list) {
 			if (compareTime(dureeLibre,"1:30")) {
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 			}
+			var w=$(window).width();
 			$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
