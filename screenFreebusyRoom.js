@@ -88,7 +88,8 @@ function initDocument(){
 		var w=$(window).width();
 		var h=$(window).height();
 		console.log(w);
-$("body").css("font-size",((w*h/1000000)+0.5)+"em");
+	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
+	$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
 	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
@@ -219,7 +220,7 @@ function fillResInfos(list) {
 			if (compareTime(dureeLibre,"1:30")) {
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 			}
-			//$("body").className("bodyRed");
+			$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
