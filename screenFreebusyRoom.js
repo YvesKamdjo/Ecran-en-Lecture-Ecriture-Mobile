@@ -411,7 +411,7 @@ function remplirLaFrise(json){
 						}
 					
 				}
-				else{
+				else if (k==starth){
 					var l;
 					var deb;
 					if(startm!="00")
@@ -419,6 +419,12 @@ function remplirLaFrise(json){
 					else
 						deb=1;
 					for(l=deb;l<=4;l++){
+					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+					$("#"+idcasedebut).css('background','red');
+					}
+			}
+			else{
+				for(l=1;l<=4;l++){
 					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
 					$("#"+idcasedebut).css('background','red');
 					}
