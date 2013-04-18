@@ -256,6 +256,8 @@ function fillResInfos(list) {
 	else {
 		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
 		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
+		var w=$(window).width();
+		$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
 		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
 		$("body").css({"background-color":"#d7f0db"});
 		$("#screenBorder").css({"background-color":"#38b54d"});
