@@ -241,8 +241,8 @@ function fillResInfos(list) {
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
 			$("#etat-libre").css({"width":"100%"});
-			$("#etat").append("Occupée").css({"color":"#ed1b24"}).css({"padding-left":"30%"});
-			$("#temps").html(temps).css({"padding-left":"30%"});
+			$("#etat").append("Occupée").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#temps").html(temps).css({"padding-left":"20%"});
 			$("#b_conf").show();
 			$("#info-res-title").html("Réunion actuelle:");
 		}

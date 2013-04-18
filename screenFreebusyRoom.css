@@ -64,7 +64,7 @@ body, html{
 }
 
 #etat-libre #etat{
-	padding-left:15%;
+	padding-left:12%;
 	font-size:450%;
 	width:100%;
 	display:inline-block;
@@ -75,7 +75,7 @@ body, html{
 }
 
 #temps {
-	padding-left:15%;
+	padding-left:13%;
 	width:100%;
 	display:inline-block;
 	position:relative;
