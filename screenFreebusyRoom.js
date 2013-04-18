@@ -90,8 +90,8 @@ function initDocument(){
 		var h=$(window).height();
 		console.log(w);
 	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+10+"%"));
-	$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
+	$("#info-salle").css("top",(w*(-1/400)+5+"%"));
+	$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
 	$("#nom-salle").css("font-size",((w*h/500000)+1)+"em").css("left", (w*(1/322)+20)+"px").css("top", (w*(1/322)-8)+"px");
 	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
@@ -223,7 +223,7 @@ function fillResInfos(list) {
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 			}
 			var w=$(window).width();
-			$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
+			$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
@@ -259,7 +259,7 @@ function fillResInfos(list) {
 		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
 		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
 		var w=$(window).width();
-		$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
+		$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
 		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
 		$("body").css({"background-color":"#d7f0db"});
 		$("#screenBorder").css({"background-color":"#38b54d"});
