@@ -80,18 +80,19 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em");
+	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em");
+	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/322)+3)+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
-		$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-		$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em");
-		$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
-		$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-		$("#link_img").css("height", ((w*h/1000000)+2)+"em");
+		console.log(w);
+$("body").css("font-size",((w*h/1000000)+0.5)+"em");
+	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
+	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
+	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/322)+3)+"px");
 	});
 	getUrbaToken();
 }

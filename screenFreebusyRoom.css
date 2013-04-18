@@ -48,16 +48,13 @@ body, html{
 	width:auto;
 	display:inline-block;
 	position:relative;
-	left:5px;
 	font-weight:600;
 }
 
 #hourPanel {
-	width:auto;
-	position:relative;
-	display:inline-block;
 	color:white;
 	font-weight:600;
+	margin-right:2%;
 }
 
 #etat-libre{
@@ -135,7 +132,6 @@ body, html{
 
 #info-res {
 	padding-left:5%;
-	width:100%;
 	height:auto;
 	position:absolute;
 	top:55%;
@@ -165,7 +161,6 @@ body, html{
 #link_img {
 	width:auto;
 	position:relative;
-	left:10px;
 }
 
 #link_back {
