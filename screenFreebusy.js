@@ -218,11 +218,33 @@ function selectNextResForEachRoom(list) {
 		
 		if (k==1){
 			var duree=substractTime(startTimes[0], now);
-			ecranEnLecture.freeRoomList[i].time="pendant "+duree;
+			if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="pendant 30 min";
+			else if ((compareTime(duree,"1:0"))&&(compareTime("1:30",duree))) duree="pendant 1h";
+			else if ((compareTime(duree,"1:30"))&&(compareTime("2:0",duree))) duree="pendant 1h30";
+			else if ((compareTime(duree,"2:0"))&&(compareTime("3:0",duree))) duree="pendant 2h";
+			else if ((compareTime(duree,"3:0"))&&(compareTime("4:0",duree))) duree="pendant 3h";
+			else if ((compareTime(duree,"4:0"))&&(compareTime("5:0",duree))) duree="pendant 4h";
+			else if (compareTime(duree,"5:0")) {
+				var heure=[];
+				heure=startTimes[0].split(":");
+				duree="jusqu'à "+ heure[0]+"h";
+				}
+			ecranEnLecture.freeRoomList[i].time=duree;
 			}
 		else if (k>1) {
 			var duree=substractTime(smallestStartTime(startTimes), now);
-			ecranEnLecture.freeRoomList[i].time="pendant "+duree;
+			if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="pendant 30 min";
+			else if ((compareTime(duree,"1:0"))&&(compareTime("1:30",duree))) duree="pendant 1h";
+			else if ((compareTime(duree,"1:30"))&&(compareTime("2:0",duree))) duree="pendant 1h30";
+			else if ((compareTime(duree,"2:0"))&&(compareTime("3:0",duree))) duree="pendant 2h";
+			else if ((compareTime(duree,"3:0"))&&(compareTime("4:0",duree))) duree="pendant 3h";
+			else if ((compareTime(duree,"4:0"))&&(compareTime("5:0",duree))) duree="pendant 4h";
+			else if (compareTime(duree,"5:0")) {
+				var heure=[];
+				heure=startTimes[0].split(":");
+				duree="jusqu'à "+ heure[0]+"h";
+				}
+			ecranEnLecture.freeRoomList[i].time=duree;
 		}
 	}
 	
@@ -275,7 +297,8 @@ function splitRoomList(freeRooms, busyRooms) {
 }
 
 // Interface graphique En JQuery Mobile
-function ajouterSalleLibre(nomSalle, idSalle, nBseats, time){
+function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
+var time=timeFree.replace(":","h");
 $("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">'+time+'</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
 $("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
 $("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});

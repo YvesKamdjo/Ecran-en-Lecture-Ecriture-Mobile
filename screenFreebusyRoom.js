@@ -80,20 +80,22 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
+	$("#info-salle").css("top",(w*(-1/322)+10+"%"));
+	$("#nom-salle").css("font-size",((w*h/500000)+1)+"em").css("left", (w*(1/322)+20)+"px").css("top", (w*(1/322)-8)+"px");
+	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/322)+3)+"px");
+	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
 		console.log(w);
 	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
+	$("#info-salle").css("top",(w*(-1/322)+10+"%"));
 	$(".menu_hour").css("margin-top",(w*(-4/322)+25)+"%");
-	$("#nom-salle").css("font-size",((w*h/1000000)+2)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
+	$("#nom-salle").css("font-size",((w*h/500000)+1)+"em").css("left", (w*(1/322)+20)+"px").css("top", (w*(1/322)-8)+"px");
+	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/322)+3)+"px");
+	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
 	getUrbaToken();
 }
@@ -140,7 +142,7 @@ function getRoomName(){
 }
 	
 function fillRoomName(objJson){
-	$("#nom-salle").html(objJson.displayName);
+	$("#nom-salle").append(objJson.displayName);
 	getResInfo();
 }
 

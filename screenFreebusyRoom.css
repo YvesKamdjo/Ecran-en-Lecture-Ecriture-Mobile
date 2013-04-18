@@ -29,13 +29,11 @@ body, html{
 	background-color:#2f464c;
 	color:white;
 	font-weight:600;
-	font-size:300%;
 }
 
 #info-salle {
 	display:block;
 	position:relative;
-	top:1%;
 }
 #pied
 {
@@ -46,6 +44,7 @@ body, html{
 }
 #nom-salle {
 	width:auto;
+	height:100%;
 	display:inline-block;
 	position:relative;
 	font-weight:600;

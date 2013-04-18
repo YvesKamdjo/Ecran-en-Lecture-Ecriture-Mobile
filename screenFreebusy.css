@@ -32,15 +32,11 @@ li:even
 #listes-salles-libres
 {
 	border-left:  10px solid #3ab54a;
-	margin-left: 20px;
-	margin-right: 20px;
 }
 #listes-salles-occupees
 {
 	border-left:  10px solid #ed1b24;
 	margin-bottom: 20px;
-	margin-left: 20px;
-	margin-right: 20px;
 }
 .ui-listview .ui-li-icon {
     left: 0px;
