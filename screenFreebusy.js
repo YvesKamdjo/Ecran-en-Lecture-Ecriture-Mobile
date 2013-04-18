@@ -299,7 +299,7 @@ function splitRoomList(freeRooms, busyRooms) {
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 var time=timeFree.replace(":","h");
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="duree"><img class="duree-icon">'+time+'</div><div class="seats"><img class="seats-icon">'+nBseats+' places</div></div></div></a></li>');
+$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
 $("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});
 $("li.une-salle-libre:even").css({'background-color':'white'});

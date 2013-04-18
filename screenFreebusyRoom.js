@@ -88,7 +88,6 @@ function initDocument(){
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
-		console.log(w);
 	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
 	$("#info-salle").css("top",(w*(-1/400)+5+"%"));
 	$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
@@ -110,7 +109,7 @@ function initDocument(){
 
 function setValidToken(newToken){
 	FreebusyRoom.validToken= newToken.Token;
-	getRoomName();
+	getRoomInfo();
 }
 
 function createStartDate() {
@@ -132,17 +131,21 @@ function getRoomID() {
 	return temp[1];
 }
 
-function getRoomName(){
+function getRoomInfo(){
 	var roomID=getRoomID();
 	$.ajax({
 			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillRoomName',		
+			jsonpCallback: 'fillRoomInfo',		
 		});
 }
 	
-function fillRoomName(objJson){
+function fillRoomInfo(objJson){
 	$("#nom-salle").append(objJson.displayName);
+	FreebusyRoom.roomName=objJson.displayName;
+	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
+	FreebusyRoom.endTime=objJson.resourceProfil.endTime;
+	
 	getResInfo();
 }
 
@@ -208,19 +211,19 @@ function sortResList(list) {
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
-	console.log(nowPlusTemp);
 	if (list.length>0) {
 		res=list[0];
-		console.log(res[0]);
-		console.log("comp"+compareTime(res[0],nowPlusTemp));
 		if (compareTime(res[0],nowPlusTemp)) {
 			var temps="jusqu'à "+res[0];
 			var dureeLibre=substractTime(res[0],now);
 			if (compareTime(dureeLibre,"1:00")) {
-				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
+				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
 			}
 			if (compareTime(dureeLibre,"1:30")) {
-				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
+				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+			}
+			if (compareTime(dureeLibre,"2:00")) {
+				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 			}
 			var w=$(window).width();
 			$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
@@ -256,8 +259,16 @@ function fillResInfos(list) {
 		$("#info-res-owner").html(ownerInfo);
 	}
 	else {
-		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 60 minutes </div></li>');
-		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 90 minutes </div></li>');
+		var dureeLibre=substractTime(FreebusyRoom.endTime,now);
+		if (compareTime(dureeLibre,"1:00")) {
+		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+			}
+		if (compareTime(dureeLibre,"1:30")) {
+		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+			}
+		if (compareTime(dureeLibre,"2:00")) {
+				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+			}
 		var w=$(window).width();
 		$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
 		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
@@ -298,7 +309,7 @@ function createEndTime() {
 }
 
 function createJsonRes(){
-	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"écran","key":"Champ1"},{"name":null,"value":"écran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+getRoomID()+'}}'
+	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+getRoomID()+'}}'
 	
 	return jsonToSend;
 }
@@ -325,7 +336,6 @@ function sendRes(){
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
-		alert( "Salle Réservée " + msg );
 		location.reload();
 	});
 }
@@ -371,7 +381,6 @@ function remplirLaFrise(json){
 		all=value.endH.split(":");
 		var endh=all[0];
 		var endm=all[1];
-		//console.log(endh);
 		if(starth==endh){//si c'est dans la même heure
 			
 				var quartHeure;
@@ -385,33 +394,30 @@ function remplirLaFrise(json){
 				deb=1+startm/15;
 				else
 				deb=1;
-				console.log(quartHeure);
 				for(l=deb;l<=quartHeure;l++){
 				var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
 				$("#"+idcasedebut).css('background','red');
 				}
 			}
 		else{
-		//console.log(starth);
 		
 		var k;
 		for(k=starth;k<=endh;k++){
 				if (k==endh){
 					var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
-					console.log(endm);
 					if(endm!="00"){
 					
 						quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
-						var l;
-						console.log(quartHeure);
-						for(l=1;l<=quartHeure;l++){
-						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-						$("#"+idcasedebut).css('background','red');
 						}
-						}
-					
+					else
+						quartHeure=1;
+					var l;
+					for(l=1;l<=quartHeure;l++){
+					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+					$("#"+idcasedebut).css('background','red');
+					}
 				}
-				else if (k==starth){
+				else{
 					var l;
 					var deb;
 					if(startm!="00")
@@ -419,12 +425,6 @@ function remplirLaFrise(json){
 					else
 						deb=1;
 					for(l=deb;l<=4;l++){
-					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-					$("#"+idcasedebut).css('background','red');
-					}
-			}
-			else{
-				for(l=1;l<=4;l++){
 					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
 					$("#"+idcasedebut).css('background','red');
 					}

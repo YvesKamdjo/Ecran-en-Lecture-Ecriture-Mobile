@@ -8,7 +8,6 @@
 	color:#D7F0DB;
 	height: 50px;
 	vertical-align: middle;
-	margin-top: 50px;
 	font-size: 26px;
 	background:#32464d;
 	list-style: none;
@@ -22,7 +21,7 @@
 	font-size: 26px;
 	background:#32464d;
 	list-style: none;
-	margin-top: 75px;
+	margin-top: 50px;
 	padding: 14px 0 1px 20px;
 }
 li:even
@@ -111,11 +110,11 @@ text-shadow: 0px;
 
 .duree {
 	height:100%;
-	width:auto;
 	position:relative;
-	left:0;
+	right:0;
 	display:inline-block;
 	padding-top:5px;
+	padding-left:25px;
 	font-size:50%;
 }
 
@@ -123,10 +122,9 @@ text-shadow: 0px;
 	height:100%;
 	width:auto;
 	position:relative;
-	right:0;
+	left:0;
 	display:inline-block;
 	padding-top:5px;
-	padding-left:25px;
 	font-size:50%;
 }
 

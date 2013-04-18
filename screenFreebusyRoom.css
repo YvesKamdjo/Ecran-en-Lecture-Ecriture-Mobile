@@ -179,6 +179,8 @@ li {
 #sub {
 	margin-left:25%;
 	width:75%;
+	position:relative;
+	z-index:1;
 }
 
 #sub li {
@@ -201,7 +203,7 @@ li {
 	width:100%;
 	height:20%;
 	background-color:#5e8894;
-	z-index:1;
+	z-index:0;
 }
 .ligne
 {
