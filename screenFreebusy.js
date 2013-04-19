@@ -269,7 +269,7 @@ function sortRoomsByCapacity(list) {
 		list = list.sort(function(a, b) {
 		var A=a.capacity;
 		var B=b.capacity;
-		return parseInt(A, 10)-parseInt(B, 10);
+		return parseInt(B, 10)-parseInt(A, 10);
 	});
 	return list;
 }
