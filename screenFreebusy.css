@@ -3,6 +3,14 @@
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
 
+.loadgif {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+
 #salles-libres
 {
 	color:#D7F0DB;

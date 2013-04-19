@@ -234,6 +234,7 @@ function fillResInfos(list) {
 			$("#temps").html(temps);
 			$("#bouton").show();
 			$("#info-res-title").html("Prochaine réunion :");
+			$(".loadgif").hide();
 		}
 		else {
 			var temps="jusqu'à "+res[1];
@@ -245,6 +246,7 @@ function fillResInfos(list) {
 			$("#temps").html(temps).css({"padding-left":"20%"});
 			$("#b_conf").show();
 			$("#info-res-title").html("Réunion actuelle:");
+			$(".loadgif").hide();
 		}
 		
 		var sujet="";
@@ -278,6 +280,7 @@ function fillResInfos(list) {
 		$("#etat").append("Libre");
 		$("#etat").css({"color":"#38b54d"});
 		$("#bouton").show();
+		$(".loadgif").hide();
 		}
 	setTimeout(function() {location.reload();}, 300000);
 }
@@ -417,19 +420,22 @@ function remplirLaFrise(json){
 					$("#"+idcasedebut).css('background','red');
 					}
 				}
-				else{
-					var l;
-					var deb;
-					if(startm!="00")
-						deb=1+startm/15;
-					else
-						deb=1;
-					for(l=deb;l<=4;l++){
-					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-					$("#"+idcasedebut).css('background','red');
-					}
++				else if (k==starth){
+ 					var l;
+ 					var deb;
+ 					if(startm!="00")
+@@ -423,6 +423,12 @@ function remplirLaFrise(json){
+ 					$("#"+idcasedebut).css('background','red');
+ 					}
+ 			}
++			else{
++				for(l=1;l<=4;l++){
++					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
++					$("#"+idcasedebut).css('background','red');
++					}
++			}
+
 			}
 		}
-	}
 	});
 }

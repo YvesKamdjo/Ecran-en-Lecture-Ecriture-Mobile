@@ -294,6 +294,7 @@ function splitRoomList(freeRooms, busyRooms) {
 	$('#listes-salles-occupees').on('click', 'li', function() {
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
+	$(".loadgif").hide();
 }
 
 // Interface graphique En JQuery Mobile
