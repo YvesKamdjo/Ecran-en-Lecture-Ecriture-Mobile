@@ -384,6 +384,7 @@ function remplirLaFrise(json){
 		all=value.endH.split(":");
 		var endh=all[0];
 		var endm=all[1];
+		console.log(starth);
 		if(starth==endh){//si c'est dans la même heure
 			
 				var quartHeure;
