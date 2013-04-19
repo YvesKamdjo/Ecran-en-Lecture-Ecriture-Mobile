@@ -25,6 +25,7 @@ function showTime(){
 	document.getElementById('hourPanel').innerHTML=t;
 	setTimeout("showTime();",1000);
 }
+
   
 function addTime(time1, time2) {
 	var t1=time1.split(":");
@@ -375,27 +376,26 @@ function construireLaFrise(){
 	}
 }
 }
-function remplirLaFrise(json){
+function remplirLaFrise(json){//construction et remplissage de la frise
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
 		var starth= parseInt(all[0],10);
-		var startm=parseInt(all[1],10);;
+		var startm=parseInt(all[1],10);
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);
 		var endm=parseInt(all[1],10);
-		console.log(starth);
+		console.log($("#frise").height());
 		if(starth==endh){//si c'est dans la même heure
-			
 				var quartHeure;
-				if(endm!="00")
+				if(endm!=0)
 					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
 				else
 					quartHeure=1;
 				var l;
 				var deb;
-				if (startm!="00")
-				deb=1+startm/15;
+				if (startm!=0)
+				deb=1+startm/15;//calcul du quart d'heure à partir duquel commence la résa
 				else
 				deb=1;
 				for(l=deb;l<=quartHeure;l++){
@@ -424,7 +424,7 @@ function remplirLaFrise(json){
 					else if (k==starth){
 						var l;
 						var deb;
-						if(startm!="00"){
+						if(startm!=0){
 							quartHeure=1+startm/15;
 						}
 						else
@@ -445,4 +445,12 @@ function remplirLaFrise(json){
 				}
 			}
 	});
+}
+function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
+	var t;
+	t = getTime();
+	var t2=[];
+	t2=t.split(":");
+	var h=parseInt(t2[0],10);
+	var m=parseInt(t2[1],10);
 }
