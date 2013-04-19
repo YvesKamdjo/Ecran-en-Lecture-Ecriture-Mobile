@@ -23,6 +23,7 @@ function showTime(){
 	var t;
 	t = getTime();
 	document.getElementById('hourPanel').innerHTML=t;
+	afficherHeureSurFrise();
 	setTimeout("showTime();",1000);
 }
 
@@ -98,7 +99,6 @@ function initDocument(){
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
 	getUrbaToken();
-	afficherHeureSurFrise();
 	$(window).resize(function(){
 	afficherHeureSurFrise();
 	//alert("bougerr");
