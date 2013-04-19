@@ -466,5 +466,6 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	console.log(uniteMinute);
 	console.log(pos);
 	$("#frise").css('background-position',pos);
+	$("#frise").css('background-size','0.525% 100%');
 	
 }
