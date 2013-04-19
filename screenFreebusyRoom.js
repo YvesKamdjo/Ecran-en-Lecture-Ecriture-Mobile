@@ -98,6 +98,11 @@ function initDocument(){
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
 	getUrbaToken();
+	afficherHeureSurFrise();
+	$(window).resize(function(){
+	afficherHeureSurFrise();
+	//alert("bougerr");
+	});
 }
 
  function getUrbaToken(){
@@ -376,7 +381,7 @@ function construireLaFrise(){
 	}
 }
 }
-function remplirLaFrise(json){//construction et remplissage de la frise
+function remplirLaFrise(json){// remplissage de la frise
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
@@ -385,7 +390,7 @@ function remplirLaFrise(json){//construction et remplissage de la frise
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);
 		var endm=parseInt(all[1],10);
-		console.log($("#frise").height());
+		//console.log($("#frise").height());
 		if(starth==endh){//si c'est dans la même heure
 				var quartHeure;
 				if(endm!=0)
@@ -448,9 +453,18 @@ function remplirLaFrise(json){//construction et remplissage de la frise
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
+	var uniteHeure=$(window).width()*0.0833;
+	var uniteMinute=uniteHeure/60;
 	t = getTime();
 	var t2=[];
 	t2=t.split(":");
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
+	var temp=h-8;
+	var pos= temp*uniteHeure+m*uniteMinute;
+	console.log(uniteHeure);
+	console.log(uniteMinute);
+	console.log(pos);
+	$("#frise").css('background-position',pos);
+	
 }
