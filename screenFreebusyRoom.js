@@ -414,7 +414,7 @@ function remplirLaFrise(json){
 							quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
 							}
 						else
-							quartHeure=1;
+							quartHeure=0;
 						var l;
 						for(l=1;l<=quartHeure;l++){
 						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
@@ -424,8 +424,14 @@ function remplirLaFrise(json){
 					else if (k==starth){
 						var l;
 						var deb;
-						if(startm!="00")
-						function remplirLaFrise(json){
+						if(startm!="00"){
+							quartHeure=1+startm/15;
+						}
+						else
+							quartHeure=1;
+						var l;
+						for(l=quartHeure;l<=4;l++){
+							var idcasedebut="case"+k+""+l;
 						$("#"+idcasedebut).css('background','red');
 						}
 					}
