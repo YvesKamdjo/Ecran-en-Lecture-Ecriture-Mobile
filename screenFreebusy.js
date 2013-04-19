@@ -1,8 +1,8 @@
-var ecranEnLecture= new Object();
+var Freebusy= new Object();
 
 function setIdentification(log, pass){
-	ecranEnLecture.login=log;
-	ecranEnLecture.password=pass;
+	Freebusy.login=log;
+	Freebusy.password=pass;
 }
 
 function getTime(){
@@ -53,7 +53,7 @@ function getDocumentReady(){
  function getUrbaToken(){
 
 	$.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
@@ -65,12 +65,12 @@ function getDocumentReady(){
 }
 
 function setValidToken(newToken){
-	ecranEnLecture.validToken= newToken.Token;
+	Freebusy.validToken= newToken.Token;
 }
 
 function getRoomList(){
 	$.ajax({
-			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+ecranEnLecture.validToken,
+			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList',		
 		});
@@ -87,7 +87,7 @@ function fillRoomList(objJson) {
 		i++;
 		}
 
-	ecranEnLecture.roomList=allRoomList;
+	Freebusy.roomList=allRoomList;
 	getFreeRoomList();
 }
 
@@ -119,7 +119,7 @@ function createDuration(){
 
 function getFreeRoomList(){
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+ecranEnLecture.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList',		
 		});
@@ -139,7 +139,8 @@ function fillFreeRoomList(objJson){
 		i++;
 		
 	}
-	ecranEnLecture.freeRoomList=freeRoomList;
+	
+	Freebusy.freeRoomList=sortRoomsByCapacity(freeRoomList);
 	//compareRoomLists();
 	getResInfos();
 
@@ -162,7 +163,7 @@ function getResInfos() {
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+ecranEnLecture.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom',		
 		});
@@ -174,8 +175,8 @@ function fillResListforRoom(objJson) {
 
 	$.each(objJson, function(key, value) {
 
-		for (i=0;i<ecranEnLecture.freeRoomList.length;i++) {
-			if ((objJson[ligne])&&(objJson[ligne].resource.id==ecranEnLecture.freeRoomList[i].id)) {
+		for (i=0;i<Freebusy.freeRoomList.length;i++) {
+			if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.freeRoomList[i].id)) {
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -203,13 +204,13 @@ function selectNextResForEachRoom(list) {
 	var startTimes=[];
 	var now=getTime();
 	
-	for (i=0;i<ecranEnLecture.freeRoomList.length;i++) {
+	for (i=0;i<Freebusy.freeRoomList.length;i++) {
 		var k=0
 		for (j=0;j<list.length;j++) {
 			if(list[j]){
 				var res=[];
 				res=list[j];
-				if (res[0]==ecranEnLecture.freeRoomList[i].id) {
+				if (res[0]==Freebusy.freeRoomList[i].id) {
 					startTimes[k]=res[1];
 					k++;
 				}
@@ -229,7 +230,7 @@ function selectNextResForEachRoom(list) {
 				heure=startTimes[0].split(":");
 				duree="jusqu'à "+ heure[0]+"h";
 				}
-			ecranEnLecture.freeRoomList[i].time=duree;
+			Freebusy.freeRoomList[i].time=duree;
 			}
 		else if (k>1) {
 			var duree=substractTime(smallestStartTime(startTimes), now);
@@ -244,7 +245,7 @@ function selectNextResForEachRoom(list) {
 				heure=startTimes[0].split(":");
 				duree="jusqu'à "+ heure[0]+"h";
 				}
-			ecranEnLecture.freeRoomList[i].time=duree;
+			Freebusy.freeRoomList[i].time=duree;
 		}
 	}
 	
@@ -264,9 +265,18 @@ function smallestStartTime(list) {
 	return list[0];
 }
 
+function sortRoomsByCapacity(list) {
+		list = list.sort(function(a, b) {
+		var A=a.capacity;
+		var B=b.capacity;
+		return parseInt(A, 10)-parseInt(B, 10);
+	});
+	return list;
+}
+
 function compareRoomLists() {
-	var allRooms=ecranEnLecture.roomList;
-	var freeRooms=ecranEnLecture.freeRoomList;
+	var allRooms=Freebusy.roomList;
+	var freeRooms=Freebusy.freeRoomList;
 	var i,j=0;
 	for (i=0;i<freeRooms.length;i++) {
 		for (j=0;j<allRooms.length;j++) {
@@ -343,14 +353,14 @@ $('ul').listview('refresh');
 //Fin Interface graphique
 // Evenements sur les cliques des listes
 function getNameFreeRoomDisplayed(salle){
-	ecranEnLecture.nomSalle=salle;
+	Freebusy.nomSalle=salle;
 }
 function setNameFreeRoomDisplayed(){
-	$("#nom-salle").html(ecranEnLecture.nomSalle);
+	$("#nom-salle").html(Freebusy.nomSalle);
 }
 function getNameBusyRoomDisplayed(salle){
-	ecranEnLecture.nomSalle=salle;
+	Freebusy.nomSalle=salle;
 }
 function setNameBusyRoomDisplayed(){
-	$("#nom-salle").html(ecranEnLecture.nomSalle);
+	$("#nom-salle").html(Freebusy.nomSalle);
 }
