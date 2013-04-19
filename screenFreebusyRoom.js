@@ -404,38 +404,38 @@ function remplirLaFrise(json){
 			}
 		else{
 		
-		var k;
-		for(k=starth;k<=endh;k++){
-				if (k==endh){
-					var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
-					if(endm!="00"){
-					
-						quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
+			var k;
+			for(k=starth;k<=endh;k++){
+					if (k==endh){
+						var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
+						if(endm!="00"){
+						
+							quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
+							}
+						else
+							quartHeure=1;
+						var l;
+						for(l=1;l<=quartHeure;l++){
+						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+						$("#"+idcasedebut).css('background','red');
 						}
-					else
-						quartHeure=1;
-					var l;
-					for(l=1;l<=quartHeure;l++){
-					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-					$("#"+idcasedebut).css('background','red');
 					}
-				}
-+				else if (k==starth){
- 					var l;
- 					var deb;
- 					if(startm!="00")
-@@ -423,6 +423,12 @@ function remplirLaFrise(json){
- 					$("#"+idcasedebut).css('background','red');
- 					}
- 			}
-+			else{
-+				for(l=1;l<=4;l++){
-+					var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-+					$("#"+idcasedebut).css('background','red');
-+					}
-+			}
+					else if (k==starth){
+						var l;
+						var deb;
+						if(startm!="00")
+						function remplirLaFrise(json){
+						$("#"+idcasedebut).css('background','red');
+						}
+					}
+					else{
+						for(l=1;l<=4;l++){
+							var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+							$("#"+idcasedebut).css('background','red');
+							}
+					}
 
+				}
 			}
-		}
 	});
 }
