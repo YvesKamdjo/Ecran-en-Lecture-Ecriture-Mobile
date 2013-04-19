@@ -379,11 +379,11 @@ function remplirLaFrise(json){
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= all[0];
-		var startm=all[1];
+		var starth= parseInt(all[0],10);
+		var startm=parseInt(all[1],10);;
 		all=value.endH.split(":");
-		var endh=all[0];
-		var endm=all[1];
+		var endh=parseInt(all[0],10);
+		var endm=parseInt(all[1],10);
 		console.log(starth);
 		if(starth==endh){//si c'est dans la même heure
 			
@@ -414,7 +414,7 @@ function remplirLaFrise(json){
 							quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
 							}
 						else
-							quartHeure=0;
+							quartHeure=0;// l'heure de fin de resa est du genre xh00
 						var l;
 						for(l=1;l<=quartHeure;l++){
 						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
