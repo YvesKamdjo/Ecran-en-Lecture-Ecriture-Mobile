@@ -138,6 +138,7 @@ function getUrlParameters(){//permet de récuperer les paramètres dans l'URL po
 	t1=t[0].split("=");
 	FreebusyRoom.roomID= t1[1];
 	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	FreebusyRoom.state="free";
 	t1=t[1].split("=");
 	FreebusyRoom.hideOwner= t1[1];
 	t1=t[2].split("=");
@@ -145,14 +146,9 @@ function getUrlParameters(){//permet de récuperer les paramètres dans l'URL po
 	t1=t[3].split("=");
 	FreebusyRoom.hideSubject=t1[1];
 	}
+	else
+		FreebusyRoom.state="busy";
 }
-
-/*function getRoomID() {
-	var url=document.location.href;
-	var temp=[];
-	var temp=url.split("resource=");
-	return temp[1];
-}*/
 
 function getRoomInfo(){
 getUrlParameters();
@@ -233,12 +229,16 @@ function sortResList(list) {
 	}
 	fillResInfos(list);
 }
+function setRoomState( state){// fonction qui permet de retenir l'état d'une salle actuellement free or busy
+FreebusyRoom.state= state;
+}
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
 	if (list.length>0) {
 		res=list[0];
 		if (compareTime(res[0],nowPlusTemp)) {
+			FreebusyRoom.state="free";// on sauvegarde l'état de la salle pour de futures utilisations
 			var temps="jusqu'à "+res[0];
 			var dureeLibre=substractTime(res[0],now);
 			if (compareTime(dureeLibre,"1:00")) {
@@ -262,6 +262,8 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 		}
 		else {
+			FreebusyRoom.state="busy";
+			console.log(FreebusyRoom.state);
 			var temps="jusqu'à "+res[1];
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
@@ -485,9 +487,14 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
 	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
-	console.log(uniteHeure);
-	console.log(uniteMinute);
-	console.log(pos);
+	//console.log(uniteHeure);
+	//console.log(uniteMinute);
+	//console.log(FreebusyRoom.state);
+	if(FreebusyRoom.state=="free")
+		$("#frise").css('background-image','url(curseur-vert.png)');
+	else
+		if(FreebusyRoom.state=="busy")
+			$("#frise").css('background-image','url(curseur-rouge.png)');
 	$("#frise").css('background-position',pos);
 	$("#frise").css('background-size','0.525% 100%');
 	
