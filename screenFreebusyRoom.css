@@ -185,8 +185,8 @@ li {
 }
 
 #sub {
-	margin-left:25%;
-	width:75%;
+	margin:0 1% 0 1%;
+	width:98%;
 	position:relative;
 	z-index:1;
 }
