@@ -391,7 +391,8 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle, owner){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
+setHideParameters(false,false,false);
+$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 $("li.une-salle-occupee").mouseover(function() {
 	$(this).css('background','#e7c5bc');
 });

@@ -129,16 +129,34 @@ function createEndDate() {
 	endDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T23:59:59";
 	return endDate;
 }
+function getUrlParameters(){//permet de récuperer les paramètres dans l'URL pour filtrer les info à afficher
+	var allArg;
+	allArg= document.location.search;//récupération de la requete contenue dans l'URL
+	var t=[];
+	var t1=[];
+	t=allArg.split("&");
+	t1=t[0].split("=");
+	FreebusyRoom.roomID= t1[1];
+	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	t1=t[1].split("=");
+	FreebusyRoom.hideOwner= t1[1];
+	t1=t[2].split("=");
+	FreebusyRoom.hidePhone=t1[1];
+	t1=t[3].split("=");
+	FreebusyRoom.hideSubject=t1[1];
+	}
+}
 
-function getRoomID() {
+/*function getRoomID() {
 	var url=document.location.href;
 	var temp=[];
 	var temp=url.split("resource=");
 	return temp[1];
-}
+}*/
 
 function getRoomInfo(){
-	var roomID=getRoomID();
+getUrlParameters();
+	var roomID=FreebusyRoom.roomID;
 	$.ajax({
 			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
@@ -167,10 +185,11 @@ function getResInfo() {
 }
 
 function fillResListforRoom(objJson) {
+	getUrlParameters();
 	var ligne=0;
 	var j=0;
 	var jsonLocal=[];
-	var roomID=getRoomID();
+	var roomID=FreebusyRoom.roomID;
 	var resList=[];
 	$.each(objJson, function(key, value) {
 			if (objJson[ligne].resource.id==roomID) {
@@ -255,14 +274,20 @@ function fillResInfos(list) {
 		}
 		
 		var sujet="";
-		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		if(FreebusyRoom.hideSubject=="false"){
+			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		
+		if (FreebusyRoom.hideOwner=="false"){
 		var owner=res[2];
+		}
 		var ownerPhone="";
+		if(FreebusyRoom.hidePhone=="false"){
 		if(res[3]) var ownerPhone=" - "+res[3];
+		}
 		var ownerInfo=owner+ownerPhone;
+		if (ownerInfo!="undefined")
 		$("#info-res-owner").html(ownerInfo);
 	}
 	else {
