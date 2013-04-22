@@ -312,7 +312,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 var time=timeFree.replace(":","h");
 $("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("li.une-salle-libre").mouseover(function() {
-	$(this).css('background','#C2D8C5');
+	$(this).css('background','#cedfd0');
 });
 $("li.une-salle-libre").mouseout(function() {
 	$(this).css('background','#ecf3ed');
