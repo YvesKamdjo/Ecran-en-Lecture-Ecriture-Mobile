@@ -291,6 +291,11 @@ function sortRoomsByCapacity(list) {
 	return list;
 }
 
+function sortAlphabeticalOrder(a, b) {
+	if (a.name < b.name) return false;
+	else return true;
+}
+
 function compareRoomLists() {
 	var allRooms=Freebusy.roomList;
 	var freeRooms=Freebusy.freeRoomList;
@@ -302,6 +307,7 @@ function compareRoomLists() {
 			}
 		}
 	}
+	allRooms.sort(sortAlphabeticalOrder);
 	splitRoomList(freeRooms, allRooms);
 }
 
