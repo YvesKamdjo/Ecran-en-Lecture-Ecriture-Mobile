@@ -226,9 +226,10 @@ li {
 	background:url(trait_blanc.png);
 	background-repeat:repeat-x;*/
 }
-#linge2
+#linge2.tr
 {
-	font-size: 5px;
+	font-size: 0px;
+	line-height: 1px;
 }
 .creneauHoraire
 {
@@ -243,9 +244,9 @@ li {
 }
 .caseFrise.traitSeparation
 {
-	border-left: 2px solid white;
+	border-left: 1px solid white;
 }
 table{
-	table-layout: fixed;
+	/*table-layout: fixed;*/
 	border-spacing: 0;
 }

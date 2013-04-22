@@ -366,7 +366,7 @@ function res_demand(minutes) {
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		getTokenWrite();
 }
-function construireLaFrise(){
+function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var i;
 	var tmp1, tmp2;
 	var startH, startMin;
@@ -374,23 +374,22 @@ function construireLaFrise(){
 	for (i=8;i<20;i++){
 	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
 	$("#ligne2").append('<td width="8.33%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
-	for(var j=1; j<=4; j++){
+	for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 	$("#case"+i+""+j).css('background','white');
 	}
 }
 }
-function remplirLaFrise(json){// remplissage de la frise
+function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge selon les occupations
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= parseInt(all[0],10);
-		var startm=parseInt(all[1],10);
+		var starth= parseInt(all[0],10);//l'heure de début de la résa
+		var startm=parseInt(all[1],10);// les minutes de début de la résa!
 		all=value.endH.split(":");
-		var endh=parseInt(all[0],10);
-		var endm=parseInt(all[1],10);
-		//console.log($("#frise").height());
-		if(starth==endh){//si c'est dans la même heure
+		var endh=parseInt(all[0],10);// l'heure de fin
+		var endm=parseInt(all[1],10);//les minutes de fin
+		if(starth==endh){//si la resa a une durée inférieure à 1 heure
 				var quartHeure;
 				if(endm!=0)
 					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
@@ -411,7 +410,7 @@ function remplirLaFrise(json){// remplissage de la frise
 		
 			var k;
 			for(k=starth;k<=endh;k++){
-					if (k==endh){
+					if (k==endh){//si nous sommes dans la dernière heure de la resa
 						var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
 						if(endm!="00"){
 						
@@ -425,13 +424,13 @@ function remplirLaFrise(json){// remplissage de la frise
 						$("#"+idcasedebut).css('background','red');
 						}
 					}
-					else if (k==starth){
+					else if (k==starth){//si nous somme dans la première heure de la resa
 						var l;
 						var deb;
 						if(startm!=0){
 							quartHeure=1+startm/15;
 						}
-						else
+						else// pour tous les horaires intermmediaires!
 							quartHeure=1;
 						var l;
 						for(l=quartHeure;l<=4;l++){
@@ -452,15 +451,15 @@ function remplirLaFrise(json){// remplissage de la frise
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
-	var uniteHeure=$(window).width()*0.0833;
-	var uniteMinute=uniteHeure/60;
+	var uniteHeure=$(window).width()*0.0833;// calcul de la taille d'heure en pixel
+	var uniteMinute=uniteHeure/60;// calcul d'une minute en pixel
 	t = getTime();
 	var t2=[];
 	t2=t.split(":");
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute;
+	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
 	console.log(uniteHeure);
 	console.log(uniteMinute);
 	console.log(pos);
