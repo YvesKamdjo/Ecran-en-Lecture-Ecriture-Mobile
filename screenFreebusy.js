@@ -311,21 +311,11 @@ function splitRoomList(freeRooms, busyRooms) {
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 var time=timeFree.replace(":","h");
 $("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
-$("li.une-salle-libre").css({'background':'none'}, {'border':'none'});
-$("li.une-salle-libre:odd").css({'background-color':'#d7f0db'});
-$("li.une-salle-libre:even").css({'background-color':'white'});
-
-$("li.une-salle-libre:odd").mouseover(function() {
+$("li.une-salle-libre").mouseover(function() {
 	$(this).css('background','#C2D8C5');
 });
-$("li.une-salle-libre:odd").mouseout(function() {
-	$(this).css('background','#d7f0db');
-});
-$("li.une-salle-libre:even").mouseover(function() {
-	$(this).css('background','#e5eae5');
-});
-$("li.une-salle-libre:even").mouseout(function() {
-	$(this).css('background','white');
+$("li.une-salle-libre").mouseout(function() {
+	$(this).css('background','#ecf3ed');
 });
 
 $(".duree-icon:even").attr('src','icon-duree-light.png');
@@ -339,12 +329,11 @@ $('#listes-salles-libres').listview('refresh');
 
 function ajouterSalleOccupee(nomSalle, idSalle){
 $("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
-$("li.une-salle-occupee:odd").css('background','#fad2d3');
-$("li.une-salle-occupee:odd").mouseover(function() {
-	$(this).css('background','#E1BDBE');
+$("li.une-salle-occupee").mouseover(function() {
+	$(this).css('background','#e7c5bc');
 });
-$("li.une-salle-occupee:odd").mouseout(function() {
-	$(this).css('background','#fad2d3');
+$("li.une-salle-occupee").mouseout(function() {
+	$(this).css('background','#ffe7e1');
 });
 $("a:even").css('color','#5e8894');
 $('ul').listview('refresh');

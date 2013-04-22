@@ -146,16 +146,15 @@ text-shadow: 0px;
 a {
 	padding: 0.6em 10px !important;
 }
-/*
+
 .une-salle-libre {
 	background:none;
 	border:none;
+	background-color:#ecf3ed;
 }
 
-.salle-libre-light{
-	background-color:white !important;
+.une-salle-occupee {
+	background:none;
+	border:none;
+	background-color:#ffe7e1;
 }
-
-.salle-libre-dark{
-	background-color:#d7f0db !important;
-}*/
