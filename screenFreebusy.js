@@ -82,7 +82,7 @@ function fillRoomList(objJson) {
 	var allRoomList = [];
 	while (objJson[i]){
 		if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
-			allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity};
+			allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity, "owner":""};
 			j++;}
 		i++;
 		}
@@ -142,7 +142,7 @@ function fillFreeRoomList(objJson){
 	
 	Freebusy.freeRoomList=sortRoomsByCapacity(freeRoomList);
 	//compareRoomLists();
-	getResInfos();
+	getResInfo();
 
 }
 
@@ -158,18 +158,18 @@ function createEndDate() {
 	return endDate;
 }
 
-function getResInfos() {
+function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillResListforRoom',		
+			jsonpCallback: 'fillResListforRooms',		
 		});
 }
 
-function fillResListforRoom(objJson) {
+function fillResListforRooms(objJson) {
 	var ligne=0;
 	var resList=[];
 
@@ -189,9 +189,26 @@ function fillResListforRoom(objJson) {
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
-					resList[ligne]=[objJson[ligne].resource.id,start,end]
+					resList[ligne]=[objJson[ligne].resource.id,start,end];
 				}
 				
+			}
+			else if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.roomList[i].id)) {
+				var now=getTime();
+				var sD=(objJson[ligne].startDate).split("T");
+				var startHour=(sD[1]).split(":");
+				var start=""+startHour[0]+":"+startHour[1];
+				var eD=(objJson[ligne].endDate).split("T");
+				var endHour=(eD[1]).split(":");
+				var end=""+endHour[0]+":"+endHour[1];
+				
+				if (compareTime(now,start)) {					
+					//var subject=objJson[ligne].fields[3].value;					
+					var owner=objJson[ligne].fields[1].value;
+					//var ownerPhone=objJson[ligne].fields[2].value;
+					//resList[ligne]=[objJson[ligne].resource.id,start,end];
+					Freebusy.roomList[i].owner=owner;
+				}
 			}
 		}
 		ligne++;
@@ -295,7 +312,7 @@ function splitRoomList(freeRooms, busyRooms) {
 			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity, freeRooms[i].time);
 	}
 	for (j=0;j<busyRooms.length;j++){
-			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].capacity);
+			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].owner);
 	}
 	
 	$('#listes-salles-libres').on('click', 'li', function() {
@@ -327,14 +344,18 @@ $('#listes-salles-libres').listview('refresh');
 }
 
 
-function ajouterSalleOccupee(nomSalle, idSalle){
-$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'">'+nomSalle+'</a></li>');
+function ajouterSalleOccupee(nomSalle, idSalle, owner){
+$("#listes-salles-occupees").append('<li class="une-salle-occupee" data-icon="custom_arrow"><a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 $("li.une-salle-occupee").mouseover(function() {
 	$(this).css('background','#e7c5bc');
 });
 $("li.une-salle-occupee").mouseout(function() {
 	$(this).css('background','#ffe7e1');
 });
+$(".duree-icon:even").attr('src','icon-duree-light.png');
+$(".seats-icon:even").attr('src','icon-seats-light.png');
+$(".duree-icon:odd").attr('src','icon-duree-dark.png');
+$(".seats-icon:odd").attr('src','icon-seats-dark.png');
 $("a:even").css('color','#5e8894');
 $('ul').listview('refresh');
 }
