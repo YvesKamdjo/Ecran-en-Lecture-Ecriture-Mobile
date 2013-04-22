@@ -174,9 +174,8 @@ function fillResListforRooms(objJson) {
 	var resList=[];
 
 	$.each(objJson, function(key, value) {
-
-		for (i=0;i<Freebusy.freeRoomList.length;i++) {
-			if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.freeRoomList[i].id)) {
+		for (i=0;i<Freebusy.roomList.length;i++) {
+			if ((objJson[ligne])&&(i<Freebusy.freeRoomList.length)&&(objJson[ligne].resource.id==Freebusy.freeRoomList[i].id)) {
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -191,7 +190,6 @@ function fillResListforRooms(objJson) {
 					var ownerPhone=objJson[ligne].fields[2].value;
 					resList[ligne]=[objJson[ligne].resource.id,start,end];
 				}
-				
 			}
 			else if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.roomList[i].id)) {
 				var now=getTime();
@@ -202,7 +200,7 @@ function fillResListforRooms(objJson) {
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
 				
-				if (compareTime(now,start)) {					
+				if ((compareTime(now,start))&&(compareTime(end,now))) {					
 					//var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					//var ownerPhone=objJson[ligne].fields[2].value;
