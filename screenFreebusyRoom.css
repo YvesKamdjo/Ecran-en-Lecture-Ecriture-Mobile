@@ -212,6 +212,7 @@ li {
 	width:100%;
 	height:15%;
 	background-color:#5e8894;
+	/*background-image:url(barre.png);*/
 	background-repeat:no-repeat;
 	z-index:0;
 }
@@ -239,11 +240,14 @@ li {
 .caseFrise
 {
 	text-align:left;
+	vertical-align: bottom;
 	color:#fcfbfd;
 }
 .caseFrise.traitSeparation
 {
-	border-left: 1px solid white;
+	background:url(trait_blanc.png);
+	background-repeat:no-repeat;
+	background-position: left bottom;
 }
 table{
 	/*table-layout: fixed;*/

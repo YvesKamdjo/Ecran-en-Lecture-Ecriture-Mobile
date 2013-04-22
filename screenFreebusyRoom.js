@@ -398,9 +398,13 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var tmp1, tmp2;
 	var startH, startMin;
 	var endH, endMin;
+	var pos;
 	for (i=8;i<20;i++){
+	pos=(i-8)*9.33;
 	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
-	$("#ligne2").append('<td width="8.33%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+	$("#ligne2").append('<td width="8.33%" height="1" class="caseFrise traitSeparation" colspan="4"><div id="'+i+'"><div>&nbsp;</td>');
+	//$("#ligne2").height(5);
+	//$("#"+i).css('background-position',pos+"%");
 	for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 	$("#case"+i+""+j).css('background','white');
