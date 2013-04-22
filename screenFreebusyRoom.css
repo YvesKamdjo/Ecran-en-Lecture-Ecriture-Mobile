@@ -181,7 +181,7 @@ ul {
 
 li {
 	list-style-type: none;
-	text-align:center;
+	text-align:left;
 }
 
 #sub {
@@ -193,6 +193,7 @@ li {
 
 #sub li {
 	height:30%;
+	padding-left:25%;
 	background-color:white;
 	border: 1px solid #38b54d;
 }
