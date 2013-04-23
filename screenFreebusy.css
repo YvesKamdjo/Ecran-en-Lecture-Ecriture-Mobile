@@ -1,6 +1,8 @@
 
 * {
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
 }
 
 #wrapper {
