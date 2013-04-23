@@ -97,7 +97,7 @@ function addMinutes(date, minutes) {
 }
 
 function initDocument(){
-	//getUrbaToken(getFreeRoomList);
+	//initialisations des variables globales et mise en forme de la page en fonction de l'Ã©cran
 	FreebusyRoom.ID=getRoomID();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
@@ -126,7 +126,7 @@ function initDocument(){
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
 
-	getUrbaToken(getFreeRoomList);
+	getUrbaToken(getFreeRoomList);// on veut d'abord savoir si la salle est considÃ©rÃ©e comme libre ou occupÃ©e par l'API
 	$(window).resize(function(){
 	afficherHeureSurFrise();
 	});
@@ -160,15 +160,15 @@ function createEndDate() {
 	return endDate;
 }
 
-function getUrlParameters(){//permet de récuperer les paramètres dans l'URL pour filtrer les info à afficher
+function getUrlParameters(){//permet de rï¿½cuperer les paramï¿½tres dans l'URL pour filtrer les info ï¿½ afficher
 	var allArg;
-	allArg= document.location.search;//récupération de la requete contenue dans l'URL
+	allArg= document.location.search;//rï¿½cupï¿½ration de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
 	t=allArg.split("&");
 	t1=t[0].split("=");
 	FreebusyRoom.roomID= t1[1];
-	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupï¿½e ou pas
 	t1=t[1].split("=");
 	FreebusyRoom.hideOwner= t1[1];
 	t1=t[2].split("=");
@@ -201,7 +201,7 @@ function getFreeRoomList(){
 		});
 }
 
-function checkRoomVacancy(objJson) {
+function checkRoomVacancy(objJson) {//vÃ©rifie si la salle appartient Ã  la liste des salles libres de la prochaine demi-heure
 	var i=0;
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
@@ -218,7 +218,7 @@ function checkRoomVacancy(objJson) {
 	getUrbaToken(getRoomInfo);
 }
 	
-function fillRoomInfo(objJson){
+function fillRoomInfo(objJson){// rÃ©cupÃ¨re les informations basiques de la salle : nom, heures pendant lesquelles il est possible de rÃ©server
 	$("#nom-salle").append(objJson.displayName);
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
@@ -237,7 +237,7 @@ function getResInfo() {
 		});
 }
 
-function fillResListforRoom(objJson) {
+function fillResListforRoom(objJson) {// rÃ©cupÃ¨re les infos des rÃ©servations pour les afficher
 	var ligne=0;
 	var j=0;
 	var jsonLocal=[];
@@ -414,7 +414,7 @@ function sendRes(){
 	});
 }
 
-function button_res() {
+function button_res() {// le bouton montre ou cache le menu pour envoyer une rÃ©servation
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
 		FreebusyRoom.bResPushed=false;
@@ -427,7 +427,7 @@ function button_res() {
 	}
 }
 
-function res_demand(minutes) {
+function res_demand(minutes) {//envoie une rÃ©servation sur une durÃ©e choisie par l'utilisateur
 		$("#b_res"+minutes).css({"background-color":"#38b54d"});
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		getUrbaToken(sendRes);
@@ -450,12 +450,12 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= parseInt(all[0],10);//l'heure de début de la résa
-		var startm=parseInt(all[1],10);// les minutes de début de la résa!
+		var starth= parseInt(all[0],10);//l'heure de dï¿½but de la rï¿½sa
+		var startm=parseInt(all[1],10);// les minutes de dï¿½but de la rï¿½sa!
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
-		if(starth==endh){//si la resa a une durée inférieure à 1 heure
+		if(starth==endh){//si la resa a une durï¿½e infï¿½rieure ï¿½ 1 heure
 				var quartHeure;
 				if(endm!=0)
 					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la rÃ©sa
