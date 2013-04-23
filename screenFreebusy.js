@@ -65,6 +65,8 @@ function substractTime(t1, t2) {
 
 function getDocumentReady(){
 	$(document).ready(function() {
+		var contentHeight = document.getElementById("content").scrollHeight;
+		document.getElementById("wrapper").style.height = contentHeight + "px";
 		getUrbaToken(getRoomList);
 	});
 }
