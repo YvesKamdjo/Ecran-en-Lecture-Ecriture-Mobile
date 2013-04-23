@@ -272,6 +272,7 @@ function selectNextResForEachRoom(list) {// ne prend en compte que la prochaine 
 				var res=[];
 				res=list[j];
 				if (res[0]==Freebusy.freeRoomList[i].id) {
+					console.log(res+" ; "+Freebusy.freeRoomList[i].name);
 					startTimes[k]=res[1];
 					k++;
 				}
