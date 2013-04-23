@@ -251,6 +251,7 @@ function fillResListforRooms(objJson) {//crée un tableau avec toutes les réser
 					var owner=objJson[ligne].fields[1].value;
 					//var ownerPhone=objJson[ligne].fields[2].value;
 					//resList[ligne]=[objJson[ligne].resource.id,start,end];
+					console.log(owner+" ; "+Freebusy.roomList[i].name);
 					Freebusy.roomList[i].owner=owner;
 				}
 			}
@@ -272,7 +273,6 @@ function selectNextResForEachRoom(list) {// ne prend en compte que la prochaine 
 				var res=[];
 				res=list[j];
 				if (res[0]==Freebusy.freeRoomList[i].id) {
-					console.log(res+" ; "+Freebusy.freeRoomList[i].name);
 					startTimes[k]=res[1];
 					k++;
 				}
