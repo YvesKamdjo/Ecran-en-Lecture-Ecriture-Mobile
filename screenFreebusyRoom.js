@@ -290,6 +290,8 @@ function fillResInfos(list) {
 		res=list[0];
 		if (compareTime(res[0],nowPlusTemp)) {
 			if (FreebusyRoom.vacancy) {
+			
+			FreebusyRoom.state="free";
 				var temps="jusqu'à "+res[0];
 				var dureeLibre=substractTime(res[0],now);
 				if (compareTime(dureeLibre,"1:00")) {
@@ -313,6 +315,7 @@ function fillResInfos(list) {
 				$(".loadgif").hide();
 			}
 			else {
+			console.log("teste libreee");
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
@@ -439,7 +442,7 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var endH, endMin;
 	for (i=8;i<20;i++){
 	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
-	$("#ligne2").append('<td width="8.33%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+	$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 	for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 	$("#case"+i+""+j).css('background','white');
@@ -528,7 +531,7 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
 	//console.log(uniteHeure);
 	//console.log(uniteMinute);
-	//console.log(FreebusyRoom.state);
+	console.log(FreebusyRoom.state);
 	if(FreebusyRoom.state=="free")
 		$("#frise").css('background-image','url(curseur-vert.png)');
 	else
