@@ -72,7 +72,34 @@ function compareTime(time, ref) {
 	
 }
 
+function createDuration(){
+	var now= new Date();
+	var hour = now.getHours(); 
+	var minute = now.getMinutes();
+	if (hour < 10) { hour = "0" + hour; } 
+	if (minute < 10) { minute = "0" + minute; }
+	
+	var later=addMinutes(now,30);
+	var hourBis = later.getHours(); 
+	var minuteBis = later.getMinutes();
+	if (hourBis < 10) { hourBis = "0" + hourBis; } 
+	if (minuteBis < 10) { minuteBis = "0" + minuteBis; }	
+	
+	var nowUrba=now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+hour+":"+minute+":00";
+	var laterUrba=later.getFullYear()+"-"+(later.getMonth()+1)+"-"+later.getDate()+"T"+hourBis+":"+minuteBis+":00";
+	
+	var duration=nowUrba+","+laterUrba;
+	return duration;
+}
+
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}
+
 function initDocument(){
+	//getUrbaToken(getFreeRoomList);
+	FreebusyRoom.ID=getRoomID();
+	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -98,24 +125,27 @@ function initDocument(){
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
-	getUrbaToken();
+
+	getUrbaToken(getFreeRoomList);
 	$(window).resize(function(){
 	afficherHeureSurFrise();
-	//alert("bougerr");
 	});
 }
 
- function getUrbaToken(){
+ function getUrbaToken(function1){
  $.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
-		jsonpCallback: 'setValidToken',			
+		jsonpCallback: 'setValidToken',
+		success: function(jsonp) {
+						function1();
+					}		
 	});	
 }
 
+
 function setValidToken(newToken){
 	FreebusyRoom.validToken= newToken.Token;
-	getRoomInfo();
 }
 
 function createStartDate() {
@@ -129,16 +159,16 @@ function createEndDate() {
 	endDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T23:59:59";
 	return endDate;
 }
-function getUrlParameters(){//permet de récuperer les paramètres dans l'URL pour filtrer les info à afficher
+
+function getUrlParameters(){//permet de r�cuperer les param�tres dans l'URL pour filtrer les info � afficher
 	var allArg;
-	allArg= document.location.search;//récupération de la requete contenue dans l'URL
+	allArg= document.location.search;//r�cup�ration de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
 	t=allArg.split("&");
 	t1=t[0].split("=");
 	FreebusyRoom.roomID= t1[1];
-	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
-	FreebusyRoom.state="free";
+	if (t.length>2){//permet de savoir s'il s'agit d'une salle occup�e ou pas
 	t1=t[1].split("=");
 	FreebusyRoom.hideOwner= t1[1];
 	t1=t[2].split("=");
@@ -146,18 +176,46 @@ function getUrlParameters(){//permet de récuperer les paramètres dans l'URL po
 	t1=t[3].split("=");
 	FreebusyRoom.hideSubject=t1[1];
 	}
-	else
-		FreebusyRoom.state="busy";
+}
+
+function getRoomID() {
+	var url=document.location.href;
+	var temp=[];
+	var temp=url.split("resource=");
+	return temp[1];
 }
 
 function getRoomInfo(){
-getUrlParameters();
-	var roomID=FreebusyRoom.roomID;
 	$.ajax({
-			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+roomID+'?Token='+FreebusyRoom.validToken,
+			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',		
 		});
+}
+
+function getFreeRoomList(){
+	$.ajax({
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			dataType : 'jsonp',
+			jsonpCallback: 'checkRoomVacancy',		
+		});
+}
+
+function checkRoomVacancy(objJson) {
+	var i=0;
+	var now=getTime();
+	var nowPlusTemp=addTime(now,"0:30");
+	
+	while (objJson[i]) {
+		if (objJson[i].id==FreebusyRoom.ID) {
+			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)) {
+				console.log(objJson[i].name);
+				FreebusyRoom.vacancy=true;
+			}
+		}
+		i++;
+	}
+	getUrbaToken(getRoomInfo);
 }
 	
 function fillRoomInfo(objJson){
@@ -165,7 +223,6 @@ function fillRoomInfo(objJson){
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
 	FreebusyRoom.endTime=objJson.resourceProfil.endTime;
-	
 	getResInfo();
 }
 
@@ -181,14 +238,12 @@ function getResInfo() {
 }
 
 function fillResListforRoom(objJson) {
-	getUrlParameters();
 	var ligne=0;
 	var j=0;
 	var jsonLocal=[];
-	var roomID=FreebusyRoom.roomID;
 	var resList=[];
 	$.each(objJson, function(key, value) {
-			if (objJson[ligne].resource.id==roomID) {
+			if (objJson[ligne].resource.id==FreebusyRoom.ID) {
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -210,9 +265,7 @@ function fillResListforRoom(objJson) {
 	});
 	construireLaFrise();
 	remplirLaFrise(jsonLocal);
-	
-	sortResList(resList);
-	
+	sortResList(resList);	
 }
 
 function sortResList(list) {
@@ -227,10 +280,8 @@ function sortResList(list) {
 			return parseInt(x, 10)-parseInt(y, 10);
 		});
 	}
+	
 	fillResInfos(list);
-}
-function setRoomState( state){// fonction qui permet de retenir l'état d'une salle actuellement free or busy
-FreebusyRoom.state= state;
 }
 function fillResInfos(list) {	
 	var now=getTime();
@@ -238,32 +289,38 @@ function fillResInfos(list) {
 	if (list.length>0) {
 		res=list[0];
 		if (compareTime(res[0],nowPlusTemp)) {
-			FreebusyRoom.state="free";// on sauvegarde l'état de la salle pour de futures utilisations
-			var temps="jusqu'à "+res[0];
-			var dureeLibre=substractTime(res[0],now);
-			if (compareTime(dureeLibre,"1:00")) {
-				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+			if (FreebusyRoom.vacancy) {
+				var temps="jusqu'à "+res[0];
+				var dureeLibre=substractTime(res[0],now);
+				if (compareTime(dureeLibre,"1:00")) {
+					$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+				}
+				if (compareTime(dureeLibre,"1:30")) {
+					$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+				}
+				if (compareTime(dureeLibre,"2:00")) {
+					$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+				}
+				var w=$(window).width();
+				$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
+				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
+				$("#screenBorder").css({"background-color":"#38b54d"});
+				$("#nom-salle").css({"color":"#d7f0db"});
+				$("#etat").append("Libre").css({"color":"#38b54d"});
+				$("#temps").html(temps);
+				$("#bouton").show();
+				$("#info-res-title").html("Prochaine réunion :");
+				$(".loadgif").hide();
 			}
-			if (compareTime(dureeLibre,"1:30")) {
-				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
-			}
-			if (compareTime(dureeLibre,"2:00")) {
-				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
-			}
-			var w=$(window).width();
-			$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
-			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
-			$("#screenBorder").css({"background-color":"#38b54d"});
-			$("#nom-salle").css({"color":"#d7f0db"});
-			$("#etat").append("Libre").css({"color":"#38b54d"});
-			$("#temps").html(temps);
-			$("#bouton").show();
-			$("#info-res-title").html("Prochaine réunion :");
+			else {
+			$("body").css({"background-color":"#fad2d3"});
+			$("#screenBorder").css({"background-color":"#ed1b24"});
+			$("#nom-salle").css({"color":"#fad2d3"});
+			$("#etat").append("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$(".loadgif").hide();
+			}
 		}
 		else {
-			FreebusyRoom.state="busy";
-			console.log(FreebusyRoom.state);
 			var temps="jusqu'à "+res[1];
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
@@ -276,44 +333,39 @@ function fillResInfos(list) {
 		}
 		
 		var sujet="";
-		if(FreebusyRoom.hideSubject=="false"){
-			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
-		}
+		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		if (FreebusyRoom.hideOwner=="false"){
+		
 		var owner=res[2];
-		}
 		var ownerPhone="";
-		if(FreebusyRoom.hidePhone=="false"){
 		if(res[3]) var ownerPhone=" - "+res[3];
-		}
 		var ownerInfo=owner+ownerPhone;
-		if (ownerInfo!="undefined")
 		$("#info-res-owner").html(ownerInfo);
 	}
 	else {
-		var dureeLibre=substractTime(FreebusyRoom.endTime,now);
-		if (compareTime(dureeLibre,"1:00")) {
-		$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
-			}
-		if (compareTime(dureeLibre,"1:30")) {
-		$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
-			}
-		if (compareTime(dureeLibre,"2:00")) {
+		if (FreebusyRoom.vacancy) {
+				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
 				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
-			}
-		var w=$(window).width();
-		$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
-		$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
-		$("body").css({"background-color":"#d7f0db"});
-		$("#screenBorder").css({"background-color":"#38b54d"});
-		$("#nom-salle").css({"color":"#d7f0db"});
-		$("#etat").append("Libre");
-		$("#etat").css({"color":"#38b54d"});
-		$("#bouton").show();
+			var w=$(window).width();
+			$(".menu_hour").css("margin-top",(w*(-1/400)+5)+"%");
+			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
+			$("#screenBorder").css({"background-color":"#38b54d"});
+			$("#nom-salle").css({"color":"#d7f0db"});
+			$("#etat").append("Libre").css({"color":"#38b54d"});
+			$("#bouton").show();
+			$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
+			$(".loadgif").hide();
+		}
+		else {
+		$("body").css({"background-color":"#fad2d3"});
+		$("#screenBorder").css({"background-color":"#ed1b24"});
+		$("#nom-salle").css({"color":"#fad2d3"});
+		$("#etat").append("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
 		}
+	}
 	setTimeout(function() {location.reload();}, 300000);
 }
 
@@ -349,19 +401,6 @@ function createJsonRes(){
 	return jsonToSend;
 }
 
- function getTokenWrite(){
- $.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
-		dataType : 'jsonp',
-		jsonpCallback: 'setValidTokenWrite',			
-	});	
-}
-
-function setValidTokenWrite(newToken){
-	FreebusyRoom.validToken= newToken.Token;
-	sendRes();
-}
-
 function sendRes(){
 	var jsonRes=createJsonRes();
 
@@ -391,20 +430,16 @@ function button_res() {
 function res_demand(minutes) {
 		$("#b_res"+minutes).css({"background-color":"#38b54d"});
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
-		getTokenWrite();
+		getUrbaToken(sendRes);
 }
 function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var i;
 	var tmp1, tmp2;
 	var startH, startMin;
 	var endH, endMin;
-	var pos;
 	for (i=8;i<20;i++){
-	pos=(i-8)*9.33;
 	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
-	$("#ligne2").append('<td width="8.33%" height="1" class="caseFrise traitSeparation" colspan="4"><div id="'+i+'"><div>&nbsp;</td>');
-	//$("#ligne2").height(5);
-	//$("#"+i).css('background-position',pos+"%");
+	$("#ligne2").append('<td width="8.33%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 	for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 	$("#case"+i+""+j).css('background','white');
@@ -415,12 +450,12 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= parseInt(all[0],10);//l'heure de début de la résa
-		var startm=parseInt(all[1],10);// les minutes de début de la résa!
+		var starth= parseInt(all[0],10);//l'heure de d�but de la r�sa
+		var startm=parseInt(all[1],10);// les minutes de d�but de la r�sa!
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
-		if(starth==endh){//si la resa a une durée inférieure à 1 heure
+		if(starth==endh){//si la resa a une dur�e inf�rieure � 1 heure
 				var quartHeure;
 				if(endm!=0)
 					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
@@ -441,7 +476,7 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 		
 			var k;
 			for(k=starth;k<=endh;k++){
-					if (k==endh){//si nous sommes dans la dernière heure de la resa
+					if (k==endh){
 						var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
 						if(endm!="00"){
 						
@@ -455,13 +490,13 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 						$("#"+idcasedebut).css('background','red');
 						}
 					}
-					else if (k==starth){//si nous somme dans la première heure de la resa
+					else if (k==starth){
 						var l;
 						var deb;
 						if(startm!=0){
 							quartHeure=1+startm/15;
 						}
-						else// pour tous les horaires intermmediaires!
+						else
 							quartHeure=1;
 						var l;
 						for(l=quartHeure;l<=4;l++){
@@ -491,14 +526,9 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
 	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
-	//console.log(uniteHeure);
-	//console.log(uniteMinute);
-	//console.log(FreebusyRoom.state);
-	if(FreebusyRoom.state=="free")
-		$("#frise").css('background-image','url(curseur-vert.png)');
-	else
-		if(FreebusyRoom.state=="busy")
-			$("#frise").css('background-image','url(curseur-rouge.png)');
+	console.log(uniteHeure);
+	console.log(uniteMinute);
+	console.log(pos);
 	$("#frise").css('background-position',pos);
 	$("#frise").css('background-size','0.525% 100%');
 	
