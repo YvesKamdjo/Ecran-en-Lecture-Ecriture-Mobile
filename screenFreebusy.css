@@ -1,7 +1,7 @@
 * {
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
-
+/*
 body {
     overflow-y:hidden;
 }
@@ -9,7 +9,7 @@ body {
 .contenu {
 	 overflow-y: scroll;
 }
-
+*/
 .loadgif {
 	display: block;
     margin-left: auto;
