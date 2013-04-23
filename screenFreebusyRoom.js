@@ -1,5 +1,7 @@
 var FreebusyRoom= new Object();
 
+//test
+
 function setIdentification(log, pass){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
