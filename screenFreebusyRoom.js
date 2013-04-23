@@ -524,11 +524,13 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	t2=t.split(":");
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
-	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
-	console.log(uniteHeure);
-	console.log(uniteMinute);
-	console.log(pos);
+	var temp=h-8;//on retranche 8 car la numérotation ne commence pas à 0
+	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle
+	if(FreebusyRoom.state=="free")
+		$("#frise").css('background-image','url(curseur-vert.png)');
+	else
+		if(FreebusyRoom.state=="busy")
+			$("#frise").css('background-image','url(curseur-rouge.png)');
 	$("#frise").css('background-position',pos);
 	$("#frise").css('background-size','0.525% 100%');
 	
