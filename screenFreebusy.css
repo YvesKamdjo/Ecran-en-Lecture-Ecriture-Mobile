@@ -1,4 +1,3 @@
-
 * {
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
@@ -150,11 +149,13 @@ a {
 .une-salle-libre {
 	background:none;
 	border:none;
+	border-bottom:1px solid #d4e3d6;
 	background-color:#ecf3ed;
 }
 
 .une-salle-occupee {
 	background:none;
 	border:none;
+	border-bottom:1px solid #ffc7b9;
 	background-color:#ffe7e1;
 }
