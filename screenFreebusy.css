@@ -1,13 +1,18 @@
+
 * {
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
 
 #wrapper {
-    overflow-y:hidden;
+	width:100%;
+	height:100%;
+	overflow:hidden;
 }
 
-#content {
-	 overflow-y: auto;
+#textarea {
+	width:100%;
+	height:100%;
+	overflow:auto;
 }
 
 .loadgif {
@@ -62,6 +67,7 @@ li:even
 .ui-btn-inner {
     font-size: 26px;
     white-space: nowrap;
+	height:100%;
 }
 .ui-btn-text
 {
@@ -139,7 +145,7 @@ text-shadow: 0px;
 	position:relative;
 	left:0;
 	display:inline-block;
-	padding-top:5px;
+	padding-:5px;
 	font-size:50%;
 }
 
@@ -152,10 +158,12 @@ text-shadow: 0px;
 
 a {
 	padding: 0.6em 10px !important;
+	height:60px;
 }
 
 .une-salle-libre {
 	background:none;
+	height:90px;
 	border:none;
 	border-bottom:1px solid #d4e3d6;
 	background-color:#ecf3ed;
@@ -163,6 +171,7 @@ a {
 
 .une-salle-occupee {
 	background:none;
+	height:90px;
 	border:none;
 	border-bottom:1px solid #ffc7b9;
 	background-color:#ffe7e1;
