@@ -6,6 +6,10 @@ body {
     overflow-y:hidden;
 }
 
+.contenu {
+	 overflow-y: scroll;
+}
+
 .loadgif {
 	display: block;
     margin-left: auto;
