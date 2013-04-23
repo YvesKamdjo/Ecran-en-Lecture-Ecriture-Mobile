@@ -1,15 +1,15 @@
 * {
     font-family: 'Source Sans Pro',Tahoma,Verdana,Geneva,Helvetica,Arial,sans-serif;
 }
-/*
-body {
+
+#wrapper {
     overflow-y:hidden;
 }
 
-.contenu {
-	 overflow-y: scroll;
+#content {
+	 overflow-y: auto;
 }
-*/
+
 .loadgif {
 	display: block;
     margin-left: auto;
