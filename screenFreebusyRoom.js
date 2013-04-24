@@ -253,13 +253,12 @@ function fillResListforRoom(objJson) {
 				var eD=(objJson[ligne].endDate).split("T");
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
-				
+				jsonLocal[j]={startH:start,endH:end};// rÃ©cupÃ©ration de l'heure de dÃ©but et de fin dans un JSON
+					j++;
 				if (compareTime(end,now)) {					
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
-					jsonLocal[j]={startH:start,endH:end};// rÃ©cupÃ©ration de l'heure de dÃ©but et de fin dans un JSON
-					j++;
 					resList[ligne]=[start,end,owner,ownerPhone,subject]
 				}
 			}
@@ -288,12 +287,12 @@ function sortResList(list) {
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
+	FreebusyRoom.state="free";//marque la salle comme libre!
 	if (list.length>0) {
 		res=list[0];
 		if (compareTime(res[0],nowPlusTemp)) {//est-ce que la réservation a débuté ou débute dans moins d'une demi-heure?
 			if (FreebusyRoom.vacancy) {//est-ce que la salle est dans la liste des salles libres?
 			//non à la première, oui à la deuxième : la salle est libre pendant la prochaine demi-heure (au moins)
-			FreebusyRoom.state="free";
 				var temps="jusqu'Ã  "+res[0];
 				var dureeLibre=substractTime(res[0],now);
 				if (compareTime(dureeLibre,"1:00")) {
@@ -317,7 +316,6 @@ function fillResInfos(list) {
 				$(".loadgif").hide();
 			}
 			else {// non aux deux : la salle est "indisponible", non-reservable
-			console.log("teste libreee");
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
@@ -327,6 +325,7 @@ function fillResInfos(list) {
 		}
 		else {//oui à la première : la salle est occupée (une reservation est en cours ou commence dans moins d'une demi-heure)
 			var temps="jusqu'Ã  "+res[1];
+			FreebusyRoom.state="busy";//marque la salle comme occupée!!!
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
@@ -531,9 +530,6 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
 	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
-	//console.log(uniteHeure);
-	//console.log(uniteMinute);
-	console.log(FreebusyRoom.state);
 	if(FreebusyRoom.state=="free")
 		$("#frise").css('background-image','url(curseur-vert.png)');
 	else
