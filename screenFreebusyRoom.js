@@ -290,9 +290,9 @@ function fillResInfos(list) {
 	var nowPlusTemp=addTime(now,"0:30");
 	if (list.length>0) {
 		res=list[0];
-		if (compareTime(res[0],nowPlusTemp)) {
-			if (FreebusyRoom.vacancy) {
-			
+		if (compareTime(res[0],nowPlusTemp)) {//est-ce que la réservation a débuté ou débute dans moins d'une demi-heure?
+			if (FreebusyRoom.vacancy) {//est-ce que la salle est dans la liste des salles libres?
+			//non à la première, oui à la deuxième : la salle est libre pendant la prochaine demi-heure (au moins)
 			FreebusyRoom.state="free";
 				var temps="jusqu'Ã  "+res[0];
 				var dureeLibre=substractTime(res[0],now);
@@ -316,7 +316,7 @@ function fillResInfos(list) {
 				$("#info-res-title").html("Prochaine rÃ©union :");
 				$(".loadgif").hide();
 			}
-			else {
+			else {// non aux deux : la salle est "indisponible", non-reservable
 			console.log("teste libreee");
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
@@ -325,7 +325,7 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 			}
 		}
-		else {
+		else {//oui à la première : la salle est occupée (une reservation est en cours ou commence dans moins d'une demi-heure)
 			var temps="jusqu'Ã  "+res[1];
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
@@ -348,8 +348,8 @@ function fillResInfos(list) {
 		var ownerInfo=owner+ownerPhone;
 		$("#info-res-owner").html(ownerInfo);
 	}
-	else {
-		if (FreebusyRoom.vacancy) {
+	else {//il n'y a pas de réservation d'ici la fin de la journée
+		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
 				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
@@ -363,7 +363,7 @@ function fillResInfos(list) {
 			$("#info-res-title").html("Pas de rÃ©servation prÃ©vue aujourd'hui");
 			$(".loadgif").hide();
 		}
-		else {
+		else {//si la salle est indisponible
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
@@ -371,7 +371,7 @@ function fillResInfos(list) {
 		$(".loadgif").hide();
 		}
 	}
-	setTimeout(function() {location.reload();}, 300000);
+	setTimeout(function() {refresh();}, 300000);
 }
 
 function createDate() {
