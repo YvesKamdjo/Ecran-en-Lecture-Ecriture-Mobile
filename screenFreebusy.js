@@ -112,7 +112,7 @@ function getRoomList(){
 		});
 }
 
-function fillRoomList(objJson) {//crée un json qui reprend l'ID, le nom, la capacité de toutes les salles
+function fillRoomList(objJson) {
 	var i=0;
 	var j=0;
 	var allRoomList = [];
@@ -161,7 +161,7 @@ function getFreeRoomList(){
 		});
 }
 
-function fillFreeRoomList(objJson){// crée un json contenant la liste de toutes les salles libres durant la prochaine demi-heure
+function fillFreeRoomList(objJson){
 	var i=0;
 	var j=0;
 	var freeRoomList = [];
@@ -169,14 +169,14 @@ function fillFreeRoomList(objJson){// crée un json contenant la liste de toutes
 	var nowPlusTemp=addTime(now,"0:30");
 	
 	while (objJson[i]){
-		if (objJson[i].location.id==85) {//si c'est une petite salle, on l'ajoute
+		if (objJson[i].location.id==85) {
 			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
 			}
 		}
-		else if (objJson[i].location.id==89) {//si c'est une grand salle, on l'ajoute
+		else if (objJson[i].location.id==89) {
 			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
@@ -187,7 +187,7 @@ function fillFreeRoomList(objJson){// crée un json contenant la liste de toutes
 		
 	}
 	
-	Freebusy.freeRoomList=freeRoomList;//on place cette liste dans une variable globale
+	Freebusy.freeRoomList=freeRoomList;
 	getResInfo();
 
 }
@@ -215,7 +215,7 @@ function getResInfo() {
 		});
 }
 
-function fillResListforRooms(objJson) {//crée un tableau avec toutes les réservations des salles libres
+function fillResListforRooms(objJson) {
 	var ligne=0;
 	var resList=[];
 
@@ -251,7 +251,6 @@ function fillResListforRooms(objJson) {//crée un tableau avec toutes les réser
 					var owner=objJson[ligne].fields[1].value;
 					//var ownerPhone=objJson[ligne].fields[2].value;
 					//resList[ligne]=[objJson[ligne].resource.id,start,end];
-					console.log(owner+" ; "+Freebusy.roomList[i].name);
 					Freebusy.roomList[i].owner=owner;
 				}
 			}
@@ -262,7 +261,7 @@ function fillResListforRooms(objJson) {//crée un tableau avec toutes les réser
 	selectNextResForEachRoom(resList);
 }
 
-function selectNextResForEachRoom(list) {// ne prend en compte que la prochaine réservation (le but étant d'indiquer combien de temps la salle est libre)
+function selectNextResForEachRoom(list) {
 	var startTimes=[];
 	var now=getTime();
 	
@@ -279,18 +278,18 @@ function selectNextResForEachRoom(list) {// ne prend en compte que la prochaine 
 			}
 		}
 		
-		if (k==1){//s'il n'y a qu'une seule réservation, le calcul est facile
+		if (k==1){
 			var duree=substractTime(startTimes[0], now);
-			Freebusy.freeRoomList[i].time=duree;//on ajoute à la salle sa durée pendant laquelle elle est libre
+			Freebusy.freeRoomList[i].time=duree;
 			}
 		else if (k>1) {
-			startTimes=startTimes.sort(smallestStartTime);//on tri les heures de début des résa par ordre croissant afin de prendre seulement la plus proche dans le temps
+			startTimes=startTimes.sort(smallestStartTime);
 			var duree=substractTime(startTimes, now);
 			Freebusy.freeRoomList[i].time=duree;
 		}
 	}
-	Freebusy.freeRoomList=Freebusy.freeRoomList.sort(sortRoomsByFreeTime);//on tri les salles par durées
-	Freebusy.freeRoomList=Freebusy.freeRoomList.sort(sortRoomsByCapacity);//on tri les salles par capacités croissantes
+	Freebusy.freeRoomList=Freebusy.freeRoomList.sort(sortRoomsByFreeTime);
+	Freebusy.freeRoomList=Freebusy.freeRoomList.sort(sortRoomsByCapacity);
 	compareRoomLists();
 }
 
@@ -325,7 +324,7 @@ function sortAlphabeticalOrder(a, b) {
 	else return true;
 }
 
-function compareRoomLists() {// compare les listes de salles pour ne pas avoir de doublons et que seules les salles occupées apparaissent en tant que telles
+function compareRoomLists() {
 	var allRooms=Freebusy.roomList;
 	var freeRooms=Freebusy.freeRoomList;
 	var i,j=0;
@@ -336,7 +335,7 @@ function compareRoomLists() {// compare les listes de salles pour ne pas avoir d
 			}
 		}
 	}
-	allRooms.sort(sortAlphabeticalOrder);// on tri les salles occupées par ordre alphabétique
+	allRooms.sort(sortAlphabeticalOrder);
 	splitRoomList(freeRooms, allRooms);
 }
 
@@ -385,8 +384,8 @@ Freebusy.hideSub=hs;
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 	var time="";
-	if (timeFree=="") {time="jusqu'à la fin de la journée";}//s'il n'y a pas de réservation prévue de la journée
-	else {// sinon on donne un arrondi de la durée pendant laquelle la salle est libre
+	if (timeFree=="") {time="jusqu'à la fin de la journée";}
+	else {
 		var duree=timeFree;
 		if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="30 min";
 		else if ((compareTime(duree,"1:0"))&&(compareTime("1:30",duree))) duree="1h";
@@ -394,14 +393,14 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 		else if ((compareTime(duree,"2:0"))&&(compareTime("3:0",duree))) duree="2h";
 		else if ((compareTime(duree,"3:0"))&&(compareTime("4:0",duree))) duree="3h";
 		else if ((compareTime(duree,"4:0"))&&(compareTime("5:0",duree))) duree="4h";
-		else if (compareTime(duree,"5:0")) {//si la durée dépasse 5h, on donne l'heure approximative de la prochaine réservation
+		else if (compareTime(duree,"5:0")) {
 			var heure=[];
 			heure=startTimes[0].split(":");
 			duree="jusqu'à "+ heure[0]+"h";
 			}
 		time="pendant "+duree;
 	}
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
+$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("li.une-salle-libre").mouseover(function() {
 	$(this).css('background','#cedfd0');
 });
