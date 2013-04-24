@@ -4,7 +4,7 @@ function setIdentification(log, pass){
 	Freebusy.login=log;
 	Freebusy.password=pass;
 }
-
+//test de conflit yves
 function getTime(){
 	var myDate = new Date(); 
 	var hour = myDate.getHours(); 
