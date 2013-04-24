@@ -127,7 +127,7 @@ function initDocument(){
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px").css("top", (w*(1/1200)+3)+"px");
 	});
-
+	construireLaFrise();
 	//getUrbaToken(getFreeRoomList);
 	getUrbaToken(getRoomInfo);
 	$(window).resize(function(){
@@ -212,7 +212,6 @@ function checkRoomVacancy(objJson) {
 	while (objJson[i]) {
 		if (objJson[i].id==FreebusyRoom.ID) {
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)) {
-				console.log(objJson[i].name);
 				FreebusyRoom.vacancy=true;
 			}
 		}
@@ -268,7 +267,7 @@ function fillResListforRoom(objJson) {
 			}
 		ligne++;
 	});
-	construireLaFrise();
+	//construireLaFrise();
 	remplirLaFrise(jsonLocal);
 	sortResList(resList);	
 }
@@ -313,11 +312,13 @@ function fillResInfos(list) {
 				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 				$("#screenBorder").css({"background-color":"#38b54d"});
 				$("#nom-salle").css({"color":"#d7f0db"});
-				$("#etat").append("Libre").css({"color":"#38b54d"});
+				$("#etat").html("Libre").css({"color":"#38b54d"});
 				$("#temps").html(temps);
 				$("#bouton").show();
 				$("#info-res-title").html("Prochaine rÃ©union :");
 				$(".loadgif").hide();
+				$("#b_conf").hide();
+				console.log("libre");
 			}
 			else {//La salle n'appartient pas à la liste des salles libres
 //-------Salle indisponible--------------
@@ -325,8 +326,10 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").append("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$(".loadgif").hide();
+			$("#b_conf").hide();
+			console.log("indisponible");
 			}
 		}
 		else {//la réservation commence dans moins d'une demi-heure ou a commencé
@@ -335,11 +338,14 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").append("OccupÃ©e").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#etat").html("Occupée").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
 			if(!res[2]=="Ecran") {$("#b_conf").show();}
+			else{$("#b_conf").hide();}
 			$("#info-res-title").html("RÃ©union actuelle:");
 			$(".loadgif").hide();
+			$("#bouton").hide();
+			console.log("occupée");
 		}
 		
 		var sujet="";
@@ -364,25 +370,32 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
-			$("#etat").append("Libre").css({"color":"#38b54d"});
+			$("#etat").html("Libre").css({"color":"#38b54d"});
 			$("#bouton").show();
 			$("#info-res-title").html("Pas de rÃ©servation prÃ©vue aujourd'hui");
 			$(".loadgif").hide();
+			$("#b_conf").hide();
+			console.log("libre toute la journée");
 		}
 		else {//si la salle est indisponible
 //-------Salle indisponible-----------		
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
-		$("#etat").append("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+		$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
+		$("#bouton").hide();
+		$("#b_conf").hide();
+		console.log("indisponible sans res");
 		}
 	}
-	//setTimeout(function() {refresh();}, 300000);
+	setTimeout(function() {refresh();},300000);
 }
 
 function refresh() {
-
+	console.log("refresh");
+	//location.reload();
+	getUrbaToken(getFreeRoomList);
 }
 
 function createDate() {
@@ -544,7 +557,7 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
 	//console.log(uniteHeure);
 	//console.log(uniteMinute);
-	console.log(FreebusyRoom.state);
+	//console.log(FreebusyRoom.state);
 	if(FreebusyRoom.state=="free")
 		$("#frise").css('background-image','url(curseur-vert.png)');
 	else
