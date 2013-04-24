@@ -1,3 +1,4 @@
+//test conflit
 var Freebusy= new Object();
 var blockedRoom=[];
 function setIdentification(log, pass){
