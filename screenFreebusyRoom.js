@@ -163,15 +163,15 @@ function createEndDate() {
 	return endDate;
 }
 
-function getUrlParameters(){//permet de récuperer les paramètres dans l'URL pour filtrer les info à afficher
+function getUrlParameters(){//permet de rï¿½cuperer les paramï¿½tres dans l'URL pour filtrer les info ï¿½ afficher
 	var allArg;
-	allArg= document.location.search;//récupération de la requete contenue dans l'URL
+	allArg= document.location.search;//rï¿½cupï¿½ration de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
 	t=allArg.split("&");
 	t1=t[0].split("=");
 	FreebusyRoom.roomID= t1[1];
-	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupée ou pas
+	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupï¿½e ou pas
 	t1=t[1].split("=");
 	FreebusyRoom.hideOwner= t1[1];
 	t1=t[2].split("=");
@@ -293,8 +293,8 @@ function fillResInfos(list) {
 	FreebusyRoom.state="free";//marque la salle comme libre!
 	if (list.length>0) {
 		res=list[0];
-		if (compareTime(res[0],nowPlusTemp)) {//Si la prochaine réservation est dans plus d'une demi-heure
-			if (FreebusyRoom.vacancy) {//Si la salle appartient bien à la liste des salles libres
+		if (compareTime(res[0],nowPlusTemp)) {//Si la prochaine rï¿½servation est dans plus d'une demi-heure
+			if (FreebusyRoom.vacancy) {//Si la salle appartient bien ï¿½ la liste des salles libres
 //-----------Salle libre--------------
 				var temps="jusqu'Ã  "+res[0];
 				var dureeLibre=substractTime(res[0],now);
@@ -318,7 +318,7 @@ function fillResInfos(list) {
 				$("#info-res-title").html("Prochaine rÃ©union :");
 				$(".loadgif").hide();
 			}
-			else {//La salle n'appartient pas à la liste des salles libres
+			else {//La salle n'appartient pas ï¿½ la liste des salles libres
 //-------Salle indisponible--------------
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
@@ -327,10 +327,10 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 			}
 		}
-		else {//la réservation commence dans moins d'une demi-heure ou a commencé
-//------Salle occupée----------------
+		else {//la rï¿½servation commence dans moins d'une demi-heure ou a commencï¿½
+//------Salle occupï¿½e----------------
 			var temps="jusqu'Ã  "+res[1];
-			FreebusyRoom.state="busy";//marque la salle comme occupée!!!
+			FreebusyRoom.state="busy";//marque la salle comme occupï¿½e!!!
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
@@ -352,7 +352,7 @@ function fillResInfos(list) {
 		var ownerInfo=owner+ownerPhone;
 		$("#info-res-owner").html(ownerInfo);
 	}
-	else {//il n'y a pas de réservation d'ici la fin de la journée
+	else {//il n'y a pas de rï¿½servation d'ici la fin de la journï¿½e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 //-------Salle libre-----------
 				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
@@ -465,12 +465,12 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= parseInt(all[0],10);//l'heure de début de la résa
-		var startm=parseInt(all[1],10);// les minutes de début de la résa!
+		var starth= parseInt(all[0],10);//l'heure de dï¿½but de la rï¿½sa
+		var startm=parseInt(all[1],10);// les minutes de dï¿½but de la rï¿½sa!
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
-		if(starth==endh){//si la resa a une durée inférieure à 1 heure
+		if(starth==endh){//si la resa a une durï¿½e infï¿½rieure ï¿½ 1 heure
 				var quartHeure;
 				if(endm!=0)
 					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la rÃ©sa
