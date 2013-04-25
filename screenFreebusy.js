@@ -66,8 +66,9 @@ function substractTime(t1, t2) {
 function getDocumentReady(){
 	$(document).ready(function() {
 		getUrbaToken(getRoomList);
-		/*var textareaWidth = document.getElementById("textarea").scrollWidth;
-		document.getElementById("wrapper").style.width = textareaWidth + "px";*/
+		var textareaWidth = document.getElementById("textarea").scrollWidth;
+		document.getElementById("wrapper").style.width = textareaWidth + "px";
+		getRoomForDisplaying();
 	});
 }
 				
@@ -91,19 +92,23 @@ function setValidToken(newToken){
 function addRoomToDisplay(roomID){
 blockedRoom.push(roomID);
 }
-function getRoomForDisplaying(){
+function getRoomForDisplaying(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 var query= document.location.search;
 console.log(document.location.search);
 var tmp1;
 var tmp=[];
-tmp= query.split("=");
-	if (tmp!=""){
-		tmp1= tmp[1].split("=");
-		tmp1=tmp1+"";
-		console.log(tmp1);
-		blockedRoom = tmp1.split("_");
+console.log(query);
+if (query!=""){
+tmp1= query.split("?");
+console.log(tmp1[1]);
+tmp=tmp1[1].split("=");
+	if (tmp.lenght!=0){
+		if(tmp[0]=="showResources"){
+		blockedRoom= tmp[1].split(",");
 		console.log(blockedRoom[0]);
+		}
 	}
+}
 }
 
 function getRoomList(){
@@ -351,7 +356,7 @@ console.log(blockedRoom.length);
 
 		if (blockedRoom.length>0){
 				//console.log(blockedRoom[0]+" "+freeRooms[i].id+" "+tmp.indexOf(freeRooms[i].id));
-				if (tmp.indexOf(freeRooms[i].id)!=-1){
+				if (tmp.indexOf(freeRooms[i].id)!=-1){//vérification si l'ID est bien présente dans les paramètres de l'URL
 				ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity, freeRooms[i].time);
 				}
 		}
@@ -360,7 +365,7 @@ console.log(blockedRoom.length);
 	}
 	for (j=0;j<busyRooms.length;j++){
 		if (blockedRoom.length>0){
-			if (tmp.indexOf(freeRooms[j].id)!=-1){
+			if (tmp.indexOf(busyRooms[j].id)!=-1){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].owner);
 			}
 		}
