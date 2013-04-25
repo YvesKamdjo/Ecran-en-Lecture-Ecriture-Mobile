@@ -100,7 +100,9 @@ function addMinutes(date, minutes) {
 
 function initDocument(){
 	//getUrbaToken(getFreeRoomList);
-	FreebusyRoom.ID=getRoomID();
+	//FreebusyRoom.ID=getRoomID();
+	getUrlParameters();
+	console.log(FreebusyRoom.ID);
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
@@ -170,7 +172,7 @@ function getUrlParameters(){//permet de r�cuperer les param�tres dans l'URL 
 	var t1=[];
 	t=allArg.split("&");
 	t1=t[0].split("=");
-	FreebusyRoom.roomID= t1[1];
+	FreebusyRoom.ID= t1[1];
 	if (t.length>2){//permet de savoir s'il s'agit d'une salle occup�e ou pas
 	t1=t[1].split("=");
 	FreebusyRoom.hideOwner= t1[1];
@@ -181,12 +183,12 @@ function getUrlParameters(){//permet de r�cuperer les param�tres dans l'URL 
 	}
 }
 
-function getRoomID() {
+/*function getRoomID() {
 	var url=document.location.href;
 	var temp=[];
 	var temp=url.split("resource=");
 	return temp[1];
-}
+}*/
 
 function getRoomInfo(){
 	$.ajax({
@@ -328,7 +330,6 @@ function fillResInfos(list) {
 			$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$(".loadgif").hide();
 			$("#b_conf").hide();
-			console.log("indisponible");
 			}
 		}
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
@@ -345,25 +346,28 @@ function fillResInfos(list) {
 			console.log(res[2]+", "+resStartTimePlusTemp+", "+now);
 			if((compareTime(resStartTimePlusTemp, now))&&!(res[2]=="Ecran")) {
 				$("#b_conf").show();
-				console.log("test");
 				}
 			else{$("#b_conf").hide();}
 			$("#info-res-title").html("Réunion actuelle:");
 			$(".loadgif").hide();
 			$("#bouton").hide();
-			console.log("occup�");
 		}
 		
 		var sujet="";
-		if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		if(FreebusyRoom.hideSubject=="false")
+			if(res[4]) 
+				{sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		
-		var owner=res[2];
+		if (FreebusyRoom.hideOwner=="false")
+			var owner=res[2];
 		var ownerPhone="";
-		if(res[3]) var ownerPhone=" - "+res[3];
+		if (FreebusyRoom.hidePhone=="false")
+			if(res[3]) 
+				var ownerPhone=" - "+res[3];
 		var ownerInfo=owner+ownerPhone;
-		$("#info-res-owner").html(ownerInfo);
+		if (ownerInfo!="undefined")
+			$("#info-res-owner").html(ownerInfo);
 	}
 	else {//il n'y a pas de r�servation d'ici la fin de la journ�e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
@@ -438,7 +442,7 @@ function createEndTime() {
 }
 
 function createJsonRes(){
-	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+getRoomID()+'}}'
+	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'}}'
 	
 	return jsonToSend;
 }
@@ -480,13 +484,13 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var startH, startMin;
 	var endH, endMin;
 	for (i=8;i<20;i++){
-	$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
-	$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
-	for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
-	$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
-	$("#case"+i+""+j).css('background','white');
+		$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
+		$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
+		$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
+		$("#case"+i+""+j).css('background','white');
+		}
 	}
-}
 }
 function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge selon les occupations
 	$.each(json, function(key, value){
