@@ -165,9 +165,9 @@ function createEndDate() {
 	return endDate;
 }
 
-function getUrlParameters(){//permet de r�cuperer les param�tres dans l'URL pour filtrer les info � afficher
+function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info � afficher
 	var allArg;
-	allArg= document.location.search;//r�cup�ration de la requete contenue dans l'URL
+	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
 	t=allArg.split("&");
