@@ -378,9 +378,12 @@ function fillResInfos(list) {
 			$("#nom-salle").css({"color":"#d7f0db"});
 			$("#etat").html("Libre").css({"color":"#38b54d"});
 			$("#bouton").show();
-			$("#info-res-title").html("Pas de réservation prévue aujourd'hui");
+			$("#info-res-title").html("Pas d'autre réservation prévue aujourd'hui");
 			$(".loadgif").hide();
 			$("#b_conf").hide();
+			$("#temps").html("")
+			$("#info-res-horaires").html("");
+			$("#info-res-owner").html("");
 			console.log("libre toute la journ�e");
 		}
 		else {//si la salle est indisponible
@@ -393,6 +396,9 @@ function fillResInfos(list) {
 		$(".loadgif").hide();
 		$("#bouton").hide();
 		$("#b_conf").hide();
+		$("#temps").html("")
+		$("#info-res-horaires").html("");
+		$("#info-res-owner").html("");
 		console.log("indisponible sans res");
 		}
 	}
