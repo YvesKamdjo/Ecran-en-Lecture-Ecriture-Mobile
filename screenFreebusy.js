@@ -397,7 +397,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
 		else if ((compareTime(duree,"4:0"))&&(compareTime("5:0",duree))) duree="4h";
 		else if (compareTime(duree,"5:0")) {
 			var heure=[];
-			heure=startTimes[0].split(":");
+			heure=duree.split(":");
 			duree="jusqu'à "+ heure[0]+"h";
 			}
 		time="pendant "+duree;
