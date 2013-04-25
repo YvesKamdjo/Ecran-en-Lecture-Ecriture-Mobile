@@ -39,6 +39,8 @@ body, html{
 	background-color:#2f464c;
 	color:white;
 	font-weight:600;
+	padding-top:2px;
+	padding-bottom:2px;
 }
 
 #info-salle {
@@ -170,10 +172,12 @@ body, html{
 #link_img {
 	width:auto;
 	position:relative;
+	vertical-align:-25%;
 }
 
 #link_back {
 	display:inline-block;
+	height:100%;
 }
 
 ul {
