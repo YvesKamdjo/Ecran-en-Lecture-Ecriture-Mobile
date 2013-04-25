@@ -289,6 +289,7 @@ function sortResList(list) {
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
+	
 	FreebusyRoom.state="free";//marque la salle comme libre!
 	if (list.length>0) {
 		res=list[0];
@@ -333,13 +334,19 @@ function fillResInfos(list) {
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
 //------Salle occup�e----------------
 			var temps="jusqu'à "+res[1];
+			console.log(res[2]+", "+resStartTimePlusTemp);
+			var resStartTimePlusTemp=addTime(res[0],"0:15");
 			FreebusyRoom.state="busy";//marque la salle comme occup�e!!!
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Occup�").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#etat").html("Occup\351").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
-			if(!res[2]=="Ecran") {$("#b_conf").show();}
+			console.log(res[2]+", "+resStartTimePlusTemp+", "+now);
+			if((compareTime(resStartTimePlusTemp, now))&&!(res[2]=="Ecran")) {
+				$("#b_conf").show();
+				console.log("test");
+				}
 			else{$("#b_conf").hide();}
 			$("#info-res-title").html("Réunion actuelle:");
 			$(".loadgif").hide();
