@@ -337,14 +337,14 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Occupée").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#etat").html("Occupé").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
 			if(!res[2]=="Ecran") {$("#b_conf").show();}
 			else{$("#b_conf").hide();}
 			$("#info-res-title").html("RÃ©union actuelle:");
 			$(".loadgif").hide();
 			$("#bouton").hide();
-			console.log("occupée");
+			console.log("occupé");
 		}
 		
 		var sujet="";
