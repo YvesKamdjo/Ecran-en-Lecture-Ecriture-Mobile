@@ -63,11 +63,11 @@ function substractTime(t1, t2) {
 	return duree;
 }
 
-function getDocumentReady(){
+function initDocument(){
 	$(document).ready(function() {
 		getUrbaToken(getRoomList);
-		var textareaWidth = document.getElementById("textarea").scrollWidth;
-		document.getElementById("wrapper").style.width = textareaWidth + "px";
+		//var textareaWidth = document.getElementById("textarea").scrollWidth;
+		//document.getElementById("wrapper").style.width = textareaWidth + "px";
 		getRoomForDisplaying();
 	});
 }
