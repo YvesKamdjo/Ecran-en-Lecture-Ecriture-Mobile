@@ -66,8 +66,8 @@ function substractTime(t1, t2) {
 function getDocumentReady(){
 	$(document).ready(function() {
 		getUrbaToken(getRoomList);
-		var textareaWidth = document.getElementById("textarea").scrollWidth;
-		document.getElementById("wrapper").style.width = textareaWidth + "px";
+		/*var textareaWidth = document.getElementById("textarea").scrollWidth;
+		document.getElementById("wrapper").style.width = textareaWidth + "px";*/
 	});
 }
 				
