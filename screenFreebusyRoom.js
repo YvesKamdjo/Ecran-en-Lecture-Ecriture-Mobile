@@ -384,7 +384,8 @@ function fillResInfos(list) {
 			console.log("libre toute la journée");
 		}
 		else {//si la salle est indisponible
-//-------Salle indisponible-----------		
+//-------Salle indisponible-----------
+		FreebusyRoom.state="busy";
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
