@@ -103,7 +103,7 @@ tmp1= query.split("?");
 console.log(tmp1[1]);
 tmp=tmp1[1].split("=");
 	if (tmp.lenght!=0){
-		if(tmp[0]=="showResources"){
+		if(tmp[0]=="resources"){
 		blockedRoom= tmp[1].split(",");
 		console.log(blockedRoom[0]);
 		}
