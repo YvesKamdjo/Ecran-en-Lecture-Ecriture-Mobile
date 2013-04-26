@@ -109,13 +109,13 @@ li:even
 	width:90%;
 	position:relative;
 	left:0;
-	bottom:-0.5em;
+	bottom:-0.7em;
 }
 
 .duree-icon, .seats-icon {
-	vertical-align:-5px;
-	margin-right:5px;
-	height:20px;
+	vertical-align:-0.5em;
+	margin-right:0.5em;
+	vertical-align:bottom;
 }
 
 .duree {
@@ -123,7 +123,6 @@ li:even
 	position:relative;
 	right:0;
 	display:inline-block;
-	padding-top:5px;
 	padding-left:25px;
 	font-size:50%;
 }
