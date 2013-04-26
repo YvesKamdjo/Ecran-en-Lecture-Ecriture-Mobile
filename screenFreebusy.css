@@ -67,7 +67,6 @@ li:even
     top: 0;
 }
 .ui-btn-inner {
-    font-size: 26px;
     white-space: nowrap;
 	height:100%;
 }
@@ -83,7 +82,6 @@ li:even
 .pour-les-salles
 {
 	text-shadow: 0px;
-	font-size: 26px;
 	background:#2f464c;
 	border-bottom: 4px solid #2f464c;
 	border-right:  4px solid #2f464c;
@@ -98,23 +96,12 @@ li:even
 	border-left:  6px solid red;
 }
 
-#titre1
-{
-color:#31464c;
-font-weight: bold;
-margin-top: 30px;
-margin-left: 70px;
-width: 100%;
-font-size: 26px;
-text-shadow: 0px;
-}
-
 .room_name{
 	height:50%;
 	width:90%;
 	position:relative;
 	left:0;
-	top:0;
+	top:10%;
 	display:inline-block;
 }
 
@@ -122,7 +109,7 @@ text-shadow: 0px;
 	width:90%;
 	position:relative;
 	left:0;
-	bottom:0;
+	bottom:-0.5em;
 }
 
 .duree-icon, .seats-icon {
@@ -164,7 +151,6 @@ a {
 
 .une-salle-libre {
 	background:none;
-	height:90px;
 	border:none;
 	border-bottom:1px solid #d4e3d6;
 	background-color:#ecf3ed;
@@ -172,7 +158,6 @@ a {
 
 .une-salle-occupee {
 	background:none;
-	height:90px;
 	border:none;
 	border-bottom:1px solid #ffc7b9;
 	background-color:#ffe7e1;

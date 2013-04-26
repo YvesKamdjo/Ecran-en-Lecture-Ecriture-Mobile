@@ -64,12 +64,25 @@ function substractTime(t1, t2) {
 }
 
 function initDocument(){
-	$(document).ready(function() {
-		getUrbaToken(getRoomList);
-		//var textareaWidth = document.getElementById("textarea").scrollWidth;
-		//document.getElementById("wrapper").style.width = textareaWidth + "px";
-		getRoomForDisplaying();
+	var h=$(window).height();
+
+	$("#salles-libres").css("height",("1.5em")).css("font-size",(h/300+"em"));
+	$("#salles-occupees").css("height",("1.5em")).css("font-size",(h/300+"em"));
+	$(window).resize(function(){
+		var h=$(window).height();
+
+	$("#salles-libres").css("height",("1.5em")).css("font-size",(h/300+"em"));
+	$("#salles-occupees").css("height",("1.5em")).css("font-size",(h/300+"em"));
+	$(".une-salle-libre").css("height",(h/125+"em"));
+	$(".une-salle-occupee").css("height",(h/125+"em"));
+	$(".ui-btn-inner").css("font-size",(h/400+"em"));
 	});
+
+	getUrbaToken(getRoomList);
+	//var textareaWidth = document.getElementById("textarea").scrollWidth;
+	//document.getElementById("wrapper").style.width = textareaWidth + "px";
+	getRoomForDisplaying();
+
 }
 				
  function getUrbaToken(nextFunction){
@@ -373,13 +386,18 @@ console.log(blockedRoom.length);
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].owner);
 	}
 	
+	var h=$(window).height();
+	$(".ui-btn-inner").css("font-size",(h/400+"em"));
+	$(".une-salle-libre").css("height",(h/125+"em"));
+	$(".une-salle-occupee").css("height",(h/125+"em"));
+	
 	$('#listes-salles-libres').on('click', 'li', function() {
 		getNameFreeRoomDisplayed($(this).text());
 	});
 	$('#listes-salles-occupees').on('click', 'li', function() {
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
-	$(".loadgif").hide();
+	$(".loadgif").hide();	
 }
 
 function setHideParameters(ho,hp,hs){
