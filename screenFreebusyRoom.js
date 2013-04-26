@@ -344,7 +344,7 @@ function fillResInfos(list) {
 			$("#etat").html("Occup\351").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
 			console.log(res[2]+", "+resStartTimePlusTemp+", "+now);
-			if((compareTime(resStartTimePlusTemp, now))&&!(res[2]=="Ecran")) {
+			if(compareTime(resStartTimePlusTemp, now)) {
 				$("#b_conf").show();
 				}
 			else{$("#b_conf").hide();}
