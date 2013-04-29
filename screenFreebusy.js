@@ -403,7 +403,7 @@ console.log(blockedRoom.length);
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
 	$(".loadgif").hide();
-	setTimeout(function(){window.location.reload()},300000);
+	setTimeout(function(){location.reload();},300000);
 }
 
 function setHideParameters(ho,hp,hs){
