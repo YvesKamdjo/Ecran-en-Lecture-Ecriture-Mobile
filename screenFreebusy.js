@@ -402,7 +402,8 @@ console.log(blockedRoom.length);
 	$('#listes-salles-occupees').on('click', 'li', function() {
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
-	$(".loadgif").hide();	
+	$(".loadgif").hide();
+	setTimeout(function(){window.location.reload()},300000);
 }
 
 function setHideParameters(ho,hp,hs){
