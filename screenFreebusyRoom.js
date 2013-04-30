@@ -233,7 +233,6 @@ function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heu
 	client.send();
 	client.onreadystatechange = function() {
 	if(this.readyState == 2) {
-	alert(this.getResponseHeader('Date'));
 	var ping=this.getResponseHeader('Date');
 	var text=[];
 	text=ping.split(" ");
