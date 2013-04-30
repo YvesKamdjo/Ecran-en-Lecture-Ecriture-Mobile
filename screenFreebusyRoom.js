@@ -191,9 +191,13 @@ function getRoomInfo(){
 
 function getFreeRoomList(){
 	$.ajax({
+			type: "GET",
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'checkRoomVacancy'	
+			jsonpCallback: 'checkRoomVacancy'//,	
+			//success: function(res, status, xhr) { 
+			//alert(xhr.getResponseHeader());
+			//}
 		})
 }
 
@@ -225,10 +229,11 @@ function fillRoomInfo(objJson){
 
 function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
 	var client = new XMLHttpRequest();
-	client.open("GET", "urbaonline.com ", true);
+	client.open("GET", "time.txt", true);
 	client.send();
 	client.onreadystatechange = function() {
 	if(this.readyState == 2) {
+	alert(this.getResponseHeader('Date'));
 	var ping=this.getResponseHeader('Date');
 	var text=[];
 	text=ping.split(" ");
