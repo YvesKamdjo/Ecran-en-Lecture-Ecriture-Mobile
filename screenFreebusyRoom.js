@@ -418,12 +418,12 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},300000);
+	setTimeout(function() {refresh();},100000);
 }
 
 function refresh() {
 	console.log("refresh");
-	//location.reload();
+	location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
