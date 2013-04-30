@@ -197,9 +197,13 @@ function getRoomInfo(){
 
 function getFreeRoomList(){
 	$.ajax({
+			type: "GET",
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'checkRoomVacancy'	
+			jsonpCallback: 'checkRoomVacancy'//,	
+			//success: function(res, status, xhr) { 
+			//alert(xhr.getResponseHeader());
+			//}
 		})
 }
 
@@ -231,7 +235,7 @@ function fillRoomInfo(objJson){
 
 function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
 	var client = new XMLHttpRequest();
-	client.open("GET", "urbaonline.com ", true);
+	client.open("GET", "time.txt", true);
 	client.send();
 	client.onreadystatechange = function() {
 	if(this.readyState == 2) {
@@ -245,11 +249,18 @@ function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heu
 
 function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
 	var t=[];
-	var all= new Date();
-	var min= all.getMinutes();
+	var tempo= new Date();
+	var all=tempo.toUTCString();
+	var nt=all.split(" ");
+	var hms=[];
+	hms=nt[4].split(":");
+	var m= parseInt(hms[1],10);
+	var h= parseInt(hms[0],10);
 	t=temps.split(":");
-	if (Math.abs(t[1]-min)>=15)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
-		alert("Attention l'heure de cet appareil doit être vérifiée!");
+	var m2=parseInt(t[1],10);
+	var h2=parseInt(t[0],10);
+	if (h-h2!=0 || Math.abs(m-m2)>=10)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
+		alert("Attention l'heure de cet appareil doit etre verifiee!");
 }
 function getResInfo() {
 	var startDate=createStartDate();
