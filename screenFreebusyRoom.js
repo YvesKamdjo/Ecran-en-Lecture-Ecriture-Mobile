@@ -100,7 +100,7 @@ function addMinutes(date, minutes) {
 
 function initDocument(){
 	getUrlParameters();
-	pingServeur();
+	//pingServeur();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
@@ -116,6 +116,9 @@ function initDocument(){
 	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px");
+	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
+	$("#ligne2").css("font-size", ((12*h/1000))+"px");
+	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
@@ -126,6 +129,9 @@ function initDocument(){
 	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px");
+	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
+	$("#ligne2").css("font-size", ((12*h/1000))+"px");
+	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
