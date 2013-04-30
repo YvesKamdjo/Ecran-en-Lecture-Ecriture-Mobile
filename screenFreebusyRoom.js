@@ -99,10 +99,8 @@ function addMinutes(date, minutes) {
 }
 
 function initDocument(){
-	//getUrbaToken(getFreeRoomList);
-	//FreebusyRoom.ID=getRoomID();
 	getUrlParameters();
-	console.log(FreebusyRoom.ID);
+	pingServeur();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
@@ -130,7 +128,6 @@ function initDocument(){
 	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	});
 	construireLaFrise();
-	//getUrbaToken(getFreeRoomList);
 	getUrbaToken(getRoomInfo);
 	$(window).resize(function(){
 	afficherHeureSurFrise();
@@ -183,18 +180,12 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	}
 }
 
-/*function getRoomID() {
-	var url=document.location.href;
-	var temp=[];
-	var temp=url.split("resource=");
-	return temp[1];
-}*/
-
 function getRoomInfo(){
 	$.ajax({
 			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillRoomInfo',		
+			jsonpCallback: 'fillRoomInfo',	
+			crossDomain: 'true'
 		});
 }
 
@@ -202,8 +193,8 @@ function getFreeRoomList(){
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'checkRoomVacancy',		
-		});
+			jsonpCallback: 'checkRoomVacancy'	
+		})
 }
 
 function checkRoomVacancy(objJson) {
@@ -232,15 +223,38 @@ function fillRoomInfo(objJson){
 	getFreeRoomList();
 }
 
+function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
+	var client = new XMLHttpRequest();
+	client.open("GET", "urbaonline.com ", true);
+	client.send();
+	client.onreadystatechange = function() {
+	if(this.readyState == 2) {
+	var ping=this.getResponseHeader('Date');
+	var text=[];
+	text=ping.split(" ");
+	isDeviceInTime(text[4]);
+  }
+}
+}
+
+function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
+	var t=[];
+	var all= new Date();
+	var min= all.getMinutes();
+	t=temps.split(":");
+	if (Math.abs(t[1]-min)>=15)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
+		alert("Attention l'heure de cet appareil doit être vérifiée!");
+}
 function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
-	//var roomID=getRoomID();
-	$.ajax({
+	var geturl=$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillResListforRoom',		
-		});
+			jsonpCallback: 'fillResListforRoom',
+			});
+
+		
 }
 
 function fillResListforRoom(objJson) {
@@ -335,7 +349,6 @@ function fillResInfos(list) {
 		else {//la rï¿½servation commence dans moins d'une demi-heure ou a commencï¿½
 //------Salle occupï¿½e----------------
 			var temps="jusqu'Ã  "+res[1];
-			console.log(res[2]+", "+resStartTimePlusTemp);
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
 			FreebusyRoom.state="busy";//marque la salle comme occupï¿½e!!!
 			$("body").css({"background-color":"#fad2d3"});
@@ -343,7 +356,6 @@ function fillResInfos(list) {
 			$("#nom-salle").css({"color":"#fad2d3"});
 			$("#etat").html("Occup\351").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
-			console.log(res[2]+", "+resStartTimePlusTemp+", "+now);
 			if(compareTime(resStartTimePlusTemp, now)) {
 				$("#b_conf").show();
 				}
@@ -406,12 +418,12 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},300000);
+	setTimeout(function() {refresh();},100000);
 }
 
 function refresh() {
 	console.log("refresh");
-	//location.reload();
+	location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
@@ -571,7 +583,7 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute;// calcul de la position en fonction de l'heure actuelle
+	var pos= temp*uniteHeure+m*uniteMinute+2;// calcul de la position en fonction de l'heure actuelle
 	//console.log(FreebusyRoom.state);
 	if(FreebusyRoom.state=="free")
 		$("#frise").css('background-image','url(curseur-vert.png)');
