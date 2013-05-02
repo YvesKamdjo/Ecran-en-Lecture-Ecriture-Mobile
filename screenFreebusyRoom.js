@@ -244,6 +244,7 @@ function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
 	var t=[];
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
+	//console.log("heure du poste "+all+" heure du serveur: "+temps);
 	var nt=all.split(" ");
 	var hms=[];
 	hms=nt[4].split(":");
@@ -428,7 +429,7 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},100000);
+	setTimeout(function() {refresh();},3000);
 }
 
 function refresh() {
