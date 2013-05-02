@@ -109,7 +109,7 @@ li:even
 	width:90%;
 	position:relative;
 	left:0;
-	bottom:-0.7em;
+	bottom:-0.5em;
 }
 
 .duree-icon, .seats-icon {
@@ -144,8 +144,8 @@ li:even
 }
 
 a {
-	padding: 0.6em 10px !important;
-	height:60px;
+	padding: 0.4em !important;
+	height:3em;
 }
 
 .une-salle-libre {

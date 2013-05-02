@@ -65,20 +65,26 @@ function substractTime(t1, t2) {
 
 function initDocument(){
 	var h=$(window).height();
+	var w=$(window).width();
+	
+	if (h<w) h=w/4+500;
 
 	$("#salles-libres").css("height",("1.5em")).css("font-size",(h/300+"em"));
 	$("#salles-occupees").css("height",("1.5em")).css("font-size",(h/300+"em"));
 	
 	$(window).resize(function(){
 		var h=$(window).height();
+		var w=$(window).width();
+		
+		if (h<w) h=w/4+500;
 
-	$("#salles-libres").css("height",("1.5em")).css("font-size",(h/300+"em"));
-	$("#salles-occupees").css("height",("1.5em")).css("font-size",(h/300+"em"));
-	$(".une-salle-libre").css("height",(h/125+1+"em"));
-	$(".une-salle-occupee").css("height",(h/125+1+"em"));
-	$(".ui-btn-inner").css("font-size",(h/400+"em"));
-	$(".duree-icon").css("height",(h/2500+1+"em"));
-	$(".seats-icon").css("height",(h/2500+1+"em"));
+		$("#salles-libres").css("height",("1.5em")).css("font-size",(h/300+"em"));
+		$("#salles-occupees").css("height",("1.5em")).css("font-size",(h/300+"em"));
+		$(".une-salle-libre").css("height",(h/125+1+"em"));
+		$(".une-salle-occupee").css("height",(h/125+1+"em"));
+		$(".ui-btn-inner").css("font-size",(h/400+"em"));
+		$(".duree-icon").css("height",(h/2500+1+"em"));
+		$(".seats-icon").css("height",(h/2500+1+"em"));
 	});
 
 	getUrbaToken(getRoomList);
@@ -388,6 +394,10 @@ console.log(blockedRoom.length);
 	}
 	
 	var h=$(window).height();
+	var w=$(window).width();
+	
+	if (h<w) h=w/4+500;
+	
 	$(".ui-btn-inner").css("font-size",(h/400+"em"));
 	$(".une-salle-libre").css("height",(h/125+1+"em"));
 	$(".une-salle-occupee").css("height",(h/125+1+"em"));
@@ -401,7 +411,7 @@ console.log(blockedRoom.length);
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
 	$(".loadgif").hide();
-	setTimeout(function(){window.location.reload()},300000);
+	setTimeout(function(){location.reload();},300000);
 }
 
 function setHideParameters(ho,hp,hs){
