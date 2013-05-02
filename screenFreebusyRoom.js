@@ -444,7 +444,7 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},3000);
+	setTimeout(function() {refresh();},10000);
 }
 
 function refresh() {
