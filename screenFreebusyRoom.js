@@ -1,4 +1,5 @@
 var FreebusyRoom= new Object();
+FreebusyRoom.pushed=0;
 
 //test
 
@@ -351,6 +352,7 @@ function fillResInfos(list) {
 				$("#info-res-title").html("Prochaine réunion :");
 				$(".loadgif").hide();
 				$("#b_conf").hide();
+				$("#b_vide").hide();
 				console.log("libre");
 			}
 			else {//La salle n'appartient pas � la liste des salles libres
@@ -361,6 +363,7 @@ function fillResInfos(list) {
 			$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$(".loadgif").hide();
 			$("#b_conf").hide();
+			$("#b_vide").hide();
 			}
 		}
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
@@ -374,9 +377,12 @@ function fillResInfos(list) {
 			$("#etat").html("Occup\351").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 			$("#temps").html(temps).css({"padding-left":"20%"});
 			if(compareTime(resStartTimePlusTemp, now)) {
-				$("#b_conf").show();
+				$("#b_vide").hide();
 				}
-			else{$("#b_conf").hide();}
+			else {
+				$("#b_vide").show();
+			}
+			$("#b_conf").show();
 			$("#info-res-title").html("Réunion actuelle:");
 			$(".loadgif").hide();
 			$("#bouton").hide();
@@ -413,6 +419,7 @@ function fillResInfos(list) {
 			$("#bouton").show();
 			$("#info-res-title").html("Pas d'autre réservation prévue aujourd'hui");
 			$(".loadgif").hide();
+			$("#b_vide").hide();
 			$("#b_conf").hide();
 			$("#temps").html("")
 			$("#info-res-horaires").html("");
@@ -427,6 +434,7 @@ function fillResInfos(list) {
 		$("#nom-salle").css({"color":"#fad2d3"});
 		$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
+		$("#b_vide").hide();
 		$("#bouton").hide();
 		$("#b_conf").hide();
 		$("#temps").html("")
@@ -504,6 +512,10 @@ function button_res() {
 
 function res_demand(minutes) {
 		$("#b_res"+minutes).css({"background-color":"#38b54d"});
+		if (FreebusyRoom.pushed==0) {
+			$("#b_res"+minutes).prepend('<img src="load_green.gif">');
+			FreebusyRoom.pushed=1;
+		}
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		getUrbaToken(sendRes);
 }

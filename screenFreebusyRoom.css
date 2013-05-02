@@ -125,6 +125,25 @@ body, html{
 	box-shadow: 2px 2px 1px #888;
 }
 
+#b_vide {
+	display:none;
+	color:white;
+	display:block;
+	padding-right:0;
+	padding-left:0;
+	height:50%;
+	width:100%;
+	font-size:250%;
+	background-color:#38b54d;
+	font-weight:bold;
+	text-align:center;
+	padding-bottom:8px;
+	border-radius: 8px;
+	-moz-box-shadow: 2px 2px 1px #888;
+	-webkit-box-shadow: 2px 2px 1px #888;
+	box-shadow: 2px 2px 1px #888;
+}
+
 #b_conf {
 	display:none;
 	color:white;
