@@ -128,13 +128,15 @@ body, html{
 #b_vide {
 	display:none;
 	color:white;
-	display:block;
 	padding-right:0;
 	padding-left:0;
-	height:50%;
-	width:100%;
-	font-size:250%;
-	background-color:#38b54d;
+	position:relative;
+	top:0.5em;
+	left:3em;
+	height:20%;
+	width:30%;
+	font-size:200%;
+	background-color:grey;
 	font-weight:bold;
 	text-align:center;
 	padding-bottom:8px;
