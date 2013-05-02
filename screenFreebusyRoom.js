@@ -100,7 +100,6 @@ function addMinutes(date, minutes) {
 
 function initDocument(){
 	getUrlParameters();
-	pingServeur();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
@@ -229,7 +228,7 @@ function fillRoomInfo(objJson){
 
 function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
 	var client = new XMLHttpRequest();
-	client.open("GET", "time.txt", true);
+	client.open("GET", "time.txt", true);//script appelé sur le serveur juste pour avoir le temps!
 	client.send();
 	client.onreadystatechange = function() {
 	if(this.readyState == 2) {
@@ -244,7 +243,7 @@ function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heu
 function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
 	var t=[];
 	var tempo= new Date();
-	var all=tempo.toUTCString();
+	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
 	var nt=all.split(" ");
 	var hms=[];
 	hms=nt[4].split(":");
