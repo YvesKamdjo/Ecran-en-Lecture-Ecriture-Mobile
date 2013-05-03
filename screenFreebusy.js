@@ -50,6 +50,7 @@ function addTime(time1, time2) {
 function substractTime(t1, t2) {
 	var time1=[];
 	var time2=[];
+	console.log(t1);
 	var time1=t1.split(":");
 	var time2=t2.split(":");
 	
@@ -304,14 +305,13 @@ function selectNextResForEachRoom(list) {
 				}
 			}
 		}
-		
 		if (k==1){
 			var duree=substractTime(startTimes[0], now);
 			Freebusy.freeRoomList[i].time=duree;
 			}
 		else if (k>1) {
 			startTimes=startTimes.sort(smallestStartTime);
-			var duree=substractTime(startTimes, now);
+			var duree=substractTime(startTimes[0], now);
 			Freebusy.freeRoomList[i].time=duree;
 		}
 	}
