@@ -117,7 +117,6 @@ blockedRoom.push(roomID);
 }
 function getRoomForDisplaying(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 var query= document.location.search;
-console.log(document.location.search);
 var tmp1;
 var tmp=[];
 console.log(query);
@@ -126,7 +125,7 @@ tmp1= query.split("?");
 console.log(tmp1[1]);
 tmp=tmp1[1].split("=");
 	if (tmp.lenght!=0){
-		if(tmp[0]=="resources"){
+		if(tmp[0]=="resources"){//le mot clé utilisé pour lister les salles à afficher est "resources"
 		blockedRoom= tmp[1].split(",");
 		console.log(blockedRoom[0]);
 		}
@@ -197,7 +196,6 @@ function fillFreeRoomList(objJson){
 	var freeRoomList = [];
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
-	
 	while (objJson[i]){
 		if (objJson[i].location.id==85) {
 			console.log(objJson[i].displayName);
