@@ -131,11 +131,12 @@ body, html{
 	padding-right:0;
 	padding-left:0;
 	position:absolute;
-	top:2.8em;
+	top:2em;
 	right:5%;
 	width:30%;
+	height:4em;
 	font-size:100%;
-	background-color:grey;
+	background-color:#5e8894;
 	font-weight:bold;
 	text-align:center;
 	border-radius: 8px;
@@ -147,7 +148,7 @@ body, html{
 #b_conf {
 	display:none;
 	color:white;
-	background-color:grey;
+	background-color:#5e8894;
 	font-weight:bold;
 	font-size:100%;
 	width:30%;
@@ -198,7 +199,7 @@ body, html{
 #link_img {
 	width:auto;
 	position:relative;
-	vertical-align:-45%;
+	vertical-align:-0.6em;
 	margin:0 1em 0 0.5em;
 }
 
