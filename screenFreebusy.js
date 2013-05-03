@@ -51,6 +51,7 @@ function substractTime(t1, t2) {
 	console.log(t1);
 	var time1=[];
 	var time2=[];
+	console.log(t1);
 	var time1=t1.split(":");
 	var time2=t2.split(":");
 	
