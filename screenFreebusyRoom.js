@@ -1,8 +1,6 @@
 var FreebusyRoom= new Object();
 FreebusyRoom.pushed=0;
 
-//test
-
 function setIdentification(log, pass){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
@@ -103,7 +101,6 @@ function initDocument(){
 	getUrlParameters();
 	//pingServeur();
 	FreebusyRoom.vacancy=false;
-	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
 	$("#sub").hide();
@@ -111,25 +108,25 @@ function initDocument(){
 	$("#b_conf").hide();
 	var w=$(window).width();
 	var h=$(window).height();
-	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+10+"%"));
-	$("#nom-salle").css("font-size",((w*h/500000)+1)+"em").css("left", (w*(1/322)+20)+"px");//.css("top", (w*(1/322)-8)+"px");
-	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
+	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
+	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
+	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px");
+	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
-	$("body").css("font-size",((w*h/1000000)+0.5)+"em");
-	$("#info-salle").css("top",(w*(-1/400)+5+"%"));
+	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
+	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
-	$("#nom-salle").css("font-size",((w*h/500000)+1)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/500000)+1)+"em");
+	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/1000000)+2)+"em").css("left", (w*(1/322)+15)+"px");
+	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
@@ -147,10 +144,10 @@ function initDocument(){
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
-						function1();
+						function1(param1);
 						function2();
 					}		
-	});	
+	}).fail(function() {console.log("150"); getUrbaToken(function1, param1);});
 }
 
 function renewToken(function1){//permet de renoueller juste le token lorsqu'une requete plante
@@ -204,11 +201,8 @@ try{
 			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
-			crossDomain: 'true'
-		});
-	}catch(err){
-		renewToken(getRoomInfo);
-		console.log("An Error occured: "+err);
+			crossDomain: 'true',
+			error: function(jqXHR, textStatus, errorThrown) {
 	}
 }
 
@@ -218,7 +212,7 @@ try{
 			type: "GET",
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'checkRoomVacancy'//,	
+			jsonpCallback: 'checkRoomVacancy',
 		});
 	}catch(err){
 		renewToken(getFreeRoomList);
@@ -248,8 +242,7 @@ function fillRoomInfo(objJson){
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
 	FreebusyRoom.endTime=objJson.resourceProfil.endTime;
-	//getResInfo();
-	getFreeRoomList();
+	getUrbaToken(getFreeRoomList);
 }
 
 function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
@@ -287,7 +280,7 @@ function getResInfo() {
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?startDate='+startDate+'&endDate='+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
-			});
+			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});
 	}
 
 		
@@ -313,14 +306,38 @@ function fillResListforRoom(objJson) {
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
-					resList[ligne]=[start,end,owner,ownerPhone,subject]
+					var order=objJson[ligne].idOrder;
+					resList[ligne]=[start,end,owner,ownerPhone,subject, order]
 				}
 			}
 		ligne++;
 	});
-	//construireLaFrise();
 	remplirLaFrise(jsonLocal);
 	sortResList(resList);	
+}
+
+function getOrder(id) {
+	$.ajax({	
+		type: "GET",
+		url : 'http://demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		dataType : 'jsonp',
+		jsonpCallback: 'fillOrder',
+		error: function(jqXHR, textStatus, errorThrown) {
+		  console.log(textStatus, errorThrown);
+		}
+	}).fail(function() {console.log("319");  getUrbaToken(getOrder(id)); });
+}
+
+function fillOrder(json) {
+	for (i=0;i<json.roomServiceGroups.length;i++) {
+		for(j=0;j<json.roomServiceGroups[i].orderItems.length;j++) {
+			console.log(i+","+j+","+json.roomServiceGroups[i].orderItems[j].displayName);
+			if (json.roomServiceGroups[i].orderItems[j].value!=0) {
+				$('#info-res-presta').append(json.roomServiceGroups[i].orderItems[j].displayName+" ("+json.roomServiceGroups[i].orderItems[j].value+")");
+			}
+		}
+	}
+
 }
 
 function sortResList(list) {
@@ -370,7 +387,7 @@ function fillResInfos(list) {
 				$("#info-res-title").html("Prochaine rÃ©union :");
 				$(".loadgif").hide();
 				$("#b_conf").hide();
-				$("#b_vide").hide();
+				$("#b_vide").hide();				
 				console.log("libre");
 			}
 			else {//La salle n'appartient pas ï¿½ la liste des salles libres
@@ -378,7 +395,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+			$("#etat").html("Indisponible").css({"color":"#ed1b24"});
 			$(".loadgif").hide();
 			$("#b_conf").hide();
 			$("#b_vide").hide();
@@ -392,8 +409,8 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Occup\351").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
-			$("#temps").html(temps).css({"padding-left":"20%"});
+			$("#etat").html("Occup\351").css({"color":"#ed1b24"});
+			$("#temps").html(temps).css({"padding-left":"13%"});
 			if(compareTime(resStartTimePlusTemp, now)) {
 				$("#b_vide").hide();
 				}
@@ -421,6 +438,11 @@ function fillResInfos(list) {
 		var ownerInfo=owner+ownerPhone;
 		if (ownerInfo!="undefined")
 			$("#info-res-owner").html(ownerInfo);
+			
+		if (res[5]!=0) {
+		$('#info-res-presta').append('<img src="prestation.png" style="width:8vmin;vertical-align:middle">')
+			getUrbaToken(getOrder, res[5])
+		}
 	}
 	else {//il n'y a pas de rï¿½servation d'ici la fin de la journï¿½e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
@@ -461,7 +483,7 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},10000);
+	setTimeout(function() {refresh();},300000);
 }
 
 function refresh() {//rafraichissement de l'écran!
