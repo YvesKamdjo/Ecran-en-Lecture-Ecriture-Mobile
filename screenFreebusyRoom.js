@@ -101,7 +101,6 @@ function initDocument(){
 	getUrlParameters();
 	//pingServeur();
 	FreebusyRoom.vacancy=false;
-	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
 	$("#sub").hide();
@@ -147,7 +146,7 @@ function initDocument(){
 		success: function(jsonp) {
 						function1(param1);
 					}		
-	});	
+	}).fail(function() {console.log("150"); getUrbaToken(function1, param1);});
 }
 
 
@@ -472,7 +471,7 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
-	setTimeout(function() {refresh();},10000);
+	setTimeout(function() {refresh();},300000);
 }
 
 function refresh() {
