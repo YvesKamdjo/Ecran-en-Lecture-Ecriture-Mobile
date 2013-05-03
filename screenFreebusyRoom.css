@@ -34,12 +34,13 @@ body, html{
 #entete {
 	width:100%;
 	position:relative;
+	font-size:120%;
 	top:0;
 	left:0;
 	background-color:#2f464c;
 	color:white;
 	font-weight:600;
-	padding:1% 0 1% 0;
+	padding:0.3em 0 0.3em 0;
 }
 
 #info-salle {
@@ -96,13 +97,13 @@ body, html{
 }
 
 #bouton {
-	margin-top:3%;
+	margin-top:1em;
 	display:inline-block;
 	position:relative;
-	height:40%;
+	height:38%;
 	width:50%;
 	float:right;
-	right:5%;
+	right:1em;
 }
 
 #b_res {
@@ -199,7 +200,7 @@ body, html{
 #link_img {
 	width:auto;
 	position:relative;
-	vertical-align:-25%;
+	vertical-align:-45%;
 	margin:0 1em 0 0.5em;
 }
 
