@@ -101,7 +101,6 @@ function addMinutes(date, minutes) {
 
 function initDocument(){
 	getUrlParameters();
-	//pingServeur();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.refresh=false;
 	FreebusyRoom.bResPushed=false;
@@ -135,20 +134,19 @@ function initDocument(){
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	});
 	construireLaFrise();
-	getUrbaToken(getRoomInfo,getResInfo);
+	getUrbaToken(getRoomInfo);
 	$(window).resize(function(){
 	afficherHeureSurFrise();
 	});
 }
 
- function getUrbaToken(function1, function2){
+ function getUrbaToken(function1){
  $.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
 						function1();
-						function2();
 					}		
 	});	
 }
@@ -240,7 +238,7 @@ function checkRoomVacancy(objJson) {
 		}
 		i++;
 	}
-	//getUrbaToken(getResInfo);
+	getUrbaToken(getResInfo);
 }
 	
 function fillRoomInfo(objJson){
@@ -290,8 +288,6 @@ function getResInfo() {
 			});
 	}
 
-		
-}
 
 function fillResListforRoom(objJson) {
 	var ligne=0;
@@ -466,7 +462,7 @@ function fillResInfos(list) {
 
 function refresh() {//rafraichissement de l'écran!
 	location.reload(true);
-	getUrbaToken(getRoomInfo,getResInfo);
+	getUrbaToken(getRoomInfo);
 }
 
 function createDate() {
