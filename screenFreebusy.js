@@ -48,6 +48,7 @@ function addTime(time1, time2) {
 }
 
 function substractTime(t1, t2) {
+	console.log(t1);
 	var time1=[];
 	var time2=[];
 	console.log(t1);
