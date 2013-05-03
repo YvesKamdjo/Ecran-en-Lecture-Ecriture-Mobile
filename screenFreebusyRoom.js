@@ -1,8 +1,6 @@
 var FreebusyRoom= new Object();
 FreebusyRoom.pushed=0;
 
-//test
-
 function setIdentification(log, pass){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
@@ -196,7 +194,7 @@ function getRoomInfo(){
 			error: function(jqXHR, textStatus, errorThrown) {
 			  console.log(textStatus, errorThrown);
 			}
-		}).fail(function() { alert("error"); });
+		}).fail(function() {console.log("199"); getUrbaToken(getRoomInfo);});
 }
 
 function getFreeRoomList(){
@@ -208,7 +206,7 @@ function getFreeRoomList(){
 			error: function(jqXHR, textStatus, errorThrown) {
 			  console.log(textStatus, errorThrown);
 			}
-		}).fail(function() { alert("error"); });
+		}).fail(function() {console.log("211"); getUrbaToken(getFreeRoomList);});
 }
 
 function checkRoomVacancy(objJson) {
@@ -272,7 +270,7 @@ function getResInfo() {
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom',
-			}).fail(function() { alert("error"); });
+			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});
 
 		
 }
@@ -316,7 +314,7 @@ function getOrder(id) {
 		error: function(jqXHR, textStatus, errorThrown) {
 		  console.log(textStatus, errorThrown);
 		}
-	}).fail(function() { alert("error"); });
+	}).fail(function() {console.log("319");  getUrbaToken(getOrder(id)); });
 }
 
 function fillOrder(json) {
@@ -479,7 +477,7 @@ function fillResInfos(list) {
 
 function refresh() {
 	console.log("refresh");
-	location.reload();
+	//location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
