@@ -99,7 +99,6 @@ function addMinutes(date, minutes) {
 
 function initDocument(){
 	getUrlParameters();
-	//pingServeur();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -132,17 +131,13 @@ function initDocument(){
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	});
 	construireLaFrise();
-	getUrbaToken(getRoomInfo,getResInfo);
+	getUrbaToken(getRoomInfo);
 	$(window).resize(function(){
 	afficherHeureSurFrise();
 	});
 }
 
-<<<<<<< HEAD
- function getUrbaToken(function1, function2){
-=======
- function getUrbaToken(function1, param1){
->>>>>>> origin/master
+ function getUrbaToken(function1){
  $.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
@@ -150,9 +145,9 @@ function initDocument(){
 		success: function(jsonp) {
 <<<<<<< HEAD
 						function1();
-						function2();
 =======
 						function1(param1);
+						function2();
 >>>>>>> origin/master
 					}		
 	}).fail(function() {console.log("150"); getUrbaToken(function1, param1);});
@@ -209,20 +204,9 @@ try{
 			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
-<<<<<<< HEAD
-			crossDomain: 'true'
-		});
-	}catch(err){
-		renewToken(getRoomInfo);
-		console.log("An Error occured: "+err);
-	}
-=======
 			crossDomain: 'true',
 			error: function(jqXHR, textStatus, errorThrown) {
-			  console.log(textStatus, errorThrown);
-			}
-		}).fail(function() {console.log("199"); getUrbaToken(getRoomInfo);});
->>>>>>> origin/master
+	}
 }
 
 function getFreeRoomList(){
@@ -231,21 +215,13 @@ try{
 			type: "GET",
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-<<<<<<< HEAD
-			jsonpCallback: 'checkRoomVacancy'//,	
+			jsonpCallback: 'checkRoomVacancy',
 		});
 	}catch(err){
 		renewToken(getFreeRoomList);
 		console.log("An Error occured: "+err);
 	}
 	
-=======
-			jsonpCallback: 'checkRoomVacancy',
-			error: function(jqXHR, textStatus, errorThrown) {
-			  console.log(textStatus, errorThrown);
-			}
-		}).fail(function() {console.log("211"); getUrbaToken(getFreeRoomList);});
->>>>>>> origin/master
 }
 
 function checkRoomVacancy(objJson) {
@@ -261,11 +237,7 @@ function checkRoomVacancy(objJson) {
 		}
 		i++;
 	}
-<<<<<<< HEAD
-	//getUrbaToken(getResInfo);
-=======
 	getUrbaToken(getResInfo);
->>>>>>> origin/master
 }
 	
 function fillRoomInfo(objJson){
@@ -310,17 +282,10 @@ function getResInfo() {
 	var geturl=$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?startDate='+startDate+'&endDate='+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
-<<<<<<< HEAD
 			jsonpCallback: 'fillResListforRoom'
-			});
-	}
-=======
-			jsonpCallback: 'fillResListforRoom',
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});
->>>>>>> origin/master
+	}
 
-		
-}
 
 function fillResListforRoom(objJson) {
 	var ligne=0;
@@ -522,16 +487,9 @@ function fillResInfos(list) {
 	setTimeout(function() {refresh();},300000);
 }
 
-<<<<<<< HEAD
 function refresh() {//rafraichissement de l'écran!
 	location.reload(true);
-	getUrbaToken(getRoomInfo,getResInfo);
-=======
-function refresh() {
-	console.log("refresh");
-	//location.reload();
-	getUrbaToken(getFreeRoomList);
->>>>>>> origin/master
+	getUrbaToken(getRoomInfo);
 }
 
 function createDate() {
