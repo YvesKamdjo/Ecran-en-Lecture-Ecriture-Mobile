@@ -296,8 +296,13 @@ function fillResListforRoom(objJson) {
 					var ownerPhone=objJson[ligne].fields[2].value;
 					var order=objJson[ligne].idOrder;
 					var presenceConf=false;
-					if (objJson[ligne].presenceConfirmedDate!="") presenceConf=true;
-					resList[ligne]=[start,end,owner,ownerPhone,subject, order, presenceConf]
+					var resID=objJson[ligne].id;
+					
+					if (objJson[ligne].presenceConfirmedDate) {
+						presenceConf=true;
+						alert(objJson[ligne].presenceConfirmedDate);
+					}
+					resList[ligne]=[start,end,owner,ownerPhone,subject, order, presenceConf, resID]
 				}
 			}
 		ligne++;
@@ -394,13 +399,15 @@ function fillResInfos(list) {
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
 //------Salle occup�e----------------
 			var temps="jusqu'à "+res[1];
+			console.log(temps);
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
+			FreebusyRoom.resId=res[7];
 			FreebusyRoom.state="busy";//marque la salle comme occup�e!!!
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
 			$("#etat").html("Occup\351").css({"color":"#ed1b24"});
-			$("#temps").html(temps).css({"padding-left":"13%"});
+			$("#temps").html(temps);
 			if(compareTime(resStartTimePlusTemp, now)) {
 				$("#b_vide").hide();
 				}
@@ -431,8 +438,8 @@ function fillResInfos(list) {
 			$("#info-res-owner").html(ownerInfo);
 			
 		if (res[5]!=0) {
-		$('#info-res-presta').append('<img src="prestation.png" style="width:8vmin;vertical-align:middle">')
-			getUrbaToken(getOrder)
+		$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es')
+			//getUrbaToken(getOrder)
 		}
 	}
 	else {//il n'y a pas de r�servation d'ici la fin de la journ�e
@@ -478,14 +485,19 @@ function fillResInfos(list) {
 }
 
 function refresh() {
-	console.log("refresh");
 	//location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
 function createDate() {
 	var today= new Date();
-	var theDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+	var year=today.getFullYear();
+	var month=today.getMonth()+1;
+	var day=today.getDate();
+	
+	if (month<10) month="0"+month;
+	if (day<10) day="0"+day;
+	var theDate=""+year+"-"+month+"-"+day;
 	
 	return theDate;
 }
@@ -510,7 +522,7 @@ function createEndTime() {
 }
 
 function createJsonRes(){
-	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":'+createDate()+'T'+createStartTime()}'
+	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":'+createDate()+'T'+getTime()+'}';
 	
 	return jsonToSend;
 }
@@ -518,6 +530,19 @@ function createJsonRes(){
 function sendRes(){
 	var jsonRes=createJsonRes();
 
+	$.ajax({
+		type: "POST",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
+		contentType: 'application/json; charset=utf-8',
+		data: jsonRes
+		}).done(function( msg ) {
+		location.reload();
+	});
+}
+
+function presenceConfirmation() {
+	var jsonRes='{"id":'+FreebusyRoom.resId+',"presenceConfirmedDate":'+createDate()+'T'+getTime()+':00}';
+	console.log(jsonRes);
 	$.ajax({
 		type: "POST",
 		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
