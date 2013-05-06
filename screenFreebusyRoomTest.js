@@ -103,7 +103,6 @@ function initDocument(){
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
-	showTime();
 	$("#sub").hide();
 	$("#bouton").hide();
 	$("#b_conf").hide();
@@ -146,6 +145,7 @@ function initDocument(){
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
 		success: function(){
+		console.log("tokkk");
 		function1();
 		}
 	});
@@ -153,6 +153,7 @@ function initDocument(){
 
 
 function setValidToken(newToken){
+
 	FreebusyRoom.validToken= newToken.Token;
 }
 
@@ -170,9 +171,6 @@ function createEndDate() {
 
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info � afficher
 	var allArg;
-	FreebusyRoom.hideOwner=false;
-	FreebusyRoom.hidePhone=false;
-	FreebusyRoom.hideSubject=false;
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
@@ -227,7 +225,6 @@ function checkRoomVacancy(objJson) {
 }
 	
 function fillRoomInfo(objJson){
-	$("title").html('Salle '+objJson.displayName);
 	$("#nom-salle").append(objJson.displayName);
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
@@ -284,7 +281,6 @@ function fillResListforRoom(objJson) {
 	var resList=[];
 	$.each(objJson, function(key, value) {
 			if (objJson[ligne].resource.id==FreebusyRoom.ID) {
-				//var resID=objJson[ligne].id;//Id de la reservation
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -292,7 +288,7 @@ function fillResListforRoom(objJson) {
 				var eD=(objJson[ligne].endDate).split("T");
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
-				jsonLocal[j]={startH:start,endH:end};// recuperation de l'heure de début et de fin dans un JSON
+				jsonLocal[j]={startH:start,endH:end};// récupération de l'heure de début et de fin dans un JSON
 					j++;
 				if (compareTime(end,now)) {					
 					var subject=objJson[ligne].fields[3].value;					
@@ -302,9 +298,10 @@ function fillResListforRoom(objJson) {
 					var presenceConf=false;
 					var resID=objJson[ligne].id;
 					
-					if (objJson[ligne].presenceConfirmedDate)
+					if (objJson[ligne].presenceConfirmedDate) {
 						presenceConf=true;
-					
+						alert(objJson[ligne].presenceConfirmedDate);
+					}
 					resList[ligne]=[start,end,owner,ownerPhone,subject, order, presenceConf, resID]
 				}
 			}
@@ -402,7 +399,7 @@ function fillResInfos(list) {
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
 //------Salle occup�e----------------
 			var temps="jusqu'à "+res[1];
-			$('#info-res-presta').html('');
+			console.log(temps);
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
 			FreebusyRoom.resId=res[7];
 			FreebusyRoom.state="busy";//marque la salle comme occup�e!!!
@@ -423,25 +420,25 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 			$("#bouton").hide();
 		}
-		console.log(res);
+		
 		var sujet="";
-		if(!FreebusyRoom.hideSubject)
-			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+		if(FreebusyRoom.hideSubject=="false")
+			if(res[4]) 
+				{sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		if (!FreebusyRoom.hideOwner) {
+		if (FreebusyRoom.hideOwner=="false")
 			var owner=res[2];
-		}
 		var ownerPhone="";
-		if (!FreebusyRoom.hidePhone) {
-			if(res[3]) var ownerPhone=" - "+res[3];
-		}
+		if (FreebusyRoom.hidePhone=="false")
+			if(res[3]) 
+				var ownerPhone=" - "+res[3];
 		var ownerInfo=owner+ownerPhone;
 		if (ownerInfo!="undefined")
 			$("#info-res-owner").html(ownerInfo);
 			
 		if (res[5]!=0) {
-		$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
+		$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es')
 			//getUrbaToken(getOrder)
 		}
 	}
@@ -452,7 +449,6 @@ function fillResInfos(list) {
 				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
 				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 			var w=$(window).width();
-			$('#info-res-presta').html('');
 			$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
@@ -471,7 +467,6 @@ function fillResInfos(list) {
 		else {//si la salle est indisponible
 //-------Salle indisponible-----------
 		FreebusyRoom.state="busy";
-		$('#info-res-presta').html('');
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
@@ -490,7 +485,7 @@ function fillResInfos(list) {
 }
 
 function refresh() {
-	location.reload();
+	//location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
@@ -527,16 +522,17 @@ function createEndTime() {
 }
 
 function createJsonRes(){
-	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":"'+createDate()+'T00:00:00'+'"}'
+	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"Théo","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":'+createDate()+'T'+getTime()+'}';
 	
 	return jsonToSend;
 }
 
 function sendRes(){
 	var jsonRes=createJsonRes();
+
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -545,21 +541,18 @@ function sendRes(){
 }
 
 function presenceConfirmation() {
-	var jsonRes='{"presenceConfirmedDate":"'+createDate()+'T00:00:00"}';
+	var jsonRes='{"id":'+FreebusyRoom.resId+',"presenceConfirmedDate":'+createDate()+'T'+getTime()+':00}';
 	console.log(jsonRes);
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'json',
-		data:jsonRes,
+		data: jsonRes
 		}).done(function( msg ) {
 		location.reload();
-		});
+	});
 }
-function data_to_send(json){
 
-}
 function button_res() {
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
