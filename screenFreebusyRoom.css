@@ -76,7 +76,7 @@ body, html{
 }
 
 #etat-libre #etat{
-	padding-left:0.7em;
+	padding-left:0.4em;
 	font-size:400%;
 	width:100%;
 	display:inline-block;
@@ -87,7 +87,7 @@ body, html{
 }
 
 #temps {
-	padding-left:2.5em;
+	padding-left:1.5em;
 	width:100%;
 	display:inline-block;
 	position:relative;
@@ -166,7 +166,7 @@ body, html{
 
 
 #info-res {
-	width:40%;
+	width:45%;
 	height:auto;
 	position:absolute;
 	top:55%;
@@ -177,7 +177,7 @@ body, html{
 }
 
 #info-res-presta{
-	padding-left:1.1em;
+	padding-left:0.3em;
 }
 
 #b_res_arrow {
@@ -185,18 +185,18 @@ body, html{
 }
 
 #info-res-title {
-	padding-left:2.33em;
+	padding-left:1.37em;
 	font-weight:800;
 	display:inline-block;
 	bottom: 50px;
 }
 
 #info-res-horaires {
-	padding-left:2.3em;
+	padding-left:1.34em;
 }
 
 #info-res-owner {
-	padding-left:2.3em;
+	padding-left:1.34em;
 }
 
 #link_img {
