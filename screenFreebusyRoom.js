@@ -528,7 +528,6 @@ function createJsonRes(){
 
 function sendRes(){
 	var jsonRes=createJsonRes();
-console.log("je suis bon");
 	$.ajax({
 		type: "POST",
 		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
