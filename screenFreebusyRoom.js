@@ -110,6 +110,7 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
+	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
@@ -121,6 +122,7 @@ function initDocument(){
 		var w=$(window).width();
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
+	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
@@ -138,14 +140,14 @@ function initDocument(){
 	});
 }
 
- function getUrbaToken(function1){
+ function getUrbaToken(function1, param1){
  $.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
 		success: function(){
-		function1();
+		function1(param1);
 		}
 	});
 }
@@ -557,7 +559,7 @@ function updateResToConfirmPresence(json) {
 	console.log(json.presenceConfirmedDate);
 	json.presenceConfirmedDate=""+createDate()+"T00:00:00";
 	console.log(json.presenceConfirmedDate);
-	sendPresenceConfirmation(json);
+	getUrbaToken(sendPresenceConfirmation, json);
 }
 
 function sendPresenceConfirmation(jsonUpdateConfPres) {
@@ -566,7 +568,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {
 
 	$.ajax({
 		type: "PUT",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {
