@@ -111,8 +111,8 @@ function initDocument(){
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
 	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
-	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
+	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
@@ -124,8 +124,8 @@ function initDocument(){
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
 	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
-	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
+	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
@@ -272,9 +272,7 @@ function getResInfo() {
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom',
-			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});
-
-		
+			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
 }
 
 function fillResListforRoom(objJson) {// tri par id de la salle
@@ -301,6 +299,8 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 					var order=objJson[ligne].idOrder;
 					var presenceConf=false;
 					var resID=objJson[ligne].id;
+					
+					console.log(objJson[ligne].presenceConfirmedDate);
 					
 					if (objJson[ligne].presenceConfirmedDate)
 						presenceConf=true;
@@ -403,6 +403,7 @@ function fillResInfos(list) {
 //------Salle occup�e----------------
 			var temps="jusqu'à "+res[1];
 			$('#info-res-presta').html('');
+			$("#entete").css({"background-color":"#233a40"});
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
 			FreebusyRoom.resId=res[7];
 			FreebusyRoom.state="busy";//marque la salle comme occup�e!!!
@@ -544,19 +545,40 @@ function sendRes(){
 	});
 }
 
-function presenceConfirmation() {
-	var jsonRes='{"presenceConfirmedDate":"'+createDate()+'T00:00:00"}';
-	console.log(jsonRes);
+function confirmPresence() {
+	getUrbaToken(getRes);
+}
+
+function getRes() {
+	var geturl=$.ajax({
+		url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		dataType : 'jsonp',
+		jsonpCallback: 'updateResToConfirmPresence',
+	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
+}
+
+function updateResToConfirmPresence(json) {
+	console.log(json);
+	console.log(json.presenceConfirmedDate);
+	json.presenceConfirmedDate=""+createDate()+"T00:00:00";
+	console.log(json.presenceConfirmedDate);
+	sendPresenceConfirmation(json);
+}
+
+function sendPresenceConfirmation(jsonUpdateConfPres) {
+	console.log(jsonUpdateConfPres);
+	json=JSON.stringify(jsonUpdateConfPres);
+
 	$.ajax({
 		type: "POST",
 		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'json',
-		data:jsonRes,
+		data:json
 		}).done(function( msg ) {
 		location.reload();
 		});
 }
+
 function data_to_send(json){
 
 }
