@@ -76,7 +76,7 @@ body, html{
 }
 
 #etat-libre #etat{
-	padding-left:12%;
+	padding-left:0.7em;
 	font-size:400%;
 	width:100%;
 	display:inline-block;
@@ -87,38 +87,59 @@ body, html{
 }
 
 #temps {
-	padding-left:13%;
+	padding-left:2.5em;
 	width:100%;
 	display:inline-block;
 	position:relative;
 	left:0;
-	font-size:150%;
+	font-size:120%;
+	line-height:80%;
 	color:#2f464c
 }
 
 #bouton {
-	margin-top:1em;
+	margin-top:0.5em;
 	display:inline-block;
 	position:relative;
 	height:38%;
-	width:50%;
+	width:40%;
 	float:right;
-	right:1em;
+	right:2em;
 }
 
 #b_res {
 	display:none;
 	color:white;
 	display:block;
-	padding-right:0;
-	padding-left:0;
 	height:50%;
 	width:100%;
-	font-size:250%;
+	font-size:200%;
 	background-color:#38b54d;
 	font-weight:bold;
 	text-align:center;
 	padding-bottom:8px;
+	border-radius: 8px;
+	border:0.05em solid #2a893a;
+	-moz-box-shadow: 2px 2px 1px #888;
+	-webkit-box-shadow: 2px 2px 1px #888;
+	box-shadow: 2px 2px 1px #888;
+}
+
+#b_conf {
+	display:none;
+	color:white;
+	padding-right:0;
+	padding-left:0;
+	position:absolute;
+	top:2em;
+	right:5%;
+	width:30%;
+	height:4em;
+	font-size:100%;
+	background-color:#5e8894;
+	font-weight:bold;
+	text-align:center;
+	border:0.1em solid #2f464c;
 	border-radius: 8px;
 	-moz-box-shadow: 2px 2px 1px #888;
 	-webkit-box-shadow: 2px 2px 1px #888;
@@ -128,33 +149,15 @@ body, html{
 #b_vide {
 	display:none;
 	color:white;
-	padding-right:0;
-	padding-left:0;
-	position:absolute;
-	top:2.8em;
-	right:5%;
-	width:30%;
-	font-size:100%;
-	background-color:grey;
-	font-weight:bold;
-	text-align:center;
-	border-radius: 8px;
-	-moz-box-shadow: 2px 2px 1px #888;
-	-webkit-box-shadow: 2px 2px 1px #888;
-	box-shadow: 2px 2px 1px #888;
-}
-
-#b_conf {
-	display:none;
-	color:white;
-	background-color:grey;
+	background-color:#5e8894;
 	font-weight:bold;
 	font-size:100%;
 	width:30%;
-	height:15%;
+	height:4em;
 	position:absolute;
 	right:5%;
 	bottom:25%;
+	border:0.1em solid #2f464c;
 	border-radius: 8px;
 	-moz-box-shadow: 2px 2px 1px #888;
 	-webkit-box-shadow: 2px 2px 1px #888;
@@ -163,19 +166,18 @@ body, html{
 
 
 #info-res {
-	padding-left:5%;
-	width:50%;
+	width:40%;
 	height:auto;
 	position:absolute;
 	top:55%;
-	font-size:150%;
+	font-size:120%;
 	font-weight:600;
 	color:#2f464c;
 	z-index:-1;
 }
 
 #info-res-presta{
-	font-size:80%;
+	padding-left:1.1em;
 }
 
 #b_res_arrow {
@@ -183,22 +185,24 @@ body, html{
 }
 
 #info-res-title {
+	padding-left:2.33em;
 	font-weight:800;
 	display:inline-block;
 	bottom: 50px;
 }
 
 #info-res-horaires {
+	padding-left:2.3em;
 }
 
-#info-res-owner {}
-
-#info-res-presta {}
+#info-res-owner {
+	padding-left:2.3em;
+}
 
 #link_img {
 	width:auto;
 	position:relative;
-	vertical-align:-45%;
+	vertical-align:-0.6em;
 	margin:0 1em 0 0.5em;
 }
 
@@ -233,7 +237,7 @@ li {
 .menu_hour {
 	height:100%;
 	padding-left:16%;
-	font-size:250%;
+	font-size:200%;
 }
 
 #frise {
@@ -245,6 +249,7 @@ li {
 	height:12%;
 	min-height:40px;
 	position: center;
+	border-top: 5px solid #2f464c;
 	background-color:#5e8894;
 	/*background-image:url(barre.png);*/
 	background-repeat:no-repeat;

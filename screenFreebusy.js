@@ -463,7 +463,8 @@ var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
-html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
+if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
+else html.push('<div class="seats">indisponible</div>'); 
 $("#listes-salles-occupees").append(html.join(''));
 $("li.une-salle-occupee").mouseover(function() {
 	$(this).css('background','#e7c5bc');
