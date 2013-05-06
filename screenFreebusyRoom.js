@@ -110,9 +110,9 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
-	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
+	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
+	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
@@ -122,15 +122,16 @@ function initDocument(){
 		var w=$(window).width();
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
+	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
-	$("#nom-salle").css("font-size",((w*h/400000)+1)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1)+"em");
+	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
+	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
+	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
@@ -139,14 +140,14 @@ function initDocument(){
 	});
 }
 
- function getUrbaToken(function1){
+ function getUrbaToken(function1, param1){
  $.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
 		success: function(){
-		function1();
+		function1(param1);
 		}
 	});
 }
@@ -272,12 +273,10 @@ function getResInfo() {
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom',
-			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});
-
-		
+			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
 }
 
-function fillResListforRoom(objJson) {
+function fillResListforRoom(objJson) {// tri par id de la salle
 	var ligne=0;
 	var j=0;
 	var jsonLocal=[];
@@ -301,6 +300,8 @@ function fillResListforRoom(objJson) {
 					var order=objJson[ligne].idOrder;
 					var presenceConf=false;
 					var resID=objJson[ligne].id;
+					
+					console.log(objJson[ligne].presenceConfirmedDate);
 					
 					if (objJson[ligne].presenceConfirmedDate)
 						presenceConf=true;
@@ -403,6 +404,7 @@ function fillResInfos(list) {
 //------Salle occup�e----------------
 			var temps="jusqu'à "+res[1];
 			$('#info-res-presta').html('');
+			$("#entete").css({"background-color":"#233a40"});
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
 			FreebusyRoom.resId=res[7];
 			FreebusyRoom.state="busy";//marque la salle comme occup�e!!!
@@ -544,19 +546,36 @@ function sendRes(){
 	});
 }
 
-function presenceConfirmation() {
-	var jsonRes='{"presenceConfirmedDate":"'+createDate()+'T00:00:00"}';
-	console.log(jsonRes);
+function getRes() {
+	var geturl=$.ajax({
+		url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		dataType : 'jsonp',
+		jsonpCallback: 'updateResToConfirmPresence',
+	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
+}
+
+function updateResToConfirmPresence(json) {
+	console.log(json);
+	console.log(json.presenceConfirmedDate);
+	json.presenceConfirmedDate=""+createDate()+"T00:00:00";
+	console.log(json.presenceConfirmedDate);
+	getUrbaToken(sendPresenceConfirmation, json);
+}
+
+function sendPresenceConfirmation(jsonUpdateConfPres) {
+	console.log(jsonUpdateConfPres);
+	json=JSON.stringify(jsonUpdateConfPres);
+
 	$.ajax({
-		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		type: "PUT",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'json',
-		data:jsonRes
+		data:json
 		}).done(function( msg ) {
 		location.reload();
-	});
+		});
 }
+
 function data_to_send(json){
 
 }
@@ -588,13 +607,15 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var startH, startMin;
 	var endH, endMin;
 	for (i=8;i<20;i++){
-		$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
+		$("#ligne1").append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
 		$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 		$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 		$("#case"+i+""+j).css('background','white');
 		}
 	}
+	var h=$(window).height();
+	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 }
 function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge selon les occupations
 	$.each(json, function(key, value){
