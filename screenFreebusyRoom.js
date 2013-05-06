@@ -145,7 +145,6 @@ function initDocument(){
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
 		success: function(){
-		console.log("tokkk");
 		function1();
 		}
 	});
@@ -153,7 +152,6 @@ function initDocument(){
 
 
 function setValidToken(newToken){
-
 	FreebusyRoom.validToken= newToken.Token;
 }
 
@@ -281,6 +279,7 @@ function fillResListforRoom(objJson) {
 	var resList=[];
 	$.each(objJson, function(key, value) {
 			if (objJson[ligne].resource.id==FreebusyRoom.ID) {
+				//var resID=objJson[ligne].id;//Id de la reservation
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -288,13 +287,14 @@ function fillResListforRoom(objJson) {
 				var eD=(objJson[ligne].endDate).split("T");
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
-				jsonLocal[j]={startH:start,endH:end};// récupération de l'heure de début et de fin dans un JSON
+				jsonLocal[j]={startH:start,endH:end};// recuperation de l'heure de début et de fin dans un JSON
 					j++;
 				if (compareTime(end,now)) {					
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
 					var order=objJson[ligne].idOrder;
+					var idResa=objJson[ligne].id;//l'id d'une resa
 					resList[ligne]=[start,end,owner,ownerPhone,subject, order]
 				}
 			}
@@ -476,7 +476,7 @@ function fillResInfos(list) {
 
 function refresh() {
 	console.log("refresh");
-	//location.reload();
+	location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
@@ -514,17 +514,20 @@ function createJsonRes(){
 
 function sendRes(){
 	var jsonRes=createJsonRes();
-
+console.log("je suis bon");
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token=" +FreebusyRoom.validToken+"&callback=data_to_send",
 		contentType: 'application/json; charset=utf-8',
-		data: jsonRes
+		dataType: 'json',
+		data:jsonRes
 		}).done(function( msg ) {
 		location.reload();
 	});
 }
+function data_to_send(json){
 
+}
 function button_res() {
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
