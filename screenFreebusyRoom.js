@@ -545,7 +545,43 @@ function sendRes(){
 		location.reload();
 	});
 }
-
+function getBookingToStop(){//recupère la resa à terminer!
+	$.ajax({
+		type: "GET",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		dataType : 'jsonp',
+		jsonpCallback:"changeEndTime"
+		})
+}
+function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
+var d= new Date();
+var d2=d.toJSON();//renvoie une date au format aaaa-mm-jjThh:mm:ss
+var d3=d.toTimeString()//renvoie une date au format hh:mm:ss GMT+002
+var d31=d3.split(" ");
+var d4=d2.split("T");
+var d5=d4[0]+"T"+d31[0];
+return d5;
+}
+function changeEndTime(json){// modification de la resa à terminer
+var t=toUrbaFormat();
+console.log(t);
+var t2=t.split(".");
+console.log(t2[0]);
+json.endDate=t2[0];
+sendBookingToStop(json);
+}
+function sendBookingToStop(jsonF){
+var json=JSON.stringify(jsonF);
+	$.ajax({
+		type: "POST",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken+"&httpmethod=put",
+		contentType: 'application/json; charset=utf-8',
+		data : json
+		}).done(function(msg){
+			//location.reload();
+			console.log("dans send");
+			});
+}
 function getRes() {
 	var geturl=$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
