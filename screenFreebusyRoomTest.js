@@ -466,7 +466,6 @@ function fillResInfos(list) {
 			$("#temps").html("")
 			$("#info-res-horaires").html("");
 			$("#info-res-owner").html("");
-			console.log("libre toute la journée");
 		}
 		else {//si la salle est indisponible
 //-------Salle indisponible-----------
@@ -493,8 +492,9 @@ function refresh() {
 	getUrbaToken(getFreeRoomList);
 }
 
-function createDate() {
+function createDate() {//cree une date au texte aaaa-mm-jj
 	var today= new Date();
+	console.log(today.toJSON());
 	var year=today.getFullYear();
 	var month=today.getMonth()+1;
 	var day=today.getDate();
@@ -556,7 +556,20 @@ function presenceConfirmation() {
 		location.reload();
 	});
 }
-
+function endBooking(){
+var today= new Date();
+var t=today.toISOString();
+console.log(t.replace("Z",""));
+var json='{"endDate":'+t.replace("Z","")+'}';
+	$.ajax({
+		type: "POST",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		contentType: 'application/json; charset=utf-8',
+		data:json
+		}).done(function( msg ) {
+		location.reload();
+	});
+}
 function button_res() {
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
