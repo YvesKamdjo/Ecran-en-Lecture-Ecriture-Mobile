@@ -277,7 +277,7 @@ function getResInfo() {
 		
 }
 
-function fillResListforRoom(objJson) {
+function fillResListforRoom(objJson) {// tri par id de la salle
 	var ligne=0;
 	var j=0;
 	var jsonLocal=[];
