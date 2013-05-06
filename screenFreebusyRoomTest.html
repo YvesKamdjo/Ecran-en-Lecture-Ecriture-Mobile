@@ -1,0 +1,75 @@
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="initial-scale=1.0">
+	<head>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600,700,800,900">
+		<link rel="stylesheet" href="screenFreebusyRoom.css">
+		<script type="text/javascript" src="screenFreebusyRoomTest.js"></script>
+	<title> Détails de la salle </title>
+	</head>
+	
+	<body>
+	
+		<img src="load_grey.gif" class="loadgif">
+	
+		<div id="entete">
+			<table width="100%">
+				<tr>
+					<th align="left" valign="top"><a id="link_back" href="screenFreebusy.html"><img src="icon-list.png" id="link_img"></a><div id="nom-salle"></div></th>
+					<th align="right" width="20%" valign="bottom"><div id="hourPanel"></div></th>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="screenBorder"></div>
+		
+		<div id="info-salle">
+			<div id="etat-libre">
+				<div id="etat"></div>
+				<div id="temps"></div>
+			</div>
+			<div id="bouton">
+				<ul id="top-menu">
+					<li>
+						<button type="button" id="b_res" onClick="button_res()"> Réserver <img src="arrow_d.png" id="b_res_arrow"> </button>
+						<ul id="sub">
+							<li><div type="button" id="b_res30" class="menu_hour" onClick="res_demand(30)">30 min</div></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<button type="button" id="b_conf" onClick="getUrbaToken(presenceConfirmation)"> Confirmer ma présence </button>
+
+		</div>
+		
+		<div id="info-res">
+			<div id="info-res-title"></div>
+			<div id="info-res-horaires"></div>
+			<div id="info-res-owner"></div>			
+			<div id="info-res-presta"></div>
+		</div>
+		<button type="button" id="b_vide" onClick=""> Signaler comme vide </button>
+		
+		<div id="frise">
+			<!--img src="barre.png"-->
+				<table id="table-frise" border="0px #2f464c" width="100%"  cellpadding="0">
+					<tr id="ligne1" class="ligne">
+					</tr>
+					<tr id="ligne2" class="ligne">
+					</tr>
+					<tr id="ligne3" class="ligne">
+					</tr>
+				</table>
+		</div>
+		<script> 
+        setIdentification('gallain@lucca.fr', 'gallain');
+		pingServeur();
+        $(document).ready(function() {
+          initDocument();
+        });
+			
+		</script>
+	</body>
+</html>
