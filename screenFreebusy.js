@@ -464,7 +464,7 @@ html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
-else html.push('<div class="seats">indisponible</div>'); 
+else html.push('<div class="seats"><img class="seats-icon indisponible">indisponible</div>'); 
 $("#listes-salles-occupees").append(html.join(''));
 $("li.une-salle-occupee").mouseover(function() {
 	$(this).css('background','#e7c5bc');
@@ -476,6 +476,7 @@ $(".duree-icon:even").attr('src','icon-duree-light.png');
 $(".seats-icon:even").attr('src','icon-seats-light.png');
 $(".duree-icon:odd").attr('src','icon-duree-dark.png');
 $(".seats-icon:odd").attr('src','icon-seats-dark.png');
+$(".indisponible").css('display','none');
 $("a:even").css('color','#5e8894');
 $('ul').listview('refresh');
 }
