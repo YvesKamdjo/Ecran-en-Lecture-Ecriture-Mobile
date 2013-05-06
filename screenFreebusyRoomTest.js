@@ -255,6 +255,7 @@ function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
 	var t=[];
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
+	console.log("temps local: "+all);
 	//console.log("heure du poste "+all+" heure du serveur: "+temps);
 	var nt=all.split(" ");
 	var hms=[];
@@ -527,7 +528,6 @@ function createEndTime() {
 
 function createJsonRes(){
 	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"ThÃ©o","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":"'+createDate()+'T00:00:00'+'"}'
-	
 	return jsonToSend;
 }
 
@@ -545,11 +545,11 @@ function sendRes(){
 }
 
 function presenceConfirmation() {
-	var jsonRes='{"id":"'+FreebusyRoom.resId+'","presenceConfirmedDate":"'+createDate()+'T00:00:00"}';
+	var jsonRes='{"presenceConfirmedDate":"'+createDate()+'T00:00:00"}';//"id":"'+FreebusyRoom.resId+'",
 	console.log(jsonRes);
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
