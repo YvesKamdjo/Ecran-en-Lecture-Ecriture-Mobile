@@ -110,7 +110,6 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
@@ -122,7 +121,6 @@ function initDocument(){
 		var w=$(window).width();
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top",(w*(-1/322)+12+"%"));
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
@@ -131,6 +129,7 @@ function initDocument(){
 	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
+	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
@@ -545,10 +544,6 @@ function sendRes(){
 	});
 }
 
-function confirmPresence() {
-	getUrbaToken(getRes);
-}
-
 function getRes() {
 	var geturl=$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
@@ -570,7 +565,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {
 	json=JSON.stringify(jsonUpdateConfPres);
 
 	$.ajax({
-		type: "POST",
+		type: "PUT",
 		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
@@ -610,13 +605,15 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var startH, startMin;
 	var endH, endMin;
 	for (i=8;i<20;i++){
-		$("#ligne1").append('<td width="8.33%" class="caseFrise" colspan="4">'+i+'h</td>');
+		$("#ligne1").append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
 		$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
 		$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
 		$("#case"+i+""+j).css('background','white');
 		}
 	}
+	var h=$(window).height();
+	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 }
 function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge selon les occupations
 	$.each(json, function(key, value){
