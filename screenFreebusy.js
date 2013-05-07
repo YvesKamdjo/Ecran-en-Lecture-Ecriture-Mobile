@@ -56,27 +56,28 @@ function setValidToken(newToken){
 }
 
 function addRoomToDisplay(roomID){
-blockedRoom.push(roomID);
+	blockedRoom.push(roomID);
 }
+
 function getRoomForDisplaying(){//permet de récupérer les identifiants des salles à afficher dans l'URL
-var query= document.location.search;
-var tmp1;
-var tmp=[];
-console.log(query);
-if (query!=""){
-tmp1= query.split("?");
-console.log(tmp1[1]);
-tmp=tmp1[1].split("=");
-	if (tmp.lenght!=0){
-		if(tmp[0]=="resources"){//le mot clé utilisé pour lister les salles à afficher est "resources"
-		blockedRoom= tmp[1].split(",");
-		console.log(blockedRoom[0]);
+	var query= document.location.search;
+	var tmp1;
+	var tmp=[];
+	console.log(query);
+	if (query!=""){
+	tmp1= query.split("?");
+	console.log(tmp1[1]);
+	tmp=tmp1[1].split("=");
+		if (tmp.lenght!=0){
+			if(tmp[0]=="resources"){//le mot clé utilisé pour lister les salles à afficher est "resources"
+			blockedRoom= tmp[1].split(",");
+			console.log(blockedRoom[0]);
+			}
 		}
 	}
 }
-}
 
-function getRoomList(){
+function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
 			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
@@ -84,7 +85,7 @@ function getRoomList(){
 		});
 }
 
-function fillRoomList(objJson) {
+function fillRoomList(objJson) {//remplit un tableau contenant la liste des salles (+ infos suplémentaires) et la passe en variable globale
 	var i=0;
 	var j=0;
 	var allRoomList = [];
@@ -100,11 +101,11 @@ function fillRoomList(objJson) {
 }
 
 
-function addMinutes(date, minutes) {
+function addMinutes(date, minutes) {//ajoute un certain nombre de minutes à l'heure actuelle
     return new Date(date.getTime() + minutes*60000);
 }
 
-function createDuration(){
+function createDuration(){//traduit l'intervale de temps entre maintenant et une demi-heure en format urba (aaaa-mm-jjThh:mm:ss,aaaa-mm-jjThh:mm:ss) pour demander à l'API quelles sont les salles libres dans la prochaine demi-heure (pas minimum)
 	var now= new Date();
 	var hour = now.getHours(); 
 	var minute = now.getMinutes();
@@ -125,7 +126,7 @@ function createDuration(){
 }
 
 
-function getFreeRoomList(){
+function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
@@ -133,21 +134,21 @@ function getFreeRoomList(){
 		});
 }
 
-function fillFreeRoomList(objJson){
+function fillFreeRoomList(objJson){// remplit un tableau avec la liste des salles libres (+infos supplémentaires) et le passe en variable globale
 	var i=0;
 	var j=0;
 	var freeRoomList = [];
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
 	while (objJson[i]){
-		if (objJson[i].location.id==85) {
+		if (objJson[i].location.id==85) {//si c'est une petite salle
 			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
 			}
 		}
-		else if (objJson[i].location.id==89) {
+		else if (objJson[i].location.id==89) {//si c'est une grande salle
 			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
@@ -163,19 +164,19 @@ function fillFreeRoomList(objJson){
 
 }
 
-function createStartDate() {
+function createStartDate() {//crée une date de départ pour demander les réservations de la journée
 	var today= new Date();
 	startDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T00:00:00";
 	return startDate;
 }
 
-function createEndDate() {
+function createEndDate() {//crée une date de fin pour demander les réservations de la journée
 	var today= new Date();
 	endDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T23:59:59";
 	return endDate;
 }
 
-function getResInfo() {
+function getResInfo() {//demande à l'API la liste des réservations de la journée
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	
@@ -186,12 +187,12 @@ function getResInfo() {
 		});
 }
 
-function fillResListforRooms(objJson) {
+function fillResListforRooms(objJson) {// remplit un tableau avec la liste des réservations pour les trier
 	var ligne=0;
 	var resList=[];
 
 	$.each(objJson, function(key, value) {
-		for (i=0;i<Freebusy.roomList.length;i++) {
+		for (i=0;i<Freebusy.roomList.length;i++) {// si la réservation est liée à une salle libre
 			if ((objJson[ligne])&&(i<Freebusy.freeRoomList.length)&&(objJson[ligne].resource.id==Freebusy.freeRoomList[i].id)) {
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
@@ -201,14 +202,14 @@ function fillResListforRooms(objJson) {
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
 				
-				if (compareTime(end,now)) {					
+				if (compareTime(end,now)) {//si la réservation n'est pas finie (dans le passé)				
 					var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					var ownerPhone=objJson[ligne].fields[2].value;
 					resList[ligne]=[objJson[ligne].resource.id,start,end];
 				}
 			}
-			else if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.roomList[i].id)) {
+			else if ((objJson[ligne])&&(objJson[ligne].resource.id==Freebusy.roomList[i].id)) {// si la réservation est liée à une salle occupée
 				var now=getTime();
 				var sD=(objJson[ligne].startDate).split("T");
 				var startHour=(sD[1]).split(":");
@@ -217,7 +218,7 @@ function fillResListforRooms(objJson) {
 				var endHour=(eD[1]).split(":");
 				var end=""+endHour[0]+":"+endHour[1];
 				
-				if ((compareTime(now,start))&&(compareTime(end,now))) {					
+				if ((compareTime(now,start))&&(compareTime(end,now))) {//si la réservation est en cours					
 					//var subject=objJson[ligne].fields[3].value;					
 					var owner=objJson[ligne].fields[1].value;
 					//var ownerPhone=objJson[ligne].fields[2].value;
@@ -232,7 +233,7 @@ function fillResListforRooms(objJson) {
 	selectNextResForEachRoom(resList);
 }
 
-function selectNextResForEachRoom(list) {
+function selectNextResForEachRoom(list) {//tri les réservations pour ne garder que la prochaine dans le temps
 	var startTimes=[];
 	var now=getTime();
 	
@@ -263,7 +264,7 @@ function selectNextResForEachRoom(list) {
 	compareRoomLists();
 }
 
-function smallestStartTime(a, b) {
+function smallestStartTime(a, b) {//tri par heure de départ croissante
 		var A=a[0].split(":");
 		var B=b[0].split(":");
 		var x="";
@@ -273,13 +274,13 @@ function smallestStartTime(a, b) {
 		return parseInt(x, 10)-parseInt(y, 10);
 }
 
-function sortRoomsByCapacity(a, b) {
+function sortRoomsByCapacity(a, b) {//tri par nombre de place croissant
 		var A=a.capacity;
 		var B=b.capacity;
 		return parseInt(A, 10)-parseInt(B, 10);
 }
 
-function sortRoomsByFreeTime(a, b) {
+function sortRoomsByFreeTime(a, b) {//tri par durée libre croissante
 		var A=a.time.split(":");
 		var B=b.time.split(":");
 		var x="";
@@ -289,12 +290,12 @@ function sortRoomsByFreeTime(a, b) {
 		return parseInt(x, 10)-parseInt(y, 10);
 }
 
-function sortAlphabeticalOrder(a, b) {
+function sortAlphabeticalOrder(a, b) {//tri par ordre alphabétique
 	if (a.name < b.name) return false;
 	else return true;
 }
 
-function compareRoomLists() {
+function compareRoomLists() {//compare les listes des salles libres à la liste des salles afin de supprimer les doublons
 	var allRooms=Freebusy.roomList;
 	var freeRooms=Freebusy.freeRoomList;
 	var i,j=0;
@@ -310,7 +311,7 @@ function compareRoomLists() {
 }
 
 
-function splitRoomList(freeRooms, busyRooms) {
+function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux listes : salles libres et salles occupées
 
 getRoomForDisplaying();
 var tmp= blockedRoom.join(' ');
@@ -364,7 +365,7 @@ Freebusy.hideSub=hs;
 }
 
 // Interface graphique En JQuery Mobile
-function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){
+function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la salle dans la liste des salles libres
 	var time="";
 	if (timeFree=="") {time="jusqu'à la fin de la journée";}
 	else {
@@ -399,7 +400,7 @@ $('#listes-salles-libres').listview('refresh');
 }
 
 
-function ajouterSalleOccupee(nomSalle, idSalle, owner){
+function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
 setHideParameters(false,false,false);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
