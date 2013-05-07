@@ -16,7 +16,6 @@ function showTime(){
 	var t;
 	t = getTime();
 	document.getElementById('hourPanel').innerHTML=t;
-	afficherHeureSurFrise();
 	setTimeout("showTime();",1000);
 }
 
