@@ -37,17 +37,6 @@ function addTime(time1, time2) {
 	time3=t3[0]+":"+t3[1];
 	return time3;
 }
-/*function addTime(time1, time2) {//vient de screenOrientationGuest
-	var t1=time1.split(":");
-	var t2=time2.split(":");
-	var t3=[];
-	var time3="";
-	t3[0]=parseInt(t1[0], 10)+parseInt(t2[0], 10);
-	t3[1]=parseInt(t1[1], 10)+parseInt(t2[1], 10);
-	time3=t3[0]+":"+t3[1];
-	return time3;
-}*/
-
 function substractTime(t1, t2) {
 	console.log(t1);
 	var time1=[];
