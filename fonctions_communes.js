@@ -1,5 +1,5 @@
 
-function getTime(){
+function getTime(){// retourne l'heure au format "hh:mm"
 	var myDate = new Date(); 
 	var hour = myDate.getHours(); 
 	var minute = myDate.getMinutes(); 
@@ -12,14 +12,14 @@ function getTime(){
 	
 	return theTime;
 }
-function showTime(){
+function showTime(){//écrit l'heure dans l'élément d'id 'hourpanel', se rafraichit toutes les secondes
 	var t;
 	t = getTime();
 	document.getElementById('hourPanel').innerHTML=t;
 	setTimeout("showTime();",1000);
 }
 
-function addTime(time1, time2) {
+function addTime(time1, time2) {//ajoute deux heures au format "hh:mm" et retourne la somme dans le même format
 	var t1=time1.split(":");//récupération des hh, mm et ss
 	var t2=time2.split(":");
 	var t3=[];
@@ -37,23 +37,23 @@ function addTime(time1, time2) {
 	time3=t3[0]+":"+t3[1];
 	return time3;
 }
-function substractTime(t1, t2) {
+function substractTime(t1, t2) {// soustrait deux heures au format "hh:mm" et retourne la différence dans le même format
 	console.log(t1);
 	var time1=[];
 	var time2=[];
 	var time1=t1.split(":");
 	var time2=t2.split(":");
-	
+//conversion des deux heures en minutes
 	var minutes1=60*parseInt(time1[0],10)+parseInt(time1[1],10);
 	var minutes2=60*parseInt(time2[0],10)+parseInt(time2[1],10);
-	
+//soustraction des minutes et conversion au format "hh:mm"
 	var minutes3=minutes1-minutes2;
 	var min=minutes3%60;
 	if (min<10) min="0"+min;
 	var duree=Math.floor(minutes3/60)+":"+min;
 	return duree;
 }
-function compareTime(time, ref) {
+function compareTime(time, ref) {//prend deux heures au format "hh:mm" et revoie "true" si la première est supérieure à la seconde, "false" sinon
 	var r=ref.split(":");
 	var t=time.split(":");
 	if (parseInt(t[0],10)<parseInt(r[0],10)) return false;
