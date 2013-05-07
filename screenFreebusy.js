@@ -80,7 +80,7 @@ function getRoomList(){
 	$.ajax({
 			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
-			'jsonpCallback': 'fillRoomList',		
+			'jsonpCallback': 'fillRoomList'		
 		});
 }
 
@@ -129,7 +129,7 @@ function getFreeRoomList(){
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillFreeRoomList',		
+			jsonpCallback: 'fillFreeRoomList'		
 		});
 }
 
@@ -182,7 +182,7 @@ function getResInfo() {
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
-			jsonpCallback: 'fillResListforRooms',		
+			jsonpCallback: 'fillResListforRooms'		
 		});
 }
 
