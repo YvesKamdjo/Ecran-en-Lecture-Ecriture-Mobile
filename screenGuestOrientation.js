@@ -387,7 +387,7 @@ function displayNewJson(SortedJson){
 	}
 }
 
-function nextRes(iteration, nbLignes) {// fonction qui "tourne la page"
+function nextRes(iteration) {// fonction qui "tourne la page"
 
 	$.fn.animateHighlight = function(highlightColor, duration) {//la super fonction qui fait un flash coloré
 		var highlightBg = highlightColor || "#FFFF9C";
