@@ -454,8 +454,8 @@ function createDate() {
 	return theDate;
 }
 
-function createStartTime(){
-	var now=getTime();
+function createStartTime(){//faire commencer au quarteur précédent
+	var now=getTime();/
 	var t=[];
 	t=now.split(":");
 	m=parseInt(t[1],10);	
@@ -463,7 +463,7 @@ function createStartTime(){
 	else if (m<30) m="15";
 	else if (m<45) m="30";
 	else if (m>=45) m="45";
-	var startTime=""+t[0]+":"+m+":00";
+	var startTime=""+t[0]+":"+m+":00";//retourne l'heure actuelle au format hh:mm:00
 	return startTime;
 }
 
@@ -507,15 +507,16 @@ var d4=d2.split("T");
 var d5=d4[0]+"T"+d31[0];
 return d5;
 }
-function changeEndTime(json){// modification de la resa à terminer
+function changeEndTime(json){// modification de l'heure de fin de la resa à terminer
 var t=toUrbaFormat();
 console.log(t);
 var t2=t.split(".");
-console.log(t2[0]);
-json.endDate=t2[0];
-sendBookingToStop(json);
+var t3=t2.split("T");//recuperation de la date du jour
+var heureFinale=t3[0]+"T"+createStartTime();//createStartTime(): renvoie l'heure actuelle au format hh:mm:00 reglee au quart precedent
+json.endDate=heureFinale;
+getUrbaToken(sendBookingToStop,json);
 }
-function sendBookingToStop(jsonF){
+function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyant un JSON qui modifie l'heure de fin et rafraichit l'écran!
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
@@ -524,7 +525,6 @@ var json=JSON.stringify(jsonF);
 		data : json
 		}).done(function(msg){
 			location.reload();
-			console.log("dans send");
 			});
 }
 function getRes() {
@@ -535,20 +535,17 @@ function getRes() {
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
 }
 
-function updateResToConfirmPresence(json) {
-	console.log(json);
-	console.log(json.presenceConfirmedDate);
+function updateResToConfirmPresence(json) {//modification du champ "presenceConfirmedDate"
 	json.presenceConfirmedDate=""+createDate()+"T00:00:00";
-	console.log(json.presenceConfirmedDate);
 	getUrbaToken(sendPresenceConfirmation, json);
 }
 
-function sendPresenceConfirmation(jsonUpdateConfPres) {
+function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la reservation courante. Elle met à jour le champ "presenceConfirmedDate" dans l'API avec la date du jour.
 	console.log(jsonUpdateConfPres);
 	json=JSON.stringify(jsonUpdateConfPres);
 
 	$.ajax({
-		type: "PUT",
+		type: "POST",
 		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
@@ -557,9 +554,6 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {
 		});
 }
 
-function data_to_send(json){
-
-}
 function button_res() {
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
@@ -670,7 +664,7 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
-	var uniteHeure=$(window).width()*0.0833;// calcul de la taille d'heure en pixel
+	var uniteHeure=$(window).width()*0.0833;// calcul de la taille d'heure en pixel. 0.0833 est la largeur en pourcentage d'une unité d'heure.
 	var uniteMinute=uniteHeure/60;// calcul d'une minute en pixel
 	t = getTime();
 	var t2=[];
