@@ -6,7 +6,7 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600,700,800,900">
 		<link rel="stylesheet" href="screenFreebusyRoom.css">
-		<script type="text/javascript" src="screenFreebusyRoom.js"></script>
+		<script type="text/javascript" src="screenFreebusyRoomTest.js"></script>
 	<title> Détails de la salle </title>
 	</head>
 	
@@ -40,7 +40,7 @@
 					</li>
 				</ul>
 			</div>
-			<button type="button" id="b_conf" onClick="getUrbaToken(getRes)"> Confirmer <br>ma présence </button>
+			<button type="button" id="b_conf" onClick="getUrbaToken(presenceConfirmation)"> Confirmer ma présence </button>
 
 		</div>
 		
@@ -50,7 +50,11 @@
 			<div id="info-res-owner"></div>			
 			<div id="info-res-presta"></div>
 		</div>
-		<button type="button" id="b_vide" onClick="getUrbaToken(getBookingToStop)"> Signaler <br>comme vide </button>
+<<<<<<< HEAD
+		<button type="button" id="b_vide" onClick="getUrbaToken(getBookingToStop)"> Signaler comme vide </button>
+=======
+		<button type="button" id="b_vide" onClick=""> Signaler comme vide </button>
+>>>>>>> origin/master
 		
 		<div id="frise">
 			<!--img src="barre.png"-->
