@@ -574,11 +574,11 @@ function sendBookingToStop(jsonF){
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken+"&httpmethod=put",
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
-			//location.reload();
+			location.reload();
 			console.log("dans send");
 			});
 }
