@@ -34,7 +34,6 @@ body, html{
 #entete {
 	width:100%;
 	position:relative;
-	font-size:350%;
 	top:0;
 	left:0;
 	background-color:#2f464c;
@@ -132,7 +131,7 @@ body, html{
 	position:absolute;
 	top:1em;
 	right:5%;
-	width:7.5em;
+	width:8em;
 	height:3.2em;
 	font-size:100%;
 	background-color:#5e8894;
@@ -151,7 +150,7 @@ body, html{
 	background-color:#5e8894;
 	font-weight:bold;
 	font-size:100%;
-	width:7.5em;
+	width:8em;
 	height:3.2em;
 	position:absolute;
 	right:5%;

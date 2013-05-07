@@ -111,6 +111,7 @@ function initDocument(){
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
 	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
+	$("#entete").css("font-size",(-(w*h/10000)+370)+"%");
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
@@ -123,6 +124,7 @@ function initDocument(){
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
 	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
+	$("#entete").css("font-size",(-(w*h/10000)+370)+"%");
 	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
 	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
