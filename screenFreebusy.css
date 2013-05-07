@@ -161,3 +161,8 @@ a {
 	border-bottom:1px solid #ffc7b9;
 	background-color:#ffe7e1;
 }
+
+a img
+{
+border: none;
+} 
