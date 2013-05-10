@@ -91,6 +91,9 @@ function initDocument(){
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
+		fail: function() {
+		getUrbaToken(function1, param1);
+		},
 		success: function(){
 		function1(param1);
 		}
