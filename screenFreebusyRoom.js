@@ -87,7 +87,7 @@ function initDocument(){
 
  function getUrbaToken(function1, param1){
  $.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
+		url : 'http://recette.urbaonline.com/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
@@ -137,7 +137,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 
 function getRoomInfo(){
 	$.ajax({
-			url: 'http://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
+			url: 'http://recette.urbaonline.com/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
 			crossDomain: 'true'
@@ -147,7 +147,7 @@ function getRoomInfo(){
 function getFreeRoomList(){
 	$.ajax({
 			type: "GET",
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			url : 'http://recette.urbaonline.com/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -215,7 +215,7 @@ function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
+			url : 'http://recette.urbaonline.com/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -263,7 +263,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 function getOrder(id) {
 	$.ajax({	
 		type: "GET",
-		url : 'http://demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		url : 'http://recette.urbaonline.com/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'fillOrder',
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -455,7 +455,7 @@ function createDate() {
 }
 
 function createStartTime(){//faire commencer au quarteur précédent
-	var now=getTime();/
+	var now=getTime();
 	var t=[];
 	t=now.split(":");
 	m=parseInt(t[1],10);	
@@ -483,7 +483,7 @@ function sendRes(){
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -493,7 +493,7 @@ function sendRes(){
 function getBookingToStop(){//recupère la resa à terminer!
 	$.ajax({
 		type: "GET",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		url: "http://recette.urbaonline.com/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback:"changeEndTime"
 		})
@@ -520,7 +520,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -529,7 +529,7 @@ var json=JSON.stringify(jsonF);
 }
 function getRes() {
 	var geturl=$.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : 'http://recette.urbaonline.com/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -546,7 +546,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {

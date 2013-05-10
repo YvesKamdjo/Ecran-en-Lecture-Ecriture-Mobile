@@ -41,7 +41,7 @@ function initDocument(){
  function getUrbaToken(nextFunction){
 
 	$.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
+		url : 'http://recette.urbaonline.com/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
@@ -79,7 +79,7 @@ function getRoomForDisplaying(){//permet de récupérer les identifiants des sal
 
 function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
-			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
+			'url' : 'http://recette.urbaonline.com/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList'		
 		});
@@ -128,7 +128,7 @@ function createDuration(){//traduit l'intervale de temps entre maintenant et une
 
 function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
+			url : 'http://recette.urbaonline.com/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList'		
 		});
@@ -181,7 +181,7 @@ function getResInfo() {//demande à l'API la liste des réservations de la journ
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
+			url : 'http://recette.urbaonline.com/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRooms'		
 		});
