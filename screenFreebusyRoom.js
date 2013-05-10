@@ -137,6 +137,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		FreebusyRoom.tactile=t1[1];
 	}
 }
+}
 
 function getRoomInfo(){
 	$.ajax({
