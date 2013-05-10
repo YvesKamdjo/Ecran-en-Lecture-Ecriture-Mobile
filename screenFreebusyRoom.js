@@ -40,19 +40,6 @@ function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes*60000);
 }
 
-function BtnReserver(display) {
-	if (display=="hide") {
-		$("#b_res30").hide();
-		$("#sub").hide();
-		$("#b_res").hide();
-		$("#bouton").hide();
-	}
-	if (display=="show") {
-		$("#b_res").show();
-		$("#bouton").show();
-	}
-}
-
 function initDocument(){
 	getUrlParameters();
 	//pingServeur();
@@ -60,7 +47,10 @@ function initDocument(){
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
 	showTime();
-	BtnReserver("hide");
+	$(".btn_res").hide();
+	$("#sub").hide();
+	$("#sub li").hide();
+	$(".menu_hour").hide();
 	$("#b_conf").hide();
 	var w=$(window).width();
 	var h=$(window).height();
@@ -343,8 +333,8 @@ function fillResInfos(list) {
 				$("#nom-salle").css({"color":"#d7f0db"});
 				$("#etat").html("Libre").css({"color":"#38b54d"});
 				$("#temps").html(temps);
-				if (FreebusyRoom.tactile=="true") BtnReserver("show");
-				else BtnReserver("hide");
+				if (FreebusyRoom.tactile=="true") $(".btn_res").show();
+				else $(".btn_res").hide();
 				$("#info-res-title").html("Prochaine réunion :");
 				$(".loadgif").hide();
 				$("#b_conf").hide();
@@ -360,7 +350,7 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 			$("#b_conf").hide();
 			$("#b_vide").hide();
-			BtnReserver("hide");
+			$(".btn_res").hide();
 			}
 		}
 		else {//la r�servation commence dans moins d'une demi-heure ou a commenc�
@@ -390,7 +380,7 @@ function fillResInfos(list) {
 			else if ((!res[6])&&(FreebusyRoom.tactile=="true")) $("#b_conf").show();
 			$("#info-res-title").html("Réunion actuelle:");
 			$(".loadgif").hide();
-			BtnReserver("hide");
+			$(".btn_res").hide();
 		}
 		console.log(res);
 		var sujet="";
@@ -427,8 +417,8 @@ function fillResInfos(list) {
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
 			$("#etat").html("Libre").css({"color":"#38b54d"});
-			if (FreebusyRoom.tactile=="true") BtnReserver("show");
-			else BtnReserver("hide");
+			if (FreebusyRoom.tactile=="true") $(".btn_res").show();
+			else $(".btn_res").hide();
 			$("#info-res-title").html("Pas d'autre réservation prévue aujourd'hui");
 			$(".loadgif").hide();
 			$("#b_vide").hide();
@@ -448,7 +438,7 @@ function fillResInfos(list) {
 		$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
 		$("#b_vide").hide();
-		BtnReserver("hide");
+		$(".btn_res").hide();
 		$("#b_conf").hide();
 		$("#temps").html("")
 		$("#info-res-horaires").html("");
@@ -580,14 +570,16 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 function button_res() {
 	if (FreebusyRoom.bResPushed) {
 		$("#sub").hide();
-		$("#b_res30").show();
+		$("#sub li").hide();
+		$(".menu_hour").hide();
 		FreebusyRoom.bResPushed=false;
 		document.getElementById("b_res_arrow").src = "arrow_d.png";
 	}
 	else {
 		document.getElementById("b_res_arrow").src = "arrow_u.png";
 		$("#sub").show();
-		$("#b_res30").show();
+		$("#sub li").show();
+		$(".menu_hour").show();
 		FreebusyRoom.bResPushed=true;
 	}
 }

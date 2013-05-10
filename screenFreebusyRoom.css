@@ -223,9 +223,11 @@ li {
 	width:98%;
 	position:relative;
 	z-index:1;
+	display:none;
 }
 
 #sub li {
+	display:none;
 	height:30%;
 	background-color:white;
 	border: 1px solid #38b54d;
@@ -235,6 +237,7 @@ li {
 	height:100%;
 	padding-left:16%;
 	font-size:200%;
+	display:none;
 }
 
 #frise {
