@@ -106,6 +106,7 @@ body, html{
 	width:40%;
 	float:right;
 	right:2em;
+	display:none;
 }
 
 #b_res {
@@ -212,6 +213,10 @@ body, html{
 	height:100%;
 }
 
+.btn_res {
+	display:none;
+}
+
 ul {
 	padding:0;
 	margin:0;
@@ -227,9 +232,11 @@ li {
 	width:98%;
 	position:relative;
 	z-index:1;
+	display:none;
 }
 
 #sub li {
+	display:none;
 	height:30%;
 	background-color:white;
 	border: 1px solid #38b54d;
@@ -239,6 +246,7 @@ li {
 	height:100%;
 	padding-left:16%;
 	font-size:200%;
+	display:none;
 }
 
 #frise {
