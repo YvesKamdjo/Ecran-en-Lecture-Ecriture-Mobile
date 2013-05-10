@@ -91,6 +91,9 @@ function initDocument(){
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
+		fail: function() {
+		getUrbaToken(function1, param1);
+		},
 		success: function(){
 		function1(param1);
 		}
@@ -123,19 +126,16 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	t1=t[0].split("=");
 	FreebusyRoom.ID= t1[1];
 	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupï¿½e ou pas
-	t1=t[1].split("=");
-	FreebusyRoom.hideOwner= t1[1];
-	t1=t[2].split("=");
-	FreebusyRoom.hidePhone=t1[1];
-	t1=t[3].split("=");
-	FreebusyRoom.hideSubject=t1[1];
+		t1=t[1].split("=");
+		FreebusyRoom.hideOwner= t1[1];
+		t1=t[2].split("=");
+		FreebusyRoom.hidePhone=t1[1];
+		t1=t[3].split("=");
+		FreebusyRoom.hideSubject=t1[1];
 	if (t.length>4) {// equivaut à verifier si t[4] est undefined
 		t1=t[4].split("=");
 		FreebusyRoom.tactile=t1[1];
 	}
-	else FreebusyRoom.tactile="true";
-	}
-	console.log(FreebusyRoom.tactile);
 }
 
 function getRoomInfo(){
