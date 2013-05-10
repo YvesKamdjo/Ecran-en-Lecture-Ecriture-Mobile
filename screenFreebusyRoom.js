@@ -116,9 +116,6 @@ function createEndDate() {
 
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info � afficher
 	var allArg;
-	FreebusyRoom.hideOwner=false;
-	FreebusyRoom.hidePhone=false;
-	FreebusyRoom.hideSubject=false;
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
@@ -132,6 +129,11 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	FreebusyRoom.hidePhone=t1[1];
 	t1=t[3].split("=");
 	FreebusyRoom.hideSubject=t1[1];
+	if (t[4]) {
+		t1=t[4].split("=");
+		FreebusyRoom.tactile=t1[1];
+	}
+	else FreebusyRoom.tactile="true";
 	}
 }
 
@@ -325,7 +327,8 @@ function fillResInfos(list) {
 				$("#nom-salle").css({"color":"#d7f0db"});
 				$("#etat").html("Libre").css({"color":"#38b54d"});
 				$("#temps").html(temps);
-				$("#bouton").show();
+				if (FreebusyRoom.tactile==true) $("#bouton").show();
+				else $("#bouton").hide();
 				$("#info-res-title").html("Prochaine réunion :");
 				$(".loadgif").hide();
 				$("#b_conf").hide();
@@ -356,14 +359,18 @@ function fillResInfos(list) {
 			$("#nom-salle").css({"color":"#fad2d3"});
 			$("#etat").html("Occup\351").css({"color":"#ed1b24"});
 			$("#temps").html(temps);
-			if(compareTime(resStartTimePlusTemp, now)) {
-				$("#b_vide").hide();
+			if (FreebusyRoom.tactile==true) {
+				console.log(FreebusyRoom.tactile==true);
+				if(compareTime(resStartTimePlusTemp, now)) {
+					$("#b_vide").hide();
+					}
+				else {
+					$("#b_vide").show();
 				}
-			else {
-				$("#b_vide").show();
 			}
+			else $("#b_vide").hide();
 			if (res[6]) $("#b_conf").hide();
-			else $("#b_conf").show();
+			else if ((!res[6])&&(FreebusyRoom.tactile==true)) $("#b_conf").show();
 			$("#info-res-title").html("Réunion actuelle:");
 			$(".loadgif").hide();
 			$("#bouton").hide();
@@ -403,7 +410,8 @@ function fillResInfos(list) {
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
 			$("#etat").html("Libre").css({"color":"#38b54d"});
-			$("#bouton").show();
+			if (FreebusyRoom.tactile==true) $("#bouton").show();
+			else $("#bouton").hide();
 			$("#info-res-title").html("Pas d'autre réservation prévue aujourd'hui");
 			$(".loadgif").hide();
 			$("#b_vide").hide();
