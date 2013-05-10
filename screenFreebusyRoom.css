@@ -59,7 +59,11 @@ body, html{
 	display:inline-block;
 	position:relative;
 }
-
+#table-frise
+{
+	border:0px #2f464c;
+	width:100%;
+}
 #hourPanel {
 	color:white;
 	margin-right:0.8em;
