@@ -182,35 +182,33 @@ function fillRoomInfo(objJson){
 }
 
 function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
-	var client = new XMLHttpRequest();
-	client.open("GET", "time.txt", true);//script appelé sur le serveur juste pour avoir le temps!
-	client.send();
-	client.onreadystatechange = function() {
-	if(this.readyState == 2) {
-	var ping=this.getResponseHeader('Date');
-	var text=[];
-	text=ping.split(" ");
-	isDeviceInTime(text[4]);
-  }
-}
+$.ajax({
+    url: 'http://timeapi.org/utc/now.json',
+    dataType: 'jsonp',
+	jsonpCallback:'isDeviceOnTime'
+});
 }
 
-function isDeviceInTime(temps){//permet de vérifier que le client est à l'heure
+function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var t=[];
+	var w=new Date(server.dateString);
+	var serverTime=w.toUTCString();
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
-	//console.log("heure du poste "+all+" heure du serveur: "+temps);
+	var text=[];
+	text=serverTime.split(" ");
 	var nt=all.split(" ");
 	var hms=[];
 	hms=nt[4].split(":");
 	var m= parseInt(hms[1],10);
 	var h= parseInt(hms[0],10);
-	t=temps.split(":");
+	t=text[4].split(":");
 	var m2=parseInt(t[1],10);
 	var h2=parseInt(t[0],10);
 	if (h-h2!=0 || Math.abs(m-m2)>=10)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
 		alert("Attention l'heure de cet appareil doit etre verifiee!");
 }
+
 function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
@@ -509,9 +507,9 @@ return d5;
 }
 function changeEndTime(json){// modification de l'heure de fin de la resa à terminer
 var t=toUrbaFormat();
-console.log(t);
+
 var t2=t.split(".");
-var t3=t2.split("T");//recuperation de la date du jour
+var t3=t2[0].split("T");//recuperation de la date du jour
 var heureFinale=t3[0]+"T"+createStartTime();//createStartTime(): renvoie l'heure actuelle au format hh:mm:00 reglee au quart precedent
 json.endDate=heureFinale;
 getUrbaToken(sendBookingToStop,json);
