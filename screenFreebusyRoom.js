@@ -116,6 +116,7 @@ function createEndDate() {
 
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info � afficher
 	var allArg;
+	FreebusyRoom.tactile="true";
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	var t=[];
 	var t1=[];
@@ -123,17 +124,17 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	t1=t[0].split("=");
 	FreebusyRoom.ID= t1[1];
 	if (t.length>2){//permet de savoir s'il s'agit d'une salle occup�e ou pas
-	t1=t[1].split("=");
-	FreebusyRoom.hideOwner= t1[1];
-	t1=t[2].split("=");
-	FreebusyRoom.hidePhone=t1[1];
-	t1=t[3].split("=");
-	FreebusyRoom.hideSubject=t1[1];
-	if (t[4]) {
-		t1=t[4].split("=");
-		FreebusyRoom.tactile=t1[1];
-	}
-	else FreebusyRoom.tactile="true";
+		t1=t[1].split("=");
+		FreebusyRoom.hideOwner= t1[1];
+		t1=t[2].split("=");
+		FreebusyRoom.hidePhone=t1[1];
+		t1=t[3].split("=");
+		FreebusyRoom.hideSubject=t1[1];
+		if (t[4]) {
+			t1=t[4].split("=");
+			FreebusyRoom.tactile=t1[1];
+			console.log("t4");
+		}
 	}
 	console.log(FreebusyRoom.tactile);
 }
