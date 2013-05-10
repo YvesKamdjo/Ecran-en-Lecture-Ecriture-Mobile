@@ -129,8 +129,11 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	FreebusyRoom.hidePhone=t1[1];
 	t1=t[3].split("=");
 	FreebusyRoom.hideSubject=t1[1];
-	t1=t[4].split("=");
-	FreebusyRoom.tactile=t1[1];
+	if (t[4]) {
+		t1=t[4].split("=");
+		FreebusyRoom.tactile=t1[1];
+	}
+	else FreebusyRoom.tactile="true";
 	}
 }
 
