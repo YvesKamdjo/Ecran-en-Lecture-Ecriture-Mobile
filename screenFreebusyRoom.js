@@ -195,8 +195,10 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var t=[];
 	var w=new Date(server.dateString);
 	var serverTime=w.toUTCString();
+	console.log("server time="+serverTime);
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
+	console.log("local time="+all);
 	var text=[];
 	text=serverTime.split(" ");
 	var nt=all.split(" ");
