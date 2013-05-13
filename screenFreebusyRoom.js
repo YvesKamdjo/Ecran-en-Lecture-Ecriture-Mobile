@@ -89,7 +89,7 @@ function initDocument(){
 
  function getUrbaToken(function1, param1){
  $.ajax({
-		url : 'http://recette.urbaonline.com/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
+		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
@@ -122,28 +122,59 @@ function createEndDate() {
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
 	var allArg;
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
-	var t=[];
+	FreebusyRoom.connectMode="http";// par defaut on utilise une connexion http
+	var t;
+	t=allArg.replace("?","");
 	var t1=[];
-	t=allArg.split("&");
-	t1=t[0].split("=");
-	FreebusyRoom.ID= t1[1];
-	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupï¿½e ou pas
-		t1=t[1].split("=");
-		FreebusyRoom.hideOwner= t1[1];
-		t1=t[2].split("=");
-		FreebusyRoom.hidePhone=t1[1];
-		t1=t[3].split("=");
-		FreebusyRoom.hideSubject=t1[1];
-	if (t.length>4) {// equivaut à verifier si t[4] est undefined
-		t1=t[4].split("=");
-		FreebusyRoom.tactile=t1[1];
+	t1=t.split("&");
+	var i;
+	for(i=0;i<t1.length;i++){
+		switch (t1[i].substring(0,6)){
+		case "resour":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.ID= tmp[1];
+		break;
+		case "hideOw":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hideOwner= tmp[1];
+		break;
+		case "hidePh":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hidePhone= tmp[1];
+		break;
+		case "hideSu":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hideSubject= tmp[1];
+		break;
+		case "isTact":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.tactile= tmp[1];
+		break;
+		case "isHttp":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.http=tmp[1];
+		isHTTP();
+		break;
+		}
 	}
 }
+
+function isHTTP(){//permet de spécifier le type de connexion selectionné: HTTP ou HTTPS
+if (FreebusyRoom.http=="true")
+	FreebusyRoom.connectMode=="http";
+else if (FreebusyRoom.http=="false")
+	FreebusyRoom.connectMode="https";
 }
 
 function getRoomInfo(){
 	$.ajax({
-			url: 'http://recette.urbaonline.com/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
+			url: FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
 			crossDomain: 'true'
@@ -153,7 +184,7 @@ function getRoomInfo(){
 function getFreeRoomList(){
 	$.ajax({
 			type: "GET",
-			url : 'http://recette.urbaonline.com/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -187,7 +218,7 @@ function fillRoomInfo(objJson){
 	getUrbaToken(getFreeRoomList);
 }
 
-function pingServeur(){//permet de faire un ping au serveur pour récupérer l'heure
+function pingServeur(){//permet de récupérer l'heure sur l'api public timeapi.org
 $.ajax({
     url: 'http://timeapi.org/utc/now.json',
     dataType: 'jsonp',
@@ -221,7 +252,7 @@ function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
-			url : 'http://recette.urbaonline.com/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -269,7 +300,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 function getOrder(id) {
 	$.ajax({	
 		type: "GET",
-		url : 'http://recette.urbaonline.com/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'fillOrder',
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -496,7 +527,7 @@ function sendRes(){
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
-		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -506,7 +537,7 @@ function sendRes(){
 function getBookingToStop(){//recupère la resa à terminer!
 	$.ajax({
 		type: "GET",
-		url: "http://recette.urbaonline.com/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback:"changeEndTime"
 		})
@@ -533,7 +564,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -542,7 +573,7 @@ var json=JSON.stringify(jsonF);
 }
 function getRes() {
 	var geturl=$.ajax({
-		url : 'http://recette.urbaonline.com/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -559,7 +590,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 
 	$.ajax({
 		type: "POST",
-		url: "http://recette.urbaonline.com/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {
@@ -609,19 +640,19 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var h=$(window).height();
 	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 }
-function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge selon les occupations
+function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge/vert selon les occupations
 	$.each(json, function(key, value){
 		var all=[];
 		all= value.startH.split(":");
-		var starth= parseInt(all[0],10);//l'heure de dï¿½but de la rï¿½sa
-		var startm=parseInt(all[1],10);// les minutes de dï¿½but de la rï¿½sa!
+		var starth= parseInt(all[0],10);//l'heure de debut de la resa
+		var startm=parseInt(all[1],10);// les minutes de dï¿½but de la resa!
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
-		if(starth==endh){//si la resa a une durï¿½e infï¿½rieure ï¿½ 1 heure
+		if(starth==endh){//si la resa a une duree inferieure a 1 heure
 				var quartHeure;
 				if(endm!=0)
-					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la rÃ©sa
+					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la resa
 				else
 					quartHeure=1;
 				var l;
@@ -641,7 +672,7 @@ function remplirLaFrise(json){// remplissage de la frise avec la couleur rouge s
 			for(k=starth;k<=endh;k++){
 					if (k==endh){
 						var quartHeure; // calcul du quart d'heure Ã  partir duquel commence la rÃ©sa
-						if(endm!="00"){
+						if(endm!=0){
 						
 							quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la rÃ©sa
 							}
@@ -689,8 +720,8 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute+2;// calcul de la position en fonction de l'heure actuelle
-	//console.log(FreebusyRoom.state);
+	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle
+	//console.log(pos);
 	if(FreebusyRoom.state=="free")
 		$("#frise").css('background-image','url(curseur-vert.png)');
 	else

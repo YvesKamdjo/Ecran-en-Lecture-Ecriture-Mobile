@@ -41,7 +41,7 @@ function initDocument(){
  function getUrbaToken(nextFunction){
 
 	$.ajax({
-		url : 'http://recette.urbaonline.com/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
@@ -63,15 +63,12 @@ function getRoomForDisplaying(){//permet de récupérer les identifiants des sal
 	var query= document.location.search;
 	var tmp1;
 	var tmp=[];
-	console.log(query);
 	if (query!=""){
 	tmp1= query.split("?");
-	console.log(tmp1[1]);
 	tmp=tmp1[1].split("=");
 		if (tmp.lenght!=0){
 			if(tmp[0]=="resources"){//le mot clé utilisé pour lister les salles à afficher est "resources"
 			blockedRoom= tmp[1].split(",");
-			console.log(blockedRoom[0]);
 			}
 		}
 	}
@@ -79,7 +76,7 @@ function getRoomForDisplaying(){//permet de récupérer les identifiants des sal
 
 function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
-			'url' : 'http://recette.urbaonline.com/api/v1/resources?Token='+Freebusy.validToken,
+			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList'		
 		});
@@ -128,7 +125,7 @@ function createDuration(){//traduit l'intervale de temps entre maintenant et une
 
 function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
-			url : 'http://recette.urbaonline.com/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList'		
 		});
@@ -142,14 +139,12 @@ function fillFreeRoomList(objJson){// remplit un tableau avec la liste des salle
 	var nowPlusTemp=addTime(now,"0:30");
 	while (objJson[i]){
 		if (objJson[i].location.id==85) {//si c'est une petite salle
-			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
 			}
 		}
 		else if (objJson[i].location.id==89) {//si c'est une grande salle
-			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
@@ -181,7 +176,7 @@ function getResInfo() {//demande à l'API la liste des réservations de la journ
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : 'http://recette.urbaonline.com/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRooms'		
 		});
@@ -315,7 +310,6 @@ function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux liste
 
 getRoomForDisplaying();
 var tmp= blockedRoom.join(' ');
-console.log(blockedRoom.length);
 	for (i=0;i<freeRooms.length;i++){
 
 		if (blockedRoom.length>0){
@@ -358,11 +352,12 @@ console.log(blockedRoom.length);
 	setTimeout(function(){location.reload();},300000);
 }
 
-function setHideParameters(ho,hp,hs,hb){
+function setHideParameters(ho,hp,hs,hb,http){
 Freebusy.hideOw=ho;
 Freebusy.hidePh=hp;
 Freebusy.hideSub=hs;
 Freebusy.isTactile=hb;
+Freebusy.http=http;
 }
 
 // Interface graphique En JQuery Mobile
@@ -384,8 +379,13 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			}
 		time="pendant "+duree;
 	}
-setHideParameters(false,false,false,true);
-$("#listes-salles-libres").append('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats"><img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
+setHideParameters(false,false,false,true,true);
+var html=[];
+html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
+html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
+html.push(Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'&isHttp='+Freebusy.http+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+html.push('<img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
+$("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
 	$(this).css('background','#cedfd0');
 });
@@ -403,10 +403,11 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
-setHideParameters(false,false,false,true);
+setHideParameters(false,false,false,true,true);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
-html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'">');
+html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
+html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'&isHttp='+Freebusy.http+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 else html.push('<div class="seats"><img class="seats-icon indisponible">indisponible</div>'); 
