@@ -123,29 +123,47 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var allArg;
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	FreebusyRoom.connectMode="http";// par defaut on utilise une connexion http
-	var t=[];
+	var t;
+	t=allArg.replace("?","");
 	var t1=[];
-	t=allArg.split("&");
-	t1=t[0].split("=");
-	FreebusyRoom.ID= t1[1];
-	if (t.length>2){//permet de savoir s'il s'agit d'une salle occupï¿½e ou pas
-		t1=t[1].split("=");
-		FreebusyRoom.hideOwner= t1[1];
-		t1=t[2].split("=");
-		FreebusyRoom.hidePhone=t1[1];
-		t1=t[3].split("=");
-		FreebusyRoom.hideSubject=t1[1];
-	if (t.length>4) {// equivaut à verifier si t[4] est undefined. Tactile ou pas?
-		t1=t[4].split("=");
-		FreebusyRoom.tactile=t1[1];
-	}
-	 if(t.length>5){//connexion http ou https?
-	 t1=t[5].split("=");
-	 console.log(t1[1]);
-		FreebusyRoom.http=t1[1];
+	t1=t.split("&");
+	var i;
+	console.log(t1[0].substring(0,6));
+	for(i=0;i<t1.length;i++){
+		switch (t1[i].substring(0,6)){
+		case "resour":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.ID= tmp[1];
+		break;
+		case "hideOw":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hideOwner= tmp[1];
+		break;
+		case "hidePh":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hidePhone= tmp[1];
+		break;
+		case "hideSu":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.hideSubject= tmp[1];
+		break;
+		case "isTact":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.tactile= tmp[1];
+		break;
+		case "isHttp":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		FreebusyRoom.http=tmp[1];
 		isHTTP();
-	 }
-}
+		break;
+		}
+	}
 }
 
 function isHTTP(){//permet de retourner le type de connexion selectionné: HTTP ou HTTPS
