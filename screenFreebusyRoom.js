@@ -482,7 +482,7 @@ function fillResInfos(list) {
 }
 
 function refresh() {
-	location.reload();
+	//location.reload();
 	getUrbaToken(getFreeRoomList);
 }
 
