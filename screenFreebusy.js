@@ -63,15 +63,12 @@ function getRoomForDisplaying(){//permet de récupérer les identifiants des sal
 	var query= document.location.search;
 	var tmp1;
 	var tmp=[];
-	console.log(query);
 	if (query!=""){
 	tmp1= query.split("?");
-	console.log(tmp1[1]);
 	tmp=tmp1[1].split("=");
 		if (tmp.lenght!=0){
 			if(tmp[0]=="resources"){//le mot clé utilisé pour lister les salles à afficher est "resources"
 			blockedRoom= tmp[1].split(",");
-			console.log(blockedRoom[0]);
 			}
 		}
 	}
@@ -142,14 +139,12 @@ function fillFreeRoomList(objJson){// remplit un tableau avec la liste des salle
 	var nowPlusTemp=addTime(now,"0:30");
 	while (objJson[i]){
 		if (objJson[i].location.id==85) {//si c'est une petite salle
-			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
 			}
 		}
 		else if (objJson[i].location.id==89) {//si c'est une grande salle
-			console.log(objJson[i].displayName);
 			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
 			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
 			j++;
@@ -315,7 +310,6 @@ function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux liste
 
 getRoomForDisplaying();
 var tmp= blockedRoom.join(' ');
-console.log(blockedRoom.length);
 	for (i=0;i<freeRooms.length;i++){
 
 		if (blockedRoom.length>0){

@@ -128,7 +128,6 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var t1=[];
 	t1=t.split("&");
 	var i;
-	console.log(t1[0].substring(0,6));
 	for(i=0;i<t1.length;i++){
 		switch (t1[i].substring(0,6)){
 		case "resour":
@@ -166,7 +165,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	}
 }
 
-function isHTTP(){//permet de retourner le type de connexion selectionné: HTTP ou HTTPS
+function isHTTP(){//permet de spécifier le type de connexion selectionné: HTTP ou HTTPS
 if (FreebusyRoom.http=="true")
 	FreebusyRoom.connectMode=="http";
 else if (FreebusyRoom.http=="false")
