@@ -41,6 +41,14 @@ body, html{
 	padding:0.3em 0 0.3em 0;
 }
 
+#table-entete {
+	width:100%;
+}
+
+#entete-heure {
+	width:20%;
+}
+
 #info-salle {
 	display:block;
 	position:relative;
@@ -294,6 +302,9 @@ li {
 table{
 	table-layout: fixed;
 	border-spacing: 0;
+}
+#table-frise {
+	width:100%;
 }
 
 a img
