@@ -622,10 +622,22 @@ function res_demand(minutes) {
 			FreebusyRoom.pushed=1;
 		}
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
-		getUrbaToken(sendRes);
+		//affichage de la popup pour signifier la resa
 		var st=createStartTime().replace(":00","");
 		var en=createEndTime().replace(":00","");
-		alert("Vous avez reserv\351 la salle "+FreebusyRoom.roomName+" de "+st+' \340 '+en);//\340=à \351=é
+		var sel=$('#forfade');
+		sel.append('Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en);
+		sel.css({"width":"30%","heigth":"10%","position":"relative",
+				"border-radius":"5px","margin":"0 auto",
+				"background":"#5e8894","display":"inline-block",
+				"left":"20%","top":"20%","text-align":"center",
+				"font-weight":"600","color":"#ffffff"});
+		sel.fadeIn(5000, function(){
+		sel.delay(7000);
+		sel.fadeOut(5000);
+		});
+		//fin popup
+		getUrbaToken(sendRes);
 }
 function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var i;
