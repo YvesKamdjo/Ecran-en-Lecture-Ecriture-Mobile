@@ -622,8 +622,10 @@ function res_demand(minutes) {
 			FreebusyRoom.pushed=1;
 		}
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
-		alert("Votre reservation va de"+createStartTime()+' \340 '+createEndTime());//\340=à
 		getUrbaToken(sendRes);
+		var st=createStartTime().replace(":00","");
+		var en=createEndTime().replace(":00","");
+		alert("Vous avez reserv\351 la salle "+FreebusyRoom.roomName+" de "+st+' \340 '+en);//\340=à \351=é
 }
 function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var i;
