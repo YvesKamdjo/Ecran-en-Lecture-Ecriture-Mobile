@@ -477,6 +477,7 @@ function fillResInfos(list) {
 		console.log("indisponible sans res");
 		}
 	}
+	setTimeout(function() {window.location.reload();},3600000);
 	setTimeout(function() {refresh();},300000);
 }
 
@@ -711,6 +712,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				}
 			}
 	});
+
 	setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
