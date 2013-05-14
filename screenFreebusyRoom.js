@@ -43,6 +43,7 @@ function addMinutes(date, minutes) {
 function initDocument(){
 	getUrlParameters();
 	//pingServeur();
+	if (FreebusyRoom.tactile=="false") $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -55,27 +56,16 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
-	$("#entete").css("font-size",(-(w*h/10000)+370)+"%");
-	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
+	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
-	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/2000000)+2)+"em");
-	$("#entete").css("font-size",(-(w*h/10000)+370)+"%");
-	$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
-	$("#nom-salle").css("font-size",((w*h/400000)+1.3)+"em").css("left", (w*(1/322)+20)+"px");
-	$("#hourPanel").css("font-size",((w*h/400000)+1.3)+"em");
+	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
-	$("#link_img").css("height", ((w*h/600000)+2)+"em").css("left", (w*(1/322)+15)+"px");
-	$("#table-frise").css("padding-top", ((12*h/1000))+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
