@@ -56,7 +56,6 @@ function initDocument(){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
@@ -64,7 +63,6 @@ function initDocument(){
 		var w=$(window).width();
 		var h=$(window).height();
 	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
 	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
