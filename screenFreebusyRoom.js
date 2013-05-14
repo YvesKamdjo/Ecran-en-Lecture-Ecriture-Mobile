@@ -77,7 +77,7 @@ function initDocument(){
 
  function getUrbaToken(function1, param1){
  $.ajax({
-		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
+		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
@@ -109,8 +109,9 @@ function createEndDate() {
 
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
 	var allArg;
+	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
-	FreebusyRoom.connectMode="http";// par defaut on utilise une connexion http
+	//FreebusyRoom.connectProtocol="http";// par defaut on utilise une connexion http
 	var t;
 	t=allArg.replace("?","");
 	var t1=[];
@@ -143,26 +144,13 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		tmp=t1[i].split("=");
 		FreebusyRoom.tactile= tmp[1];
 		break;
-		case "isHttp":
-		var tmp=[];
-		tmp=t1[i].split("=");
-		FreebusyRoom.http=tmp[1];
-		isHTTP();
-		break;
 		}
 	}
 }
 
-function isHTTP(){//permet de spécifier le type de connexion selectionné: HTTP ou HTTPS
-if (FreebusyRoom.http=="true")
-	FreebusyRoom.connectMode=="http";
-else if (FreebusyRoom.http=="false")
-	FreebusyRoom.connectMode="https";
-}
-
 function getRoomInfo(){
 	$.ajax({
-			url: FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
+			url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
 			crossDomain: 'true'
@@ -172,8 +160,8 @@ function getRoomInfo(){
 function getFreeRoomList(){
 	$.ajax({
 			type: "GET",
-			url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
-			dataType : 'jsonp',
+			url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			dataType:  'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
 			  console.log(textStatus, errorThrown);
@@ -240,7 +228,7 @@ function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
-			url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -288,7 +276,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 function getOrder(id) {
 	$.ajax({	
 		type: "GET",
-		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'fillOrder',
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -438,7 +426,7 @@ function fillResInfos(list) {
 			$("#etat").html("Libre").css({"color":"#38b54d"});
 			if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 			else $(".btn_res").hide();
-			$("#info-res-title").html("Pas d'autre rÃ©servation prÃ©vue aujourd'hui");
+			$("#info-res-title").html("Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui");
 			$(".loadgif").hide();
 			$("#b_vide").hide();
 			$("#b_conf").hide();
@@ -516,7 +504,7 @@ function sendRes(){
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -526,7 +514,7 @@ function sendRes(){
 function getBookingToStop(){//recupère la resa à terminer!
 	$.ajax({
 		type: "GET",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback:"changeEndTime"
 		})
@@ -553,7 +541,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token='+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -562,7 +550,7 @@ var json=JSON.stringify(jsonF);
 }
 function getRes() {
 	var geturl=$.ajax({
-		url : FreebusyRoom.connectMode+'://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+'://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -579,7 +567,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 
 	$.ajax({
 		type: "POST",
-		url: "http://demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {
