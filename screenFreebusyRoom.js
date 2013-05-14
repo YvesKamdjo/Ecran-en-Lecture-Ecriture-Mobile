@@ -614,22 +614,26 @@ function res_demand(minutes) {
 		}
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		//affichage de la popup pour signifier la resa
-		var st=createStartTime().replace(":00","");
-		var en=createEndTime().replace(":00","");
-		var sel=$('#forfade');
-		sel.append('Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en);
-		sel.css({"width":"30%","heigth":"10%","position":"relative",
+			var st=createStartTime().replace(":00","");
+			var en=createEndTime().replace(":00","");
+			var sel=$('#forfade');
+			sel.append('Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en);
+			sel.css({"width":"30%","heigth":"10%","position":"relative",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"inline-block",
 				"left":"20%","top":"20%","text-align":"center",
 				"font-weight":"600","color":"#ffffff"});
-		sel.fadeIn(5000, function(){
-		sel.delay(7000);
-		sel.fadeOut(5000);
-		});
-		//fin popup
-		getUrbaToken(sendRes);
+			//sel.fadeIn(2000000).fadeOut(90000000);//delay(7000).
+			//getUrbaToken(sendRes);
+			sel.fadeIn(10000,function () {
+			sel.fadeOut(3000);
+			}); 
+			setTimeout(function() {
+				getUrbaToken(sendRes);
+			}, 2000);
+					//fin popup
 }
+
 function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var i;
 	var tmp1, tmp2;
