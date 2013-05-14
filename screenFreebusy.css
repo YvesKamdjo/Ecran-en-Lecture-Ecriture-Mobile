@@ -134,6 +134,7 @@ li:even
 	left:0;
 	display:inline-block;
 	font-size:50%;
+	width:7em;
 }
 
 .ui-icon-custom_arrow {
