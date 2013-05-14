@@ -128,6 +128,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.hideOwner= tmp[1];
+		console.log(FreebusyRoom.hideOwner);
 		break;
 		case "hidePh":
 		var tmp=[];
@@ -395,11 +396,11 @@ function fillResInfos(list) {
 			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		if (!FreebusyRoom.hideOwner) {
+		if (FreebusyRoom.hideOwner=="false") {
 			var owner=res[2];
 		}
 		var ownerPhone="";
-		if (!FreebusyRoom.hidePhone) {
+		if (FreebusyRoom.hidePhone=="false") {
 			if(res[3]) var ownerPhone=" - "+res[3];
 		}
 		var ownerInfo=owner+ownerPhone;
