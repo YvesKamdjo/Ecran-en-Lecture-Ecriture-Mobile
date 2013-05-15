@@ -55,12 +55,34 @@ function initDocument(){
 	$("#b_conf").hide();
 	var w=$(window).width();
 	var h=$(window).height();
+	if (h>w) {
+		$("#entete").css("font-size", 150+"%");
+		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
+	}
+	else {
+		if (h<400) $("#info-salle").css("top", 1+"em");
+		else $("#info-salle").css("top", 2+"em");
+		$("#entete").css("font-size", 200+"%");
+		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
+	}
 	$("body").css("font-size",((w*h/80000)+15)+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
+		console.log(h);
+	if (h>w) {
+		$("#entete").css("font-size", 150+"%");
+		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
+	}
+	else {
+		if (h<400) $("#info-salle").css("top", 1+"em");
+		else $("#info-salle").css("top", 2+"em");
+		$("#entete").css("font-size", 200+"%");
+		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
+	}
+	
 	$("body").css("font-size",((w*h/80000)+15)+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
