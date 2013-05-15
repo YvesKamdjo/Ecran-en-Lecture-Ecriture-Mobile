@@ -208,10 +208,10 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mAutreReun="Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"
 		break;
 		case "en":
-			FreebusyRoom.mHeure="Warning! you have to check the device hour!";//message pour l'heure!
+			FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
 			FreebusyRoom.mReunionAct="Current booking:";
-			FreebusyRoom.mAutreReun="They are no others bookings Planned today";
-			$("#b_res").closest('.btn_res').contents().not("#b_res_arrow").eq(0).replaceWith('Book');//$("#mssReserver").append("Book");
+			FreebusyRoom.mAutreReun="There are no other bookings planned today";
+			$("#b_res").contents().filter("span").text('Book');
 		break;
 	}
 }
@@ -618,7 +618,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings?'+FreebusyRoom.ID+'&Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
+		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -677,14 +677,12 @@ function res_demand(minutes) {
 			var st=createStartTime().replace(":00","");
 			var en=createEndTime().replace(":00","");
 			var sel=$('#forfade');
-			sel.append(bookingConfirmationMess(FreebusyRoom.roomName,st,en,FreebusyRoom.lang));bookingConfirmationMess(roomName,stH,endH)='Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en
+			sel.append(bookingConfirmationMess(FreebusyRoom.roomName,st,en,FreebusyRoom.lang));//bookingConfirmationMess(roomName,stH,endH)='Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en
 			sel.css({"width":"50%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
 				"left":"25%","top":"45%","text-align":"center",
 				"font-size":"2em","font-weight":"600","color":"#ffffff"});
-			//sel.fadeIn(2000000).fadeOut(90000000);//delay(7000).
-			//getUrbaToken(sendRes);
 			sel.fadeIn(30000,function () {
 			setTimeout(function() {sel.fadeOut(1500);},1500);
 			}); 
