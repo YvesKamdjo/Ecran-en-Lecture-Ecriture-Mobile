@@ -55,17 +55,35 @@ function initDocument(){
 	$("#b_conf").hide();
 	var w=$(window).width();
 	var h=$(window).height();
-	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
-	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
+	if (h>w) {
+		$("#entete").css("font-size", 150+"%");
+		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
+	}
+	else {
+		if (h<400) $("#info-salle").css("top", 1+"em");
+		else $("#info-salle").css("top", 2+"em");
+		$("#entete").css("font-size", 200+"%");
+		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
+	}
+	$("body").css("font-size",((w*h/80000)+15)+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
-	$("body").css("font-size",((w*h/1000000)+0.8)+"em");
-	$("#info-salle").css("top", (-(w*h/5000000)+1)+"em");
-	$("#b_res_arrow").css("width",((w*h/5000000)+0.5)+"em").css("margin-left",((w*h/100000))+"%");
+		console.log(h);
+	if (h>w) {
+		$("#entete").css("font-size", 150+"%");
+		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
+	}
+	else {
+		if (h<400) $("#info-salle").css("top", 1+"em");
+		else $("#info-salle").css("top", 2+"em");
+		$("#entete").css("font-size", 200+"%");
+		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
+	}
+	
+	$("body").css("font-size",((w*h/80000)+15)+"px");
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
@@ -128,6 +146,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		break;
 		case "hideOwner":
 		FreebusyRoom.hideOwner= tmp[1];
+		console.log(FreebusyRoom.hideOwner);
 		break;
 		case "hidePhone":
 		FreebusyRoom.hidePhone= tmp[1];
@@ -592,26 +611,22 @@ function button_res() {
 }
 
 function res_demand(minutes) {
-		$("#b_res"+minutes).css({"background-color":"#38b54d"});
-		if (FreebusyRoom.pushed==0) {
-			$("#b_res"+minutes).prepend('<img src="load_green.gif">');
-			FreebusyRoom.pushed=1;
-		}
+		$("#sub").hide();
 		FreebusyRoom.timeRes=Math.floor(minutes/60)+":"+minutes%60;
 		//affichage de la popup pour signifier la resa
 			var st=createStartTime().replace(":00","");
 			var en=createEndTime().replace(":00","");
 			var sel=$('#forfade');
 			sel.append('Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en);
-			sel.css({"width":"30%","heigth":"10%","position":"relative",
+			sel.css({"width":"50%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
-				"background":"#5e8894","display":"inline-block",
-				"left":"20%","top":"20%","text-align":"center",
-				"font-weight":"600","color":"#ffffff"});
+				"background":"#5e8894","display":"block",
+				"left":"25%","top":"45%","text-align":"center",
+				"font-size":"2em","font-weight":"600","color":"#ffffff"});
 			//sel.fadeIn(2000000).fadeOut(90000000);//delay(7000).
 			//getUrbaToken(sendRes);
 			sel.fadeIn(10000,function () {
-			sel.fadeOut(3000);
+			setTimeout(function() {sel.fadeOut(1500);},1500);
 			}); 
 			setTimeout(function() {
 				getUrbaToken(sendRes);
