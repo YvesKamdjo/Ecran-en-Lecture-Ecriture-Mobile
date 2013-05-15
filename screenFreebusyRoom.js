@@ -120,28 +120,30 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	t1=t.split("&");
 	var i;
 	for(i=0;i<t1.length;i++){
-		switch (t1[i].substring(0,6)){
-		case "resour":
+		var tmp=[];
+		tmp=t1[i].split("=");
+		switch (tmp[0]){
+		case "resource":
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.ID= tmp[1];
 		break;
-		case "hideOw":
+		case "hideOwner":
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.hideOwner= tmp[1];
 		break;
-		case "hidePh":
+		case "hidePhone":
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.hidePhone= tmp[1];
 		break;
-		case "hideSu":
+		case "hideSubject":
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.hideSubject= tmp[1];
 		break;
-		case "isTact":
+		case "isTactile":
 		var tmp=[];
 		tmp=t1[i].split("=");
 		FreebusyRoom.tactile= tmp[1];
