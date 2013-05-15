@@ -40,6 +40,15 @@ function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes*60000);
 }
 
+function cutString(stringToCut, nbCharacter) {
+	var shortedString=stringToCut;
+	n=stringToCut.length;
+	if (n>nbCharacter) {
+		shortedString=stringToCut.substr(0,nbCharacter)+"...";
+	}
+	return shortedString;
+}
+
 function initDocument(){
 	getUrlParameters();
 	//pingServeur();
@@ -55,38 +64,56 @@ function initDocument(){
 	$("#b_conf").hide();
 	var w=$(window).width();
 	var h=$(window).height();
+
+	$("body").css("font-size",((w*h/80000)+15)+"px");
+	
 	if (h>w) {
-		$("#entete").css("font-size", 150+"%");
-		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
+		if (h<400) $("#info-salle").css("top", 1+"em");
+		else $("#info-salle").css("top", 2+"em");
+		$("#entete").css("font-size", 180+"%");
+		$("#bouton").attr("class", "b_res_h btn_res");
+		$("#b_conf").attr("class", "b_conf_h");
+		$("#b_vide").attr("class", "b_vide_h");
 	}
 	else {
 		if (h<400) $("#info-salle").css("top", 1+"em");
 		else $("#info-salle").css("top", 2+"em");
 		$("#entete").css("font-size", 200+"%");
-		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
+		$("#bouton").attr("class", "b_res_w btn_res");
+		$("#b_conf").attr("class", "b_conf_w");
+		$("#b_vide").attr("class", "b_vide_w");
 	}
-	$("body").css("font-size",((w*h/80000)+15)+"px");
+	
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
 	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
 		var w=$(window).width();
 		var h=$(window).height();
-		console.log(h);
-	if (h>w) {
-		$("#entete").css("font-size", 150+"%");
-		$("#bouton").css("width", 70+"%").css("float", "left").css("top", 2+"em").css("left", 3+"em").css("right", "");
-	}
-	else {
-		if (h<400) $("#info-salle").css("top", 1+"em");
-		else $("#info-salle").css("top", 2+"em");
-		$("#entete").css("font-size", 200+"%");
-		$("#bouton").css("width", 40+"%").css("float", "right").css("top", 0+"em").css("left", "").css("right", 2+"em");
-	}
 	
 	$("body").css("font-size",((w*h/80000)+15)+"px");
-	$("#ligne2").css("font-size", ((12*h/1000))+"px");
-	$("#ligne3").css("font-size", ((24*h/1000))+"px");
-	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
+		
+		if (h>w) {		
+			if (h<400) $("#info-salle").css("top", 1+"em");
+			else $("#info-salle").css("top", 2+"em");
+			var roomName=cutString(FreebusyRoom.roomName,10);
+			$("#nom-salle").html(roomName);
+			$("#entete").css("font-size", 180+"%");
+			$("#bouton").attr("class", "b_res_h btn_res");
+			$("#b_conf").attr("class", "b_conf_h");
+			$("#b_vide").attr("class", "b_vide_h");
+		}
+		else {
+			if (h<400) $("#info-salle").css("top", 1+"em");
+			else $("#info-salle").css("top", 2+"em");
+			$("#entete").css("font-size", 200+"%");
+			$("#bouton").attr("class", "b_res_w btn_res");
+			$("#b_conf").attr("class", "b_conf_w");
+			$("#b_vide").attr("class", "b_vide_w");
+		}
+		
+		$("#ligne2").css("font-size", ((12*h/1000))+"px");
+		$("#ligne3").css("font-size", ((24*h/1000))+"px");
+		$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
@@ -207,8 +234,14 @@ function checkRoomVacancy(objJson) {
 }
 	
 function fillRoomInfo(objJson){
+	var w=$(window).width();
+	var h=$(window).height();
 	$("title").html('Salle '+objJson.displayName);
-	$("#nom-salle").append(objJson.displayName);
+	if (h>w) {
+		var roomName=cutString(objJson.displayName,10);
+		$("#nom-salle").html(roomName);
+	}
+	else $("#nom-salle").append(objJson.displayName);
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
 	FreebusyRoom.endTime=objJson.resourceProfil.endTime;
