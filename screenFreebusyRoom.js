@@ -124,34 +124,29 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		tmp=t1[i].split("=");
 		switch (tmp[0]){
 		case "resource":
-		var tmp=[];
-		tmp=t1[i].split("=");
 		FreebusyRoom.ID= tmp[1];
 		break;
 		case "hideOwner":
-		var tmp=[];
-		tmp=t1[i].split("=");
 		FreebusyRoom.hideOwner= tmp[1];
 		break;
 		case "hidePhone":
-		var tmp=[];
-		tmp=t1[i].split("=");
 		FreebusyRoom.hidePhone= tmp[1];
 		break;
 		case "hideSubject":
-		var tmp=[];
-		tmp=t1[i].split("=");
 		FreebusyRoom.hideSubject= tmp[1];
 		break;
 		case "isTactile":
-		var tmp=[];
-		tmp=t1[i].split("=");
 		FreebusyRoom.tactile= tmp[1];
+		break;
+		case "lang":
+		FreebusyRoom.lang=tmp[1]
 		break;
 		}
 	}
 }
 
+function setlanguage(){// permet de changer de langue d'affichage
+}
 function getRoomInfo(){
 	$.ajax({
 			url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
