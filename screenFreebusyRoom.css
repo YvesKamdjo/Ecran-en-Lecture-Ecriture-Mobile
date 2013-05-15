@@ -192,7 +192,8 @@ body, html{
 }
 
 #b_res_arrow {
-	margin-left:30px;
+	margin-left:0.5em;
+	width:0.75em;
 }
 
 #info-res-title {
