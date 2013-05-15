@@ -206,12 +206,21 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mHeure="Attention l'heure de cet appareil doit etre verifiee!";//message pour l'heure!
 			FreebusyRoom.mReunionAct="R&eacuteunion actuelle:";
 			FreebusyRoom.mAutreReun="Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"
+			$("#b_res").contents().filter("span").html('R&eacuteserver');
+			$("#b_vide").contents().filter("span").html('Signaler<br>comme vide');
+			$("#b_conf").contents().filter("span").html('Confirmer <br>ma presence');
+			FreebusyRoom.freeOrLibre="Libre";
+			FreebusyRoom.occOrBusy="Occup\351";
 		break;
 		case "en":
 			FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
 			FreebusyRoom.mReunionAct="Current booking:";
 			FreebusyRoom.mAutreReun="There are no other bookings planned today";
 			$("#b_res").contents().filter("span").text('Book');
+			$("#b_vide").contents().filter("span").html('Report <br>As free');
+			$("#b_conf").contents().filter("span").html('Confirm my <br>presence');
+			FreebusyRoom.freeOrLibre="Free";
+			FreebusyRoom.occOrBusy="Busy";
 		break;
 	}
 }
@@ -415,7 +424,7 @@ function fillResInfos(list) {
 				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 				$("#screenBorder").css({"background-color":"#38b54d"});
 				$("#nom-salle").css({"color":"#d7f0db"});
-				$("#etat").html("Libre").css({"color":"#38b54d"});
+				$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
 				$("#temps").html(temps);
 				if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 				else $(".btn_res").hide();
@@ -448,7 +457,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Occup\351").css({"color":"#ed1b24"});
+			$("#etat").html(FreebusyRoom.occOrBusy).css({"color":"#ed1b24"});
 			$("#temps").html(temps);
 			if (FreebusyRoom.tactile=="true") {
 				console.log(FreebusyRoom.tactile=="true");
@@ -500,7 +509,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
-			$("#etat").html("Libre").css({"color":"#38b54d"});
+			$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
 			if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 			else $(".btn_res").hide();
 			$("#info-res-title").html(FreebusyRoom.mAutreReun);//"Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"=mAutreReun
@@ -677,7 +686,7 @@ function res_demand(minutes) {
 			var st=createStartTime().replace(":00","");
 			var en=createEndTime().replace(":00","");
 			var sel=$('#forfade');
-			sel.append(bookingConfirmationMess(FreebusyRoom.roomName,st,en,FreebusyRoom.lang));//bookingConfirmationMess(roomName,stH,endH)='Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en
+			sel.html(bookingConfirmationMess(FreebusyRoom.roomName,st,en,FreebusyRoom.lang));//bookingConfirmationMess(roomName,stH,endH)='Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en
 			sel.css({"width":"50%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
