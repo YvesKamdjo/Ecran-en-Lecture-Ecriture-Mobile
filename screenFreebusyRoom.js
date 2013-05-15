@@ -395,15 +395,15 @@ function fillResInfos(list) {
 		}
 		console.log(res);
 		var sujet="";
-		if(!FreebusyRoom.hideSubject)
+		if(FreebusyRoom.hideSubject=="false")
 			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
 		var duree="De "+res[0]+" à "+res[1]+sujet;
 		$("#info-res-horaires").html(duree);
-		if (!FreebusyRoom.hideOwner) {
+		if (FreebusyRoom.hideOwner=="false") {
 			var owner=res[2];
 		}
 		var ownerPhone="";
-		if (!FreebusyRoom.hidePhone) {
+		if (FreebusyRoom.hidePhone=="false") {
 			if(res[3]) var ownerPhone=" - "+res[3];
 		}
 		var ownerInfo=owner+ownerPhone;
