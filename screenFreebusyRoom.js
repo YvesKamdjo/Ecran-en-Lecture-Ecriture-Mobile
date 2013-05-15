@@ -74,6 +74,7 @@ function initDocument(){
 		$("#bouton").attr("class", "b_res_h btn_res");
 		$("#b_conf").attr("class", "b_conf_h");
 		$("#b_vide").attr("class", "b_vide_h");
+		$("#sub li").css("height","20%");
 	}
 	else {
 		if (h<400) $("#info-salle").css("top", 1+"em");
@@ -82,6 +83,7 @@ function initDocument(){
 		$("#bouton").attr("class", "b_res_w btn_res");
 		$("#b_conf").attr("class", "b_conf_w");
 		$("#b_vide").attr("class", "b_vide_w");
+		$("#sub li").css("height","30%");
 	}
 	
 	$("#ligne2").css("font-size", ((12*h/1000))+"px");
@@ -92,23 +94,28 @@ function initDocument(){
 	
 	$("body").css("font-size",((w*h/80000)+15)+"px");
 		
-		if (h>w) {		
-			if (h<400) $("#info-salle").css("top", 1+"em");
-			else $("#info-salle").css("top", 2+"em");
+		if (h>w) {
 			var roomName=cutString(FreebusyRoom.roomName,10);
 			$("#nom-salle").html(roomName);
+			if (h<400) $("#info-salle").css("top", 1+"em");
+			else $("#info-salle").css("top", 2+"em");
 			$("#entete").css("font-size", 180+"%");
 			$("#bouton").attr("class", "b_res_h btn_res");
 			$("#b_conf").attr("class", "b_conf_h");
 			$("#b_vide").attr("class", "b_vide_h");
+			$("#sub li").css("height","20%");
 		}
 		else {
+			var roomName=cutString(FreebusyRoom.roomName,20);
+			console.log(roomName);
+			$("#nom-salle").html(roomName);
 			if (h<400) $("#info-salle").css("top", 1+"em");
 			else $("#info-salle").css("top", 2+"em");
 			$("#entete").css("font-size", 200+"%");
 			$("#bouton").attr("class", "b_res_w btn_res");
 			$("#b_conf").attr("class", "b_conf_w");
 			$("#b_vide").attr("class", "b_vide_w");
+			$("#sub li").css("height","30%");
 		}
 		
 		$("#ligne2").css("font-size", ((12*h/1000))+"px");
@@ -157,6 +164,7 @@ function createEndDate() {
 function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
 	var allArg;
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
+	console.log(FreebusyRoom.connectProtocol);
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	//FreebusyRoom.connectProtocol="http";// par defaut on utilise une connexion http
 	var t;
@@ -237,11 +245,9 @@ function fillRoomInfo(objJson){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("title").html('Salle '+objJson.displayName);
-	if (h>w) {
-		var roomName=cutString(objJson.displayName,10);
-		$("#nom-salle").html(roomName);
-	}
-	else $("#nom-salle").append(objJson.displayName);
+	if (h>w) var roomName=cutString(objJson.displayName,10);
+	else var roomName=cutString(objJson.displayName,20);
+	$("#nom-salle").html(roomName);
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
 	FreebusyRoom.endTime=objJson.resourceProfil.endTime;
@@ -603,8 +609,9 @@ var json=JSON.stringify(jsonF);
 			});
 }
 function getRes() {
+	console.log(FreebusyRoom.connectProtocol);
 	var geturl=$.ajax({
-		url : FreebusyRoom.connectProtocol+'://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -616,12 +623,12 @@ function updateResToConfirmPresence(json) {//modification du champ "presenceConf
 }
 
 function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la reservation courante. Elle met à jour le champ "presenceConfirmedDate" dans l'API avec la date du jour.
-	console.log(jsonUpdateConfPres);
+	console.log(FreebusyRoom.resId);
 	json=JSON.stringify(jsonUpdateConfPres);
 
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {
