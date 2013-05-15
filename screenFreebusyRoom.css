@@ -46,7 +46,7 @@ body, html{
 }
 
 #entete-heure {
-	width:20%;
+	width:22%;
 }
 
 #info-salle {
@@ -136,9 +136,6 @@ body, html{
 	color:white;
 	padding-right:0;
 	padding-left:0;
-	position:absolute;
-	top:1em;
-	right:5%;
 	width:8em;
 	height:3.2em;
 	font-size:100%;
@@ -152,6 +149,41 @@ body, html{
 	box-shadow: 2px 2px 1px #888;
 }
 
+.b_res_h {
+	width:80%;
+	float:left;
+	top:2em;
+	left:2em;
+}
+.b_res_w {
+	width:40%;
+	float:right;
+	top:0em;
+	right:2em;
+}
+
+.b_conf_h {
+	position:absolute;
+	top:7em;
+	left:5%;
+}
+.b_conf_w {
+	position:absolute;
+	top:1em;
+	right:5%;
+}
+
+.b_vide_h {
+	position:absolute;
+	top:12.5em;
+	right:5%;
+}
+.b_vide_w {
+	position:absolute;
+	bottom:25%;
+	right:5%;
+}
+
 #b_vide {
 	display:none;
 	color:white;
@@ -161,8 +193,6 @@ body, html{
 	width:8em;
 	height:3.2em;
 	position:absolute;
-	right:5%;
-	bottom:21%;
 	border:0.1em solid #2f464c;
 	border-radius: 0.2em;
 	-moz-box-shadow: 2px 2px 1px #888;
@@ -245,7 +275,6 @@ li {
 
 #sub li {
 	display:none;
-	height:30%;
 	background-color:white;
 	border: 1px solid #38b54d;
 }
