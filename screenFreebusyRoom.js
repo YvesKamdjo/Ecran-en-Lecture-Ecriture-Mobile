@@ -131,7 +131,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var allArg;
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
-	//FreebusyRoom.connectProtocol="http";// par defaut on utilise une connexion http
+	FreebusyRoom.lang="fr";// par defaut on utilise la langue est le français!
 	var t;
 	t=allArg.replace("?","");
 	var t1=[];
@@ -158,13 +158,33 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		FreebusyRoom.tactile= tmp[1];
 		break;
 		case "lang":
-		FreebusyRoom.lang=tmp[1]
+		FreebusyRoom.lang=tmp[1];
+		setlanguage();
 		break;
 		}
 	}
 }
 
 function setlanguage(){// permet de changer de langue d'affichage
+	switch(FreebusyRoom.lang){
+		case "fr":
+			FreebusyRoom.mHeure="Attention l'heure de cet appareil doit etre verifiee!";//message pour l'heure!
+			FreebusyRoom.mReunionAct="R&eacuteunion actuelle:";
+			FreebusyRoom.mAutreReun="Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"
+		break;
+		case "en":
+			FreebusyRoom.mHeure="Warning! you have to check the device hour!";//message pour l'heure!
+			FreebusyRoom.mReunionAct="Current booking:";
+			FreebusyRoom.mAutreReun="They are no others bookings Planned today";
+			$("#b_res").closest('.btn_res').contents().not("#b_res_arrow").eq(0).replaceWith('Book');//$("#mssReserver").append("Book");
+		break;
+	}
+}
+function bookingConfirmationMess(roomName,st,en,lang){//genere le message de confirmation lors d'une reservation.
+if(lang=="fr")
+	return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
+else if(lang=="en")
+	return 'You have booked the room '+roomName+' from '+st+' to '+en;
 }
 function getRoomInfo(){
 	$.ajax({
@@ -239,7 +259,7 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var m2=parseInt(t[1],10);
 	var h2=parseInt(t[0],10);
 	if (h-h2!=0 || Math.abs(m-m2)>=10)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
-		alert("Attention l'heure de cet appareil doit etre verifiee!");
+		alert(FreebusyRoom.mHeure);//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
 
 function getResInfo() {
@@ -360,7 +380,7 @@ function fillResInfos(list) {
 				$("#temps").html(temps);
 				if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 				else $(".btn_res").hide();
-				$("#info-res-title").html("Prochaine rÃ©union :");
+				$("#info-res-title").html("Prochaine r&eacuteunion :");
 				$(".loadgif").hide();
 				$("#b_conf").hide();
 				$("#b_vide").hide();				
@@ -403,7 +423,7 @@ function fillResInfos(list) {
 			else $("#b_vide").hide();
 			if (res[6]) $("#b_conf").hide();
 			else if ((!res[6])&&(FreebusyRoom.tactile=="true")) $("#b_conf").show();
-			$("#info-res-title").html("RÃ©union actuelle:");
+			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
 			$(".btn_res").hide();
 		}
@@ -444,7 +464,7 @@ function fillResInfos(list) {
 			$("#etat").html("Libre").css({"color":"#38b54d"});
 			if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 			else $(".btn_res").hide();
-			$("#info-res-title").html("Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui");
+			$("#info-res-title").html(FreebusyRoom.mAutreReun);//"Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"=mAutreReun
 			$(".loadgif").hide();
 			$("#b_vide").hide();
 			$("#b_conf").hide();
@@ -559,7 +579,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token='+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings?'+FreebusyRoom.ID+'&Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -568,7 +588,7 @@ var json=JSON.stringify(jsonF);
 }
 function getRes() {
 	var geturl=$.ajax({
-		url : FreebusyRoom.connectProtocol+'://demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -617,7 +637,7 @@ function res_demand(minutes) {
 			var st=createStartTime().replace(":00","");
 			var en=createEndTime().replace(":00","");
 			var sel=$('#forfade');
-			sel.append('Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en);
+			sel.append(bookingConfirmationMess(FreebusyRoom.roomName,st,en,FreebusyRoom.lang));bookingConfirmationMess(roomName,stH,endH)='Vous avez reserv&eacute; la salle '+FreebusyRoom.roomName+' de '+st+' &agrave; '+en
 			sel.css({"width":"50%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
@@ -625,7 +645,7 @@ function res_demand(minutes) {
 				"font-size":"2em","font-weight":"600","color":"#ffffff"});
 			//sel.fadeIn(2000000).fadeOut(90000000);//delay(7000).
 			//getUrbaToken(sendRes);
-			sel.fadeIn(10000,function () {
+			sel.fadeIn(30000,function () {
 			setTimeout(function() {sel.fadeOut(1500);},1500);
 			}); 
 			setTimeout(function() {
