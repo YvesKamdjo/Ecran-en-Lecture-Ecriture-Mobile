@@ -623,7 +623,7 @@ function updateResToConfirmPresence(json) {//modification du champ "presenceConf
 }
 
 function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la reservation courante. Elle met à jour le champ "presenceConfirmedDate" dans l'API avec la date du jour.
-	console.log(FreebusyRoom.resId);
+
 	json=JSON.stringify(jsonUpdateConfPres);
 
 	$.ajax({
