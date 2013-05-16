@@ -51,6 +51,7 @@ function cutString(stringToCut, nbCharacter) {
 
 function initDocument(){
 	getUrlParameters();
+	setlanguage();
 	//pingServeur();
 	if (FreebusyRoom.tactile=="false") $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
@@ -194,7 +195,6 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		break;
 		case "lang":
 		FreebusyRoom.lang=tmp[1];
-		setlanguage();
 		break;
 		}
 	}
