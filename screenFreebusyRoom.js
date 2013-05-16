@@ -49,6 +49,65 @@ function cutString(stringToCut, nbCharacter) {
 	return shortedString;
 }
 
+function generalDisplay() {
+	var w=$(window).width();
+	var h=$(window).height();
+
+	if ((w*h)<1500000) $("body").css("font-size",((w*h/50000)+10)+"px");
+	else $("body").css("font-size",40+"px");
+	
+	if (h>w) {
+	
+		if (h<320) h=320;
+		if (w<240) w=240;
+	
+		if (h<350)
+		{
+			$("#info-salle").css("top", 0.5+"em");	
+		}
+		else if (h<400)
+		{
+			$("#info-salle").css("top", 1+"em");
+		}
+		else
+		{
+			$("#info-salle").css("top", 2+"em");
+		}
+		$("#b_conf").attr("class", "b_conf_h");
+		$("#b_vide").attr("class", "b_vide_h");
+		$("#entete").css("font-size", 180+"%");
+		$("#bouton").attr("class", "b_res_h btn_res");
+		$("#sub li").css("height","20%");
+		$("#etat-libre").css("width", "70%");
+		$("#frise").css("height","25%");
+		$("#info-res").css("top","50%").css("width", "80%");
+	}
+	else {
+	
+		if (w<320) w=320;
+		if (h<240) h=240;
+	
+		if (h<400)
+		{
+			$("#info-salle").css("top", 1+"em");
+			$("#frise").css("height","15%");
+		}
+		else
+		{
+			$("#info-salle").css("top", 1.5+"em");
+			$("#frise").css("height","15%");
+		}
+		$("#entete").css("font-size", 200+"%");
+		$("#bouton").attr("class", "b_res_w btn_res");
+		$("#b_conf").attr("class", "b_conf_w");
+		$("#b_vide").attr("class", "b_vide_w");
+		$("#sub li").css("height","30%");
+		$("#etat-libre").css("width", "40%");
+		$("#info-res").css("top","60%").css("width", "70%");
+
+	}
+}
+
 function initDocument(){
 	getUrlParameters();
 	setlanguage();
@@ -63,65 +122,11 @@ function initDocument(){
 	$("#sub li").hide();
 	$(".menu_hour").hide();
 	$("#b_conf").hide();
-	var w=$(window).width();
-	var h=$(window).height();
-
-	$("body").css("font-size",((w*h/80000)+15)+"px");
 	
-	if (h>w) {
-		if (h<400) $("#info-salle").css("top", 1+"em");
-		else $("#info-salle").css("top", 2+"em");
-		$("#entete").css("font-size", 180+"%");
-		$("#bouton").attr("class", "b_res_h btn_res");
-		$("#b_conf").attr("class", "b_conf_h");
-		$("#b_vide").attr("class", "b_vide_h");
-		$("#sub li").css("height","20%");
-	}
-	else {
-		if (h<400) $("#info-salle").css("top", 1+"em");
-		else $("#info-salle").css("top", 2+"em");
-		$("#entete").css("font-size", 200+"%");
-		$("#bouton").attr("class", "b_res_w btn_res");
-		$("#b_conf").attr("class", "b_conf_w");
-		$("#b_vide").attr("class", "b_vide_w");
-		$("#sub li").css("height","30%");
-	}
+	generalDisplay();
 	
-	$("#ligne2").css("font-size", ((12*h/1000))+"px");
-	$("#ligne3").css("font-size", ((24*h/1000))+"px");
 	$(window).resize(function(){
-		var w=$(window).width();
-		var h=$(window).height();
-	
-	$("body").css("font-size",((w*h/80000)+15)+"px");
-		
-		if (h>w) {
-			var roomName=cutString(FreebusyRoom.roomName,10);
-			$("#nom-salle").html(roomName);
-			if (h<400) $("#info-salle").css("top", 1+"em");
-			else $("#info-salle").css("top", 2+"em");
-			$("#entete").css("font-size", 180+"%");
-			$("#bouton").attr("class", "b_res_h btn_res");
-			$("#b_conf").attr("class", "b_conf_h");
-			$("#b_vide").attr("class", "b_vide_h");
-			$("#sub li").css("height","20%");
-		}
-		else {
-			var roomName=cutString(FreebusyRoom.roomName,20);
-			console.log(roomName);
-			$("#nom-salle").html(roomName);
-			if (h<400) $("#info-salle").css("top", 1+"em");
-			else $("#info-salle").css("top", 2+"em");
-			$("#entete").css("font-size", 200+"%");
-			$("#bouton").attr("class", "b_res_w btn_res");
-			$("#b_conf").attr("class", "b_conf_w");
-			$("#b_vide").attr("class", "b_vide_w");
-			$("#sub li").css("height","30%");
-		}
-		
-		$("#ligne2").css("font-size", ((12*h/1000))+"px");
-		$("#ligne3").css("font-size", ((24*h/1000))+"px");
-		$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
+		generalDisplay();
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
@@ -504,6 +509,7 @@ function fillResInfos(list) {
 			$("#info-res-owner").html(ownerInfo);
 			
 		if (res[5]!=0) {
+		$("#info-res").css("top","55%");
 		$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
 			//getUrbaToken(getOrder)
 		}
@@ -557,6 +563,7 @@ function fillResInfos(list) {
 function refresh() {
 	//location.reload();
 	getUrbaToken(getFreeRoomList);
+	generalDisplay();
 }
 
 function createDate() {
@@ -701,7 +708,7 @@ function res_demand(minutes) {
 			sel.css({"width":"50%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
-				"left":"25%","top":"45%","text-align":"center",
+				"left":"25%","top":"35%","text-align":"center",
 				"font-size":"2em","font-weight":"600","color":"#ffffff"});
 			sel.fadeIn(30000,function () {
 			setTimeout(function() {sel.fadeOut(1500);},1500);
@@ -725,8 +732,6 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 		$("#case"+i+""+j).css('background','white');
 		}
 	}
-	var h=$(window).height();
-	$(".heureFrise").css("font-size", ((12*h/1000)+10)+"px");
 }
 function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge/vert selon les occupations
 	$.each(json, function(key, value){
