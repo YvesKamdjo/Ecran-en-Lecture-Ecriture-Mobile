@@ -167,7 +167,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	console.log(FreebusyRoom.connectProtocol);
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
-	FreebusyRoom.lang="fr";// par defaut on utilise la langue est le français!
+	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	var t;
 	t=allArg.replace("?","");
 	var t1=[];
@@ -211,6 +211,9 @@ function setlanguage(){// permet de changer de langue d'affichage
 			$("#b_conf").contents().filter("span").html('Confirmer <br>ma presence');
 			FreebusyRoom.freeOrLibre="Libre";
 			FreebusyRoom.occOrBusy="Occup\351";
+			FreebusyRoom.mProchOrNext="Prochaine r&eacuteunion :";
+			FreebusyRoom.jusquOrUntil="jusqu\'&agrave ";
+			FreebusyRoom.indisOrUnav="Indisponible";
 		break;
 		case "en":
 			FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
@@ -221,6 +224,9 @@ function setlanguage(){// permet de changer de langue d'affichage
 			$("#b_conf").contents().filter("span").html('Confirm my <br>presence');
 			FreebusyRoom.freeOrLibre="Free";
 			FreebusyRoom.occOrBusy="Busy";
+			FreebusyRoom.mProchOrNext="Next booking :";
+			FreebusyRoom.jusquOrUntil="Until  ";
+			FreebusyRoom.indisOrUnav="Unavailable";
 		break;
 	}
 }
@@ -229,6 +235,12 @@ if(lang=="fr")
 	return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
 else if(lang=="en")
 	return 'You have booked the room '+roomName+' from '+st+' to '+en;
+}
+function deOrFromAndAOrTo(debut,fin){
+	if(FreebusyRoom.lang=="fr")
+		return "De "+debut+" &Agrave "+fin;
+	else if(FreebusyRoom.lang=="en")
+		return "From "+debut+" To "+fin;
 }
 function getRoomInfo(){
 	$.ajax({
@@ -292,10 +304,8 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var t=[];
 	var w=new Date(server.dateString);
 	var serverTime=w.toUTCString();
-	console.log("server time="+serverTime);
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
-	console.log("local time="+all);
 	var text=[];
 	text=serverTime.split(" ");
 	var nt=all.split(" ");
@@ -408,7 +418,7 @@ function fillResInfos(list) {
 		if (compareTime(res[0],nowPlusTemp)) {//Si la prochaine rï¿½servation est dans plus d'une demi-heure
 			if (FreebusyRoom.vacancy) {//Si la salle appartient bien ï¿½ la liste des salles libres
 //-----------Salle libre--------------
-				var temps="jusqu'Ã  "+res[0];
+				var temps=FreebusyRoom.jusquOrUntil+res[0];
 				var dureeLibre=substractTime(res[0],now);
 				if ((compareTime(dureeLibre,"1:00"))&&($("#b_res60").length==0)) {
 					$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
@@ -428,7 +438,7 @@ function fillResInfos(list) {
 				$("#temps").html(temps);
 				if (FreebusyRoom.tactile=="true") $(".btn_res").show();
 				else $(".btn_res").hide();
-				$("#info-res-title").html("Prochaine r&eacuteunion :");
+				$("#info-res-title").html(FreebusyRoom.mProchOrNext);//mProchOrNext="Prochaine r&eacuteunion :"
 				$(".loadgif").hide();
 				$("#b_conf").hide();
 				$("#b_vide").hide();				
@@ -439,7 +449,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html("Indisponible").css({"color":"#ed1b24"});
+			$("#etat").html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"});//FreebusyRoom.indisOrUnav="Indisponible"
 			$(".loadgif").hide();
 			$("#b_conf").hide();
 			$("#b_vide").hide();
@@ -448,7 +458,7 @@ function fillResInfos(list) {
 		}
 		else {//la rï¿½servation commence dans moins d'une demi-heure ou a commencï¿½
 //------Salle occupï¿½e----------------
-			var temps="jusqu'Ã  "+res[1];
+			var temps=FreebusyRoom.jusquOrUntil+res[1];//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
 			$('#info-res-presta').html('');
 			$("#entete").css({"background-color":"#233a40"});
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
@@ -479,7 +489,8 @@ function fillResInfos(list) {
 		var sujet="";
 		if(FreebusyRoom.hideSubject=="false")
 			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
-		var duree="De "+res[0]+" Ã  "+res[1]+sujet;
+			var fin=res[1]+sujet;
+		var duree=deOrFromAndAOrTo(res[0],fin);//deOrFromAndAOrTo(debut,fin);
 		$("#info-res-horaires").html(duree);
 		if (FreebusyRoom.hideOwner=="false") {
 			var owner=res[2];
