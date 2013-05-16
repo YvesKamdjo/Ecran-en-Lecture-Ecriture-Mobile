@@ -40,8 +40,11 @@ function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes*60000);
 }
 
-function cutString(stringToCut, nbCharacter) {
+function cutString(stringToCut) {
 	var shortedString=stringToCut;
+	var w=$(window).width();
+	var nbCharacter=Math.floor(w/35);
+	if (nbCharacter<7) nbCharacter=6;
 	n=stringToCut.length;
 	if (n>nbCharacter) {
 		shortedString=stringToCut.substr(0,nbCharacter)+"...";
@@ -51,10 +54,13 @@ function cutString(stringToCut, nbCharacter) {
 
 function generalDisplay() {
 	var w=$(window).width();
+	console.log(w);
 	var h=$(window).height();
 
 	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+12)+"px");
 	else $("body").css("font-size",40+"px");
+
+	if (FreebusyRoom.roomName) $("#nom-salle").html(cutString(FreebusyRoom.roomName));
 	
 	if (h>w) {
 	
