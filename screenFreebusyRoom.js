@@ -43,8 +43,8 @@ function addMinutes(date, minutes) {
 function cutString(stringToCut) {
 	var shortedString=stringToCut;
 	var w=$(window).width();
-	var nbCharacter=Math.floor(w/35);
-	if (nbCharacter<7) nbCharacter=6;
+	var nbCharacter=Math.floor(w/32);
+	if (nbCharacter<6) nbCharacter=5;
 	n=stringToCut.length;
 	if (n>nbCharacter) {
 		shortedString=stringToCut.substr(0,nbCharacter)+"...";
@@ -54,7 +54,6 @@ function cutString(stringToCut) {
 
 function generalDisplay() {
 	var w=$(window).width();
-	console.log(w);
 	var h=$(window).height();
 
 	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+12)+"px");
