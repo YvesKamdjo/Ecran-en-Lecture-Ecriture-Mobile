@@ -410,13 +410,13 @@ function fillResInfos(list) {
 //-----------Salle libre--------------
 				var temps="jusqu'à "+res[0];
 				var dureeLibre=substractTime(res[0],now);
-				if (compareTime(dureeLibre,"1:00")) {
+				if ((compareTime(dureeLibre,"1:00"))&&($("#b_res60").length==0)) {
 					$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
 				}
-				if (compareTime(dureeLibre,"1:30")) {
+				if ((compareTime(dureeLibre,"1:30"))&&($("#b_res90").length==0)) {
 					$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
 				}
-				if (compareTime(dureeLibre,"2:00")) {
+				if ((compareTime(dureeLibre,"2:00"))&&($("#b_res120").length==0)) {
 					$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 				}
 				var w=$(window).width();
@@ -500,9 +500,9 @@ function fillResInfos(list) {
 	else {//il n'y a pas de r�servation d'ici la fin de la journ�e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 //-------Salle libre-----------
-				$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
-				$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
-				$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+			if ($("#b_res60").length==0) $("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+			if ($("#b_res90").length==0) $("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+			if ($("#b_res120").length==0) $("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 			var w=$(window).width();
 			$('#info-res-presta').html('');
 			$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
