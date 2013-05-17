@@ -43,10 +43,11 @@ function addMinutes(date, minutes) {
 function cutString(stringToCut) {
 	var shortedString=stringToCut;
 	var w=$(window).width();
-	var nbCharacter=Math.floor(w/32);
+	var nbCharacter=Math.floor(w/31 - 1);
 	if (nbCharacter<6) nbCharacter=5;
 	n=stringToCut.length;
 	if (n>nbCharacter) {
+		if (stringToCut.charAt(nbCharacter)==" ") nbCharacter-=1;
 		shortedString=stringToCut.substr(0,nbCharacter)+"...";
 	}
 	return shortedString;
@@ -56,65 +57,67 @@ function generalDisplay() {
 	var w=$(window).width();
 	var h=$(window).height();
 
-	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+12)+"px");
+	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+10)+"px");
 	else $("body").css("font-size",40+"px");
 
 	if (FreebusyRoom.roomName) $("#nom-salle").html(cutString(FreebusyRoom.roomName));
 	
 	if (h>w) {
 	
-		if (h<320) h=320;
-		if (w<240) w=240;
-	
 		if (h<350)
 		{
+			$("body").css("font-size",((w*h/100000)+10)+"px");
 			$("#info-salle").css("top", 0.5+"em");
 			$("#frise").css("height","20%");
-			$("#bouton").css("top","0");
+			$("#sub").css("font-size","110%");
 		}
 		else if (h<400)
 		{
+			$("body").css("font-size",((w*h/80000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","22%");
+			("#sub").css("font-size","120%");
 		}
 		else if (h<600)
 		{
+			$("body").css("font-size",((w*h/60000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","22%");
+			$("#sub").css("font-size","150%");
 		}
 		else
 		{
 			$("#info-salle").css("top", 1.5+"em");
 			$("#frise").css("height","15%");
+			$("#sub").css("font-size","150%");
 		}
 		$("#b_conf").attr("class", "b_conf_h");
 		$("#b_vide").attr("class", "b_vide_h");
 		$("#entete").css("font-size", 180+"%");
 		$("#bouton").attr("class", "b_res_h btn_res");
-		$("#sub").css("font-size","150%");
 		$("#etat-libre").css("width", "70%");
 		$("#info-res").css("bottom","25%").css("width", "80%");
 	}
 	else {
 	
-		if (w<320) w=320;
-		if (h<240) h=240;
 	console.log(h);
 		if (h<600)
 		{
+			$("body").css("font-size",((w*h/100000)+10)+"px");
 			$("#info-salle").css("top", 0.2+"em");
 			$("#frise").css("height","22%");
+			$("#sub").css("font-size","95%");
 		}
 		else
 		{
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","15%");
+			$("#sub").css("font-size","100%");
 		}
 		$("#entete").css("font-size", 200+"%");
 		$("#bouton").attr("class", "b_res_w btn_res");
 		$("#b_conf").attr("class", "b_conf_w");
 		$("#b_vide").attr("class", "b_vide_w");
-		$("#sub").css("font-size","100%");
 		$("#etat-libre").css("width", "40%");
 		$("#info-res").css("bottom","23%").css("width", "70%");
 
