@@ -633,31 +633,26 @@ function getBookingToStop(){//recupère la resa à terminer!
 var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
 if(FreebusyRoom.getBookingToStop=="false"){
 FreebusyRoom.getBookingToStop="true";//eviter de pouvoir cliquer a nouveau sans terminer cette tache!
-$("body").append($('<span id="confirmerStop">Souhaitez-vous vraiment stopper cette reservation?<br><button>Oui</button><button>Non</button></span>'));
+$("body").append($('<span id="confirmerStop">Souhaitez-vous vraiment stopper cette reservation?<br><button>Oui</button>&nbsp;&nbsp;&nbsp;&nbsp;<button>Non</button></span>'));
 $("#confirmerStop").css({"width":"40%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
 				"left":"30%","top":"35%","text-align":"center","z-index":"2",
 				"font-size":"0.75em","font-weight":"600","color":"#fad2d3"});
 $("#confirmerStop button:first").click(function(){
-	clic="oui";
-	console.log(clic);
 	$("#confirmerStop").remove();
-});
-$("#confirmerStop button:last").click(function(){
-	clic="non";
-	console.log(clic);
-	FreebusyRoom.getBookingToStop="false";
-	$("#confirmerStop").remove();
-});
-	if(clic=="oui"){
-		$.ajax({
+	$.ajax({
 			type: "GET",
 			url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback:"changeEndTime"
 			})
-	}
+});
+$("#confirmerStop button:last").click(function(){
+	FreebusyRoom.getBookingToStop="false";
+	$("#confirmerStop").remove();
+});
+		
 }
 else
 	$("#confirmerStop").fadeOut("fast").fadeIn("fast");//clignote si deja ouvert!
