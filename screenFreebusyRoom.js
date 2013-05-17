@@ -77,6 +77,11 @@ function generalDisplay() {
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","22%");
 		}
+		else if (h<600)
+		{
+			$("#info-salle").css("top", 1+"em");
+			$("#frise").css("height","22%");
+		}
 		else
 		{
 			$("#info-salle").css("top", 1.5+"em");
@@ -86,7 +91,7 @@ function generalDisplay() {
 		$("#b_vide").attr("class", "b_vide_h");
 		$("#entete").css("font-size", 180+"%");
 		$("#bouton").attr("class", "b_res_h btn_res");
-		$("#sub li").css("height","20%");
+		$("#sub").css("font-size","150%");
 		$("#etat-libre").css("width", "70%");
 		$("#info-res").css("bottom","25%").css("width", "80%");
 	}
@@ -94,21 +99,22 @@ function generalDisplay() {
 	
 		if (w<320) w=320;
 		if (h<240) h=240;
-	
-		if (h<400)
+	console.log(h);
+		if (h<600)
 		{
-			$("#frise").css("height","15%");
+			$("#info-salle").css("top", 0.2+"em");
+			$("#frise").css("height","22%");
 		}
 		else
 		{
+			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","15%");
 		}
-		$("#info-salle").css("top", 1+"em");
 		$("#entete").css("font-size", 200+"%");
 		$("#bouton").attr("class", "b_res_w btn_res");
 		$("#b_conf").attr("class", "b_conf_w");
 		$("#b_vide").attr("class", "b_vide_w");
-		$("#sub li").css("height","30%");
+		$("#sub").css("font-size","100%");
 		$("#etat-libre").css("width", "40%");
 		$("#info-res").css("bottom","23%").css("width", "70%");
 
@@ -243,10 +249,10 @@ function setlanguage(){// permet de changer de langue d'affichage
 	}
 }
 function bookingConfirmationMess(roomName,st,en,lang){//genere le message de confirmation lors d'une reservation.
-if(lang=="fr")
-	return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
-else if(lang=="en")
-	return 'You have booked the room '+roomName+' from '+st+' to '+en;
+	if(lang=="fr")
+		return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
+	else if(lang=="en")
+		return 'You have booked the room '+roomName+' from '+st+' to '+en;
 }
 function deOrFromAndAOrTo(debut,fin){
 	if(FreebusyRoom.lang=="fr")
@@ -442,7 +448,6 @@ function fillResInfos(list) {
 					$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 				}
 				var w=$(window).width();
-				$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 				$("#screenBorder").css({"background-color":"#38b54d"});
 				$("#nom-salle").css({"color":"#d7f0db"});
@@ -528,7 +533,6 @@ function fillResInfos(list) {
 			if ($("#b_res120").length==0) $("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 			var w=$(window).width();
 			$('#info-res-presta').html('');
-			$(".menu_hour").css("padding-top",(w*(-1/400)+5)+"%");
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
