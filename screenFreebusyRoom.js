@@ -124,6 +124,7 @@ function generalDisplay() {
 function initDocument(){
 	getUrlParameters();
 	setlanguage();
+	FreebusyRoom.getBookingToStop="false";
 	//pingServeur();
 	if (FreebusyRoom.tactile=="false") $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
@@ -626,12 +627,36 @@ function sendRes(){
 	});
 }
 function getBookingToStop(){//recupère la resa à terminer!
-	$.ajax({
-		type: "GET",
-		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
-		dataType : 'jsonp',
-		jsonpCallback:"changeEndTime"
-		})
+var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
+//FreebusyRoom.getBookingToStop="true";
+if(FreebusyRoom.getBookingToStop=="false"){
+FreebusyRoom.getBookingToStop="true";
+$("body").append($('<span id="confirmerStop">Souhaitez-vous vraiment stopper cette reservation?<br><button>Oui</button><button>Non</button></span>'));
+$("#confirmerStop").css({"width":"40%","heigth":"30%","position":"absolute",
+				"border-radius":"5px","margin":"0 auto",
+				"background":"#5e8894","display":"block",
+				"left":"30%","top":"35%","text-align":"center","z-index":"2",
+				"font-size":"0.5em","font-weight":"600","color":"#fad2d3"});
+$("#confirmerStop button:first").click(function(){
+	clic="oui";
+	console.log(clic);
+	$("#confirmerStop").remove();
+});
+$("#confirmerStop button:last").click(function(){
+	clic="non";
+	console.log(clic);
+	FreebusyRoom.getBookingToStop="false";
+	$("#confirmerStop").remove();
+});
+	if(clic=="oui"){
+		$.ajax({
+			type: "GET",
+			url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+			dataType : 'jsonp',
+			jsonpCallback:"changeEndTime"
+			})
+	}
+}
 }
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
 var d= new Date();
