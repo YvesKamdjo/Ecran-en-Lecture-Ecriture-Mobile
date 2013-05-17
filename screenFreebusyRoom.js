@@ -628,9 +628,8 @@ function sendRes(){
 }
 function getBookingToStop(){//recupère la resa à terminer!
 var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
-//FreebusyRoom.getBookingToStop="true";
 if(FreebusyRoom.getBookingToStop=="false"){
-FreebusyRoom.getBookingToStop="true";
+FreebusyRoom.getBookingToStop="true";//eviter de pouvoir cliquer a nouveau sans terminer cette tache!
 $("body").append($('<span id="confirmerStop">Souhaitez-vous vraiment stopper cette reservation?<br><button>Oui</button><button>Non</button></span>'));
 $("#confirmerStop").css({"width":"40%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
