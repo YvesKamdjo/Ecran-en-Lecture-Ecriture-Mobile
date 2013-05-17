@@ -68,15 +68,19 @@ function generalDisplay() {
 	
 		if (h<350)
 		{
-			$("#info-salle").css("top", 0.5+"em");	
+			$("#info-salle").css("top", 0.5+"em");
+			$("#frise").css("height","20%");
+			$("#bouton").css("top","0");
 		}
 		else if (h<400)
 		{
 			$("#info-salle").css("top", 1+"em");
+			$("#frise").css("height","22%");
 		}
 		else
 		{
 			$("#info-salle").css("top", 1.5+"em");
+			$("#frise").css("height","15%");
 		}
 		$("#b_conf").attr("class", "b_conf_h");
 		$("#b_vide").attr("class", "b_vide_h");
@@ -84,8 +88,7 @@ function generalDisplay() {
 		$("#bouton").attr("class", "b_res_h btn_res");
 		$("#sub li").css("height","20%");
 		$("#etat-libre").css("width", "70%");
-		$("#frise").css("height","25%");
-		$("#info-res").css("bottom","33%").css("width", "80%");
+		$("#info-res").css("bottom","25%").css("width", "80%");
 	}
 	else {
 	
