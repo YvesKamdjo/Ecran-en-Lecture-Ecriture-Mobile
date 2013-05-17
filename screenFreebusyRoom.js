@@ -73,7 +73,7 @@ function generalDisplay() {
 		}
 		else if (h<400)
 		{
-			$("body").css("font-size",((w*h/80000)+10)+"px");
+			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","22%");
 			("#sub").css("font-size","120%");
