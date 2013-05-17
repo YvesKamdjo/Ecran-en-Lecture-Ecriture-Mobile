@@ -221,7 +221,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mAutreReun="There are no other bookings planned today";
 			$("#b_res").contents().filter("span").text('Book');
 			$("#b_vide").contents().filter("span").html('Report <br>As free');
-			$("#b_conf").contents().filter("span").html('Confirm my <br>presence');
+			$("#b_conf").contents().filter("span").html('Confirm my <br>booking');
 			FreebusyRoom.freeOrLibre="Free";
 			FreebusyRoom.occOrBusy="Busy";
 			FreebusyRoom.mProchOrNext="Next booking :";
