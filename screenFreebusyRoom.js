@@ -638,7 +638,7 @@ $("#confirmerStop").css({"width":"40%","heigth":"30%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
 				"left":"30%","top":"35%","text-align":"center","z-index":"2",
-				"font-size":"0.5em","font-weight":"600","color":"#fad2d3"});
+				"font-size":"0.75em","font-weight":"600","color":"#fad2d3"});
 $("#confirmerStop button:first").click(function(){
 	clic="oui";
 	console.log(clic);
@@ -659,6 +659,8 @@ $("#confirmerStop button:last").click(function(){
 			})
 	}
 }
+else
+	$("#confirmerStop").fadeOut("fast").fadeIn("fast");//clignote si deja ouvert!
 }
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
 var d= new Date();
