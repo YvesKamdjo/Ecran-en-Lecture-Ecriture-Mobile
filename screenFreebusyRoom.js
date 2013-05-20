@@ -564,9 +564,9 @@ function fillResInfos(list) {
 		$("#b_vide").hide();
 		$(".btn_res").hide();
 		$("#b_conf").hide();
-		$("#temps").html("")
-		$("#info-res-horaires").html("");
-		$("#info-res-owner").html("");
+		//$("#temps").html("")
+		//$("#info-res-horaires").html("");
+		//$("#info-res-owner").html("");
 		console.log("indisponible sans res");
 		}
 	}
