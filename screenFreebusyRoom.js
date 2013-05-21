@@ -191,7 +191,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	var t;
-	t=allArg.replace("?","");
+	t=allArg.replace("?","");//pour enlever le ? au debut des parametres de l'url
 	var t1=[];
 	t1=t.split("&");
 	var i;
