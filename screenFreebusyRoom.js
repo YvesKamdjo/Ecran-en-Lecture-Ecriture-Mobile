@@ -73,7 +73,7 @@ function generalDisplay() {
 		}
 		else if (h<400)
 		{
-			$("body").css("font-size",((w*h/80000)+10)+"px");
+			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			$("#frise").css("height","22%");
 			("#sub").css("font-size","120%");
@@ -463,7 +463,27 @@ function fillResInfos(list) {
 				$(".loadgif").hide();
 				$("#b_conf").hide();
 				$("#b_vide").hide();				
-				console.log("libre");
+				
+				var sujet="";
+				if(FreebusyRoom.hideSubject=="false")
+					if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+					var fin=res[1]+sujet;
+				var duree=deOrFromAndAOrTo(res[0],fin);//deOrFromAndAOrTo(debut,fin);
+				$("#info-res-horaires").html(duree);
+				if (FreebusyRoom.hideOwner=="false") {
+					var owner=res[2];
+				}
+				var ownerPhone="";
+				if (FreebusyRoom.hidePhone=="false") {
+					if(res[3]) var ownerPhone=" - "+res[3];
+				}
+				var ownerInfo=owner+ownerPhone;
+				if (ownerInfo!="undefined")
+					$("#info-res-owner").html(ownerInfo);
+					
+				if (res[5]!=0) {
+				$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
+				
 			}
 			else {//La salle n'appartient pas ï¿½ la liste des salles libres
 //-------Salle indisponible--------------
@@ -505,28 +525,28 @@ function fillResInfos(list) {
 			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
 			$(".btn_res").hide();
-		}
-		console.log(res);
-		var sujet="";
-		if(FreebusyRoom.hideSubject=="false")
-			if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
-			var fin=res[1]+sujet;
-		var duree=deOrFromAndAOrTo(res[0],fin);//deOrFromAndAOrTo(debut,fin);
-		$("#info-res-horaires").html(duree);
-		if (FreebusyRoom.hideOwner=="false") {
-			var owner=res[2];
-		}
-		var ownerPhone="";
-		if (FreebusyRoom.hidePhone=="false") {
-			if(res[3]) var ownerPhone=" - "+res[3];
-		}
-		var ownerInfo=owner+ownerPhone;
-		if (ownerInfo!="undefined")
-			$("#info-res-owner").html(ownerInfo);
 			
-		if (res[5]!=0) {
-		$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
-			//getUrbaToken(getOrder)
+			var sujet="";
+			if(FreebusyRoom.hideSubject=="false")
+				if(res[4]) {sujet=' - '+'"'+res[4]+'"';}
+				var fin=res[1]+sujet;
+			var duree=deOrFromAndAOrTo(res[0],fin);//deOrFromAndAOrTo(debut,fin);
+			$("#info-res-horaires").html(duree);
+			if (FreebusyRoom.hideOwner=="false") {
+				var owner=res[2];
+			}
+			var ownerPhone="";
+			if (FreebusyRoom.hidePhone=="false") {
+				if(res[3]) var ownerPhone=" - "+res[3];
+			}
+			var ownerInfo=owner+ownerPhone;
+			if (ownerInfo!="undefined")
+				$("#info-res-owner").html(ownerInfo);
+				
+			if (res[5]!=0) {
+			$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
+				
+			}
 		}
 	}
 	else {//il n'y a pas de rï¿½servation d'ici la fin de la journï¿½e
@@ -547,10 +567,6 @@ function fillResInfos(list) {
 			$(".loadgif").hide();
 			$("#b_vide").hide();
 			$("#b_conf").hide();
-			$("#temps").html("")
-			$("#info-res-horaires").html("");
-			$("#info-res-owner").html("");
-			console.log("libre toute la journée");
 		}
 		else {//si la salle est indisponible
 //-------Salle indisponible-----------
@@ -564,10 +580,6 @@ function fillResInfos(list) {
 		$("#b_vide").hide();
 		$(".btn_res").hide();
 		$("#b_conf").hide();
-		$("#temps").html("")
-		$("#info-res-horaires").html("");
-		$("#info-res-owner").html("");
-		console.log("indisponible sans res");
 		}
 	}
 	setTimeout(function() {window.location.reload();},3600000);
