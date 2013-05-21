@@ -1,12 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,300' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="screenGuestOrientation.css">
-		
-		<title> Affichage des reservations en lecture seule  </title>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="screenGuestOrientationTest.js"></script>
+		<title> Orientation des visiteurs </title>
 	</head>
-	<body onload="showTime(); showDate();">
+	<body>
 		<div class="leftBorder">
 		<div class="logo"><img src="logo.jpeg" alt="logo" width="100%"></div>
 		<div id="hourPanel" class="time"></div>
@@ -27,12 +30,10 @@
 				</tr>
 			</tbody>
 		</table>
-			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
-			<script type="text/javascript" src="fonctions_communes.js"></script>
-			<script type="text/javascript" src="screenGuestOrientation.js"></script>
+	
 			<script> 
-			setIdentification('gallain@lucca.fr', 'gallain');
+
+			setIdentification('hanae', 'hanae');
 			$(document).ready(function() {
 				initDocument();
 			});
