@@ -96,10 +96,16 @@ function setPageLanguage(){
 	case "en":
 		$("#salles-libres").html("Free Rooms");
 		$("#salles-occupees").html("Busy Rooms");
+		Freebusy.messFinOrEnd="Until the end of the day";
+		Freebusy.pendantOrFor="for ";
+		Freebusy.indispoOrUnava="Unavailable";
 	break;
 	case "fr":
 		$("#salles-libres").html("Salles Libres");
 		$("#salles-occupees").html("Salles Occup&eacute;es");
+		Freebusy.messFinOrEnd="jusqu'&agrave; la fin de la journ&eacute;e";
+		Freebusy.pendantOrFor="pendant ";
+		Freebusy.indispoOrUnava="Indisponible";
 	break;
 	}
 }
@@ -392,7 +398,7 @@ Freebusy.isTactile=hb;
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la salle dans la liste des salles libres
 	var time="";
-	if (timeFree=="") {time="jusqu'à la fin de la journée";}
+	if (timeFree=="") {time=Freebusy.messFinOrEnd;}//Freebusy.messFinOrEnd="jusqu'à la fin de la journée"
 	else {
 		var duree=timeFree;
 		if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="30 min";
@@ -406,7 +412,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			heure=duree.split(":");
 			duree="jusqu'à "+ heure[0]+"h";
 			}
-		time="pendant "+duree;
+		time=Freebusy.pendantOrFor+duree;//Freebusy.pendantOrFor="pendant "
 	}
 setHideParameters(false,false,false,true);
 var html=[];
@@ -439,7 +445,7 @@ html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="sc
 html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'&lang='+Freebusy.lang+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
-else html.push('<div class="seats"><img class="seats-icon indisponible">indisponible</div>'); 
+else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
 $("#listes-salles-occupees").append(html.join(''));
 $("li.une-salle-occupee").mouseover(function() {
 	$(this).css('background','#e7c5bc');
