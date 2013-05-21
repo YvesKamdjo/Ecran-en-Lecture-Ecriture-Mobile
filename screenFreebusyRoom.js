@@ -252,18 +252,21 @@ function setlanguage(){// permet de changer de langue d'affichage
 		break;
 	}
 }
+
 function bookingConfirmationMess(roomName,st,en,lang){//genere le message de confirmation lors d'une reservation.
 	if(lang=="fr")
 		return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
 	else if(lang=="en")
 		return 'You have booked the room '+roomName+' from '+st+' to '+en;
 }
+
 function deOrFromAndAOrTo(debut,fin){
 	if(FreebusyRoom.lang=="fr")
 		return "De "+debut+" &Agrave "+fin;
 	else if(FreebusyRoom.lang=="en")
 		return "From "+debut+" To "+fin;
 }
+
 function getRoomInfo(){
 	$.ajax({
 			url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
@@ -315,11 +318,11 @@ function fillRoomInfo(objJson){
 }
 
 function pingServeur(){//permet de récupérer l'heure sur l'api public timeapi.org
-$.ajax({
-    url: 'http://timeapi.org/utc/now.json',
-    dataType: 'jsonp',
-	jsonpCallback:'isDeviceOnTime'
-});
+	$.ajax({
+		url: 'http://timeapi.org/utc/now.json',
+		dataType: 'jsonp',
+		jsonpCallback:'isDeviceOnTime'
+	});
 }
 
 function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
@@ -412,7 +415,6 @@ function fillOrder(json) {
 			}
 		}
 	}
-
 }
 
 function sortResList(list) {
@@ -430,6 +432,7 @@ function sortResList(list) {
 	
 	fillResInfos(list);
 }
+
 function fillResInfos(list) {	
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
@@ -481,9 +484,8 @@ function fillResInfos(list) {
 				if (ownerInfo!="undefined")
 					$("#info-res-owner").html(ownerInfo);
 					
-				if (res[5]!=0) {
-				$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');
-				
+				if (res[5]!=0)
+				$('#info-res-presta').html('<img src="prestation.png" style="width:1em;vertical-align:-15%;"> Prestations li\351es');	
 			}
 			else {//La salle n'appartient pas ï¿½ la liste des salles libres
 //-------Salle indisponible--------------
