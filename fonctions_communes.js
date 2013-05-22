@@ -61,11 +61,3 @@ function compareTime(time, ref) {//prend deux heures au format "hh:mm" et revoie
 	else return true;
 	
 }
-
-function setScreenFBUrlParam(){//recupère les paramètres de l'url de la page screenFreebusy
-	Common.parametreUrl=document.location.search;
-}
-
-function getScreenFBUrlParam(){
-	return Common.parametreUrl;
-}

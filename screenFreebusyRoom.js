@@ -233,11 +233,16 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		}
 	}
 }
-
+function langForHoursChecking(lang,serv,device){
+	if(lang=="fr")
+		return "Attention l'heure de cet appareil doit etre verifiee. Serveur="+serv+" GMT Ecran="+device+" GMT";
+	else if(lang=="en")
+		return "Caution: You must check the time set for this device. Server="+serv+" GMT Device="+device+" GMT";
+}
 function setlanguage(){// permet de changer de langue d'affichage
 	switch(FreebusyRoom.lang){
 		case "fr":
-			FreebusyRoom.mHeure="Attention l'heure de cet appareil doit etre verifiee!";//message pour l'heure!
+			//FreebusyRoom.mHeure="Attention l'heure de cet appareil doit etre verifiee!";
 			FreebusyRoom.mReunionAct="R&eacuteunion actuelle:";
 			FreebusyRoom.mAutreReun="Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"
 			$("#b_res").contents().filter("span").html('R&eacuteserver');
@@ -250,7 +255,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.indisOrUnav="Indisponible";//FreebusyRoom.indispoOrUnav="Indisponible"
 		break;
 		case "en":
-			FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
+			//FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
 			FreebusyRoom.mReunionAct="Current booking:";
 			FreebusyRoom.mAutreReun="There are no other bookings planned today";
 			$("#b_res").contents().filter("span").text('Book');
@@ -354,7 +359,7 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var m2=parseInt(t[1],10);
 	var h2=parseInt(t[0],10);
 	if (h-h2!=0 || Math.abs(m-m2)>=10)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
-		alert(FreebusyRoom.mHeure);//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
+		alert(langForHoursChecking(FreebusyRoom.lang,text[4],nt[4]));//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
 
 function getResInfo() {
@@ -511,8 +516,8 @@ function fillResInfos(list) {
 			$(".btn_res").hide();
 			}
 		}
-		else {//la rï¿½servation commence dans moins d'une demi-heure ou a commencï¿½
-//------Salle occupï¿½e----------------
+		else {//la reservation commence dans moins d'une demi-heure ou a commence
+//------Salle occupee----------------
 			var temps=FreebusyRoom.jusquOrUntil+res[1];//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
 			$('#info-res-presta').html('');
 			$("#entete").css({"background-color":"#233a40"});
