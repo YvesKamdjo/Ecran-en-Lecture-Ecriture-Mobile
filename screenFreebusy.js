@@ -380,9 +380,12 @@ var tmp= blockedRoom.join(' ');
 	
 	$('#listes-salles-libres').on('click', 'li', function() {
 		getNameFreeRoomDisplayed($(this).text());
+		//setScreenFBUrlParam();//recupère les parametres de l'url de l'ecran screenFreebusy
+		
 	});
 	$('#listes-salles-occupees').on('click', 'li', function() {
         getNameBusyRoomDisplayed($(this).text()); 
+		setScreenFBUrlParam();//recupère les parametres de l'url de l'ecran screenFreebusy
     }); 
 	$(".loadgif").hide();
 	setTimeout(function(){location.reload();},300000);
@@ -466,12 +469,14 @@ $('ul').listview('refresh');
 // Evenements sur les cliques des listes
 function getNameFreeRoomDisplayed(salle){
 	Freebusy.nomSalle=salle;
+	jaaulde.utils.cookies.set('linkBack',document.location.search);
 }
 function setNameFreeRoomDisplayed(){
 	$("#nom-salle").html(Freebusy.nomSalle);
 }
 function getNameBusyRoomDisplayed(salle){
 	Freebusy.nomSalle=salle;
+	jaaulde.utils.cookies.set('linkBack',document.location.search);
 }
 function setNameBusyRoomDisplayed(){
 	$("#nom-salle").html(Freebusy.nomSalle);

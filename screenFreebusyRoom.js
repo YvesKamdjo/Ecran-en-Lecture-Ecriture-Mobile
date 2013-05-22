@@ -123,10 +123,19 @@ function generalDisplay() {
 
 	}
 }
+function setBackLinkUrl(){
+	var href;
+	var cook;
+	cook=jaaulde.utils.cookies.get('linkBack');
+	console.log(cook);
+	href="screenFreebusy.html"+cook;
+	$("#link_back").attr("href",href);
+}
 
 function initDocument(){
 	getUrlParameters();
 	setlanguage();
+	setBackLinkUrl();
 	FreebusyRoom.getBookingToStop="false";
 	//pingServeur();
 	if (FreebusyRoom.tactile=="false") $("#link_back").hide();
@@ -235,7 +244,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.occOrBusy="Occup\351";
 			FreebusyRoom.mProchOrNext="Prochaine r&eacuteunion :";
 			FreebusyRoom.jusquOrUntil="jusqu\'&agrave ";
-			FreebusyRoom.indisOrUnav="Indisponible";
+			FreebusyRoom.indisOrUnav="Indisponible";//FreebusyRoom.indispoOrUnav="Indisponible"
 		break;
 		case "en":
 			FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
@@ -577,7 +586,7 @@ function fillResInfos(list) {
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
-		$("#etat").html("Indisponible").css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+		$("#etat").html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
 		$("#b_vide").hide();
 		$(".btn_res").hide();
