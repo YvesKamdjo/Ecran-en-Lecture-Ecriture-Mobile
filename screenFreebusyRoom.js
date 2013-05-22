@@ -129,7 +129,7 @@ function initDocument(){
 	setlanguage();
 	FreebusyRoom.getBookingToStop="false";
 	//pingServeur();
-	if (FreebusyRoom.tactile=="false") $("#link_back").hide();
+	if (FreebusyRoom.tactile!="capacitive") $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -212,8 +212,11 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		case "hideSubject":
 		FreebusyRoom.hideSubject= tmp[1];
 		break;
-		case "isTactile":
+		case "screen":
 		FreebusyRoom.tactile= tmp[1];
+		break;
+		case "presenceConfirmation":
+		FreebusyRoom.btnConf= tmp[1];
 		break;
 		case "lang":
 		FreebusyRoom.lang=tmp[1];
@@ -460,7 +463,7 @@ function fillResInfos(list) {
 				$("#nom-salle").css({"color":"#d7f0db"});
 				$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
 				$("#temps").html(temps);
-				if (FreebusyRoom.tactile=="true") $(".btn_res").show();
+				if (FreebusyRoom.tactile!="readonly") $(".btn_res").show();
 				else $(".btn_res").hide();
 				$("#info-res-title").html(FreebusyRoom.mProchOrNext);//mProchOrNext="Prochaine r&eacuteunion :"
 				$(".loadgif").hide();
@@ -512,8 +515,7 @@ function fillResInfos(list) {
 			$("#nom-salle").css({"color":"#fad2d3"});
 			$("#etat").html(FreebusyRoom.occOrBusy).css({"color":"#ed1b24"});
 			$("#temps").html(temps);
-			if (FreebusyRoom.tactile=="true") {
-				console.log(FreebusyRoom.tactile=="true");
+			if (FreebusyRoom.tactile!="readonly") {
 				if(compareTime(resStartTimePlusTemp, now)) {
 					$("#b_vide").hide();
 					}
@@ -523,7 +525,7 @@ function fillResInfos(list) {
 			}
 			else $("#b_vide").hide();
 			if (res[6]) $("#b_conf").hide();
-			else if ((!res[6])&&(FreebusyRoom.tactile=="true")) $("#b_conf").show();
+			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")) $("#b_conf").show();
 			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
 			$(".btn_res").hide();
@@ -563,7 +565,7 @@ function fillResInfos(list) {
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
 			$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
-			if (FreebusyRoom.tactile=="true") $(".btn_res").show();
+			if (FreebusyRoom.tactile!="readonly") $(".btn_res").show();
 			else $(".btn_res").hide();
 			$("#info-res-title").html(FreebusyRoom.mAutreReun);//"Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"=mAutreReun
 			$(".loadgif").hide();
