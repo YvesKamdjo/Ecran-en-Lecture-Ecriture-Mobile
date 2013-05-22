@@ -419,7 +419,7 @@ setHideParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-html.push(Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+html.push(Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 html.push('<img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
@@ -443,7 +443,7 @@ setHideParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&isTactile='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'">');
+html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
