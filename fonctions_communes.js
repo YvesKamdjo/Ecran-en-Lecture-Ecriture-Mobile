@@ -1,4 +1,4 @@
-
+var Common={};//variable globale pour ce fichier
 function getTime(){// retourne l'heure au format "hh:mm"
 	var myDate = new Date(); 
 	var hour = myDate.getHours(); 
@@ -60,4 +60,12 @@ function compareTime(time, ref) {//prend deux heures au format "hh:mm" et revoie
 	else if ((parseInt(t[0],10)==parseInt(r[0],10))&&(parseInt(t[1],10)<parseInt(r[1],10))) return false;
 	else return true;
 	
+}
+
+function setScreenFBUrlParam(){//recupère les paramètres de l'url de la page screenFreebusy
+	Common.parametreUrl=document.location.search;
+}
+
+function getScreenFBUrlParam(){
+	return Common.parametreUrl;
 }
