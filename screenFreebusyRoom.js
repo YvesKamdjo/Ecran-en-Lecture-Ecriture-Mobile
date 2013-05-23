@@ -909,7 +909,6 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
 	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle en pixel
-	//console.log(pos);
 	if(FreebusyRoom.state=="free")
 		sel.css('background-image','url(curseur-vert.png)');
 	else
@@ -925,6 +924,6 @@ var select=$("#ligne3");
 var position= select.position();
 var h= select.height();
 	$("#grisage").css({//,
-	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.3",
-	"top":position.top,"background": "rgba(0, 0, 0, 0.8)","left": "0","width":pos});
+	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.6",
+	"top":position.top,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos});
 }
