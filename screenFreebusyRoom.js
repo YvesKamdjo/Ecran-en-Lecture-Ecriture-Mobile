@@ -56,6 +56,7 @@ function cutString(stringToCut) {
 }
 
 function generalDisplay() {
+	var sel=$("#frise");
 	var w=$(window).width();
 	var h=$(window).height();
 	
@@ -74,21 +75,22 @@ function generalDisplay() {
 
 		if (h<400)
 		{
+			sel.css("height","20%").css("padding-bottom","");
 			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","22%").css("padding-bottom","");
+			sel.css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","120%");
 		}
 		else if (h<600)
 		{
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","22%").css("padding-bottom","");
+			sel.css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","150%");
 		}
 		else
 		{
 			$("#info-salle").css("top", 1.5+"em");
-			$("#frise").css("height","15%");
+			sel.css("height","15%");
 			$("#sub").css("font-size","150%");
 		}
 		$("#b_conf").attr("class", "b_conf_h");
@@ -112,14 +114,14 @@ function generalDisplay() {
 		if (h<600)
 		{
 			$("#info-salle").css("top", 0.2+"em");
-			$("#frise").css("height","").css("padding-bottom",0.5+"em");
+			sel.css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","90%");
 			
 		}
 		else
 		{
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","").css("padding-bottom",1+"em");
+			sel.css("height","").css("padding-bottom",1+"em");
 			$("#sub").css("font-size","100%");
 		}
 		$("#entete").css("font-size", 200+"%");
@@ -814,9 +816,11 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	for (i=8;i<20;i++){
 		$("#ligne1").append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
 		$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+		var selection=$("#ligne3");
+		selection.css({"position":"relative","z-index":"10"});
 		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
-		$("#ligne3").append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
-		$("#case"+i+""+j).css('background','white');
+		selection.append('<td class="caseFrise" heigth="10px" id="case'+i+''+j+'"> &nbsp;</td>');
+		$("#case"+i+""+j).css({'background':'white'});
 		}
 	}
 }
@@ -843,7 +847,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				deb=1;
 				for(l=deb;l<=quartHeure;l++){
 				var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
-				$("#"+idcasedebut).css('background','red');
+				$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
 				}
 			}
 		else{
@@ -861,7 +865,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 						var l;
 						for(l=1;l<=quartHeure;l++){
 						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-						$("#"+idcasedebut).css('background','red');
+						$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
 						}
 					}
 					else if (k==starth){
@@ -875,13 +879,13 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 						var l;
 						for(l=quartHeure;l<=4;l++){
 							var idcasedebut="case"+k+""+l;
-						$("#"+idcasedebut).css('background','red');
+						$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
 						}
 					}
 					else{
 						for(l=1;l<=4;l++){
 							var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-							$("#"+idcasedebut).css('background','red');
+							$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
 							}
 					}
 
@@ -893,6 +897,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
+	var sel=$("#frise");
 	var uniteHeure=$(window).width()*0.0833;// calcul de la taille d'heure en pixel. 0.0833 est la largeur en pourcentage d'une unit� d'heure.
 	var uniteMinute=uniteHeure/60;// calcul d'une minute en pixel
 	t = getTime();
@@ -904,11 +909,22 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle
 	//console.log(pos);
 	if(FreebusyRoom.state=="free")
-		$("#frise").css('background-image','url(curseur-vert.png)');
+		sel.css('background-image','url(curseur-vert.png)');
 	else
 		if(FreebusyRoom.state=="busy")
-			$("#frise").css('background-image','url(curseur-rouge.png)');
-	$("#frise").css('background-position',pos);
-	$("#frise").css('background-size','1% 100%'/*'0.525% 100%'*/);
-	
+			sel.css('background-image','url(curseur-rouge.png)');
+	sel.css('background-position',pos);
+	sel.css('background-size','1% 100%');
+	grisageFrise(pos+6);
+	//$("#ligne3").css({"opacity":"0.7"});//grisageFrise(pos);
+}
+
+function grisageFrise(pos){
+var select=$("#ligne3");
+var position= select.position();
+var h= select.height();
+	$("#grisage").css({//,
+   /* ,"position":"absolute",*/
+	"z-index":"13","position": "absolute","height": h, "left":position.left,
+	"top":position.top,"background": "rgba(0, 0, 0, 0.8)","left": "0","width":pos});
 }
