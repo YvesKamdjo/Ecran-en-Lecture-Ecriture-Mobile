@@ -101,6 +101,9 @@ function generalDisplay() {
 		$("#info-res").css("bottom","25%").css("width", "80%");
 	}
 	else {
+		console.log(w);
+		if (w<350) $("#bouton").attr("class", "b_res_h btn_res");
+		else $("#bouton").attr("class", "b_res_w btn_res");
 	
 		if (h<220) {
 			$("#b_conf").css("float","").css("right", 35+"%").css("top", 40+"%");
@@ -125,7 +128,6 @@ function generalDisplay() {
 			$("#sub").css("font-size","100%");
 		}
 		$("#entete").css("font-size", 200+"%");
-		$("#bouton").attr("class", "b_res_w btn_res");
 		$("#b_conf").attr("class", "b_conf_w");
 		$("#b_vide").attr("class", "b_vide_w");
 		$("#etat-libre").css("width", "40%");
