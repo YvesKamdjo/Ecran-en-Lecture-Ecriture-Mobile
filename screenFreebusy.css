@@ -6,7 +6,6 @@
 }
 
 body {
-	font-size:15px;
 }
 
 #wrapper {
@@ -145,7 +144,7 @@ li:even
 	background: url("fleche.png") no-repeat 100% !important;
 	height:100%;
 	width:2em;
-	right:0.5em !important;
+	right:1em !important;
 	top:0 !important;
 	margin-top:0 !important;
 	background-size:50% !important;
