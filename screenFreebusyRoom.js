@@ -68,21 +68,21 @@ function generalDisplay() {
 		{
 			$("body").css("font-size",((w*h/100000)+10)+"px");
 			$("#info-salle").css("top", 0.5+"em");
-			$("#frise").css("height","20%");
+			$("#frise").css("height","20%").css("padding-bottom","");
 			$("#sub").css("font-size","110%");
 		}
 		else if (h<400)
 		{
 			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","22%");
-			("#sub").css("font-size","120%");
+			$("#frise").css("height","22%").css("padding-bottom","");
+			$("#sub").css("font-size","120%");
 		}
 		else if (h<600)
 		{
 			$("body").css("font-size",((w*h/60000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","22%");
+			$("#frise").css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","150%");
 		}
 		else
@@ -105,13 +105,13 @@ function generalDisplay() {
 		{
 			$("body").css("font-size",((w*h/100000)+10)+"px");
 			$("#info-salle").css("top", 0.2+"em");
-			$("#frise").css("height","22%");
+			$("#frise").css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","95%");
 		}
 		else
 		{
 			$("#info-salle").css("top", 1+"em");
-			$("#frise").css("height","15%");
+			$("#frise").css("height","").css("padding-bottom",1+"em");
 			$("#sub").css("font-size","100%");
 		}
 		$("#entete").css("font-size", 200+"%");
@@ -119,7 +119,7 @@ function generalDisplay() {
 		$("#b_conf").attr("class", "b_conf_w");
 		$("#b_vide").attr("class", "b_vide_w");
 		$("#etat-libre").css("width", "40%");
-		$("#info-res").css("bottom","23%").css("width", "70%");
+		$("#info-res").css("bottom","20%").css("width", "70%");
 
 	}
 }
@@ -901,6 +901,6 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 		if(FreebusyRoom.state=="busy")
 			$("#frise").css('background-image','url(curseur-rouge.png)');
 	$("#frise").css('background-position',pos);
-	$("#frise").css('background-size','0.525% 100%');
+	$("#frise").css('background-size','1% 100%'/*'0.525% 100%'*/);
 	
 }
