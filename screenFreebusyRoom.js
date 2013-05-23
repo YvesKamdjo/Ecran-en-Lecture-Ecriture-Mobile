@@ -697,15 +697,15 @@ $("#confirmerStop input:first").click(function(){
 			jsonpCallback:"changeEndTime"
 			})
 }).css({"border-radius": "0.1em", "-moz-box-shadow": "2px 2px 1px #888",
-		"-webkit-box-shadow": "2px 2px 1px #888","margin":"4px",
-		"padding":"6px 30px","font-size":"1.00em","font-weight":"bold"});
+		"-webkit-box-shadow": "2px 2px 1px #888","margin":"0.5em",
+		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
 $("#confirmerStop input:last").click(function(){
 	FreebusyRoom.getBookingToStop="false";
 	sel.remove();
 	$("#blockDiv").remove();
 }).css({"border-radius": "0.1em", 
-		"-webkit-box-shadow": "2px 2px 1px #888","margin":"4px",
-		"padding":"6px 30px","font-size":"1.00em","font-weight":"bold"});
+		"-webkit-box-shadow": "2px 2px 1px #888","margin":"0.5em",
+		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
 }
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
 var d= new Date();
