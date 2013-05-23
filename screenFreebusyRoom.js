@@ -62,6 +62,10 @@ function generalDisplay() {
 
 	if (FreebusyRoom.roomName) $("#nom-salle").html(cutString(FreebusyRoom.roomName));
 	
+	var h_resInfo=$("#info-res").height();
+	if ((h_resInfo/h)>0.25) $("#info-res").hide();
+	else $("#info-res").show();
+	
 	if (h>w) {
 	
 		if (h<350)
@@ -107,6 +111,7 @@ function generalDisplay() {
 			$("#info-salle").css("top", 0.2+"em");
 			$("#frise").css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","95%");
+			
 		}
 		else
 		{
