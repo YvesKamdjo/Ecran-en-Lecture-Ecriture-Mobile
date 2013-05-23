@@ -102,11 +102,20 @@ function generalDisplay() {
 	}
 	else {
 	
+		if (h<220) {
+			$("#b_conf").css("float","").css("right", 35+"%").css("top", 40+"%");
+			$("#b_vide").css("float","").css("top", 40+"%").css("bottom","");
+		}
+		else {
+			$("#b_conf").css("float","right").css("right", 5+"%").css("top", 6+"em");
+			$("#b_vide").css("float","right").css("top", "").css("bottom", 25+"%");
+		}
+	
 		if (h<600)
 		{
 			$("#info-salle").css("top", 0.2+"em");
 			sel.css("height","").css("padding-bottom",0.5+"em");
-			$("#sub").css("font-size","95%");
+			$("#sub").css("font-size","90%");
 			
 		}
 		else
