@@ -908,17 +908,16 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
 	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle
+	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle en pixel
 	//console.log(pos);
 	if(FreebusyRoom.state=="free")
 		sel.css('background-image','url(curseur-vert.png)');
 	else
 		if(FreebusyRoom.state=="busy")
 			sel.css('background-image','url(curseur-rouge.png)');
-	sel.css('background-position',pos);
+	sel.css('background-position',pos-2);
 	sel.css('background-size','1% 100%');
-	grisageFrise(pos+6);
-	//$("#ligne3").css({"opacity":"0.7"});//grisageFrise(pos);
+	grisageFrise(pos+2);
 }
 
 function grisageFrise(pos){
@@ -926,7 +925,6 @@ var select=$("#ligne3");
 var position= select.position();
 var h= select.height();
 	$("#grisage").css({//,
-   /* ,"position":"absolute",*/
-	"z-index":"13","position": "absolute","height": h, "left":position.left,
+	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.3",
 	"top":position.top,"background": "rgba(0, 0, 0, 0.8)","left": "0","width":pos});
 }
