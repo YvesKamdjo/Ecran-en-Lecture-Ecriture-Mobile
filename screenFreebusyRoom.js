@@ -67,10 +67,6 @@ function generalDisplay() {
 
 	if (FreebusyRoom.roomName) $("#nom-salle").html(cutString(FreebusyRoom.roomName));
 	
-	var h_resInfo=$("#info-res").height();
-	if ((h_resInfo/h)>0.25) $("#info-res").hide();
-	else $("#info-res").show();
-	
 	if (h>w) {
 
 		if (h<400)
@@ -98,10 +94,10 @@ function generalDisplay() {
 		$("#entete").css("font-size", 180+"%");
 		$("#bouton").attr("class", "b_res_h btn_res");
 		$("#etat-libre").css("width", "70%");
-		$("#info-res").css("bottom","25%").css("width", "80%");
+		$("#info-res").css("bottom","25%").css("width", "80%").css("font-size", 115+"%").css("margin-left","");
 	}
 	else {
-		console.log(w);
+
 		if (w<350) $("#bouton").attr("class", "b_res_h btn_res");
 		else $("#bouton").attr("class", "b_res_w btn_res");
 	
@@ -113,12 +109,16 @@ function generalDisplay() {
 			$("#b_conf").css("float","right").css("right", 5+"%").css("top", 6+"em");
 			$("#b_vide").css("float","right").css("top", "").css("bottom", 25+"%");
 		}
+		
+		if (h<350) $("#info-res").css("font-size", 80+"%").css("margin-left","1em");
+		else $("#info-res").css("font-size", 115+"%").css("margin-left","");
 	
 		if (h<600)
 		{
 			$("#info-salle").css("top", 0.2+"em");
 			sel.css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","90%");
+			
 			
 		}
 		else
