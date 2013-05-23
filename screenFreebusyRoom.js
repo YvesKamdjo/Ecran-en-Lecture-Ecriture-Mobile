@@ -666,31 +666,46 @@ function sendRes(){
 }
 function getBookingToStop(){//recupère la resa à terminer!
 var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
-if(FreebusyRoom.getBookingToStop=="false"){
-FreebusyRoom.getBookingToStop="true";//eviter de pouvoir cliquer a nouveau sans terminer cette tache!
-$("body").append($('<span id="confirmerStop">Souhaitez-vous vraiment stopper cette reservation?<br><button>Oui</button>&nbsp;&nbsp;&nbsp;&nbsp;<button>Non</button></span>'));
-$("#confirmerStop").css({"width":"40%","heigth":"30%","position":"absolute",
+$("body").append($('<span id="blockDiv"></span>'));
+$("#blockDiv").css({
+    "position": "absolute","left": "0",
+    "right": "0","height": "100%",
+    "width": "100%","z-index": "999",
+	"background-color": "rgba(0, 0, 0, 0.8)"
+});
+$("#blockDiv").append($('<span id="confirmerStop"></span>'));
+var sel=$("#confirmerStop");
+if(FreebusyRoom.lang=="fr"){
+	sel.html('Souhaitez-vous vraiment lib&eacuterer cette r&eacuteservation?<br><input type="button" value=" OUI " size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" NON "></input>');
+}
+else if(FreebusyRoom.lang="en"){
+	sel.html('Do you really want to vacate this room?<br><input type="button" value="YES" size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="NO"></input>');
+}
+sel.css({"width":"40%","heigth":"40%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
-				"left":"30%","top":"35%","text-align":"center","z-index":"2",
-				"font-size":"0.75em","font-weight":"600","color":"#fad2d3"});
-$("#confirmerStop button:first").click(function(){
-	$("#confirmerStop").remove();
+				"left":"30%","top":"15%","text-align":"center","z-index":"2",
+				"font-size":"1.25em","font-weight":"600","color":"#fad2d3"});
+
+$("#confirmerStop input:first").click(function(){
+	sel.remove();
+	$("#blockDiv").remove();
 	$.ajax({
 			type: "GET",
 			url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback:"changeEndTime"
 			})
-});
-$("#confirmerStop button:last").click(function(){
+}).css({"border-radius": "0.1em", "-moz-box-shadow": "2px 2px 1px #888",
+		"-webkit-box-shadow": "2px 2px 1px #888","margin":"4px",
+		"padding":"6px 30px","font-size":"35px","font-weight":"bold"});
+$("#confirmerStop input:last").click(function(){
 	FreebusyRoom.getBookingToStop="false";
-	$("#confirmerStop").remove();
-});
-		
-}
-else
-	$("#confirmerStop").fadeOut("fast").fadeIn("fast");//clignote si deja ouvert!
+	sel.remove();
+	$("#blockDiv").remove();
+}).css({"border-radius": "0.1em", 
+		"-webkit-box-shadow": "2px 2px 1px #888","margin":"4px",
+		"padding":"6px 30px","font-size":"35px","font-weight":"bold"});
 }
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
 var d= new Date();
