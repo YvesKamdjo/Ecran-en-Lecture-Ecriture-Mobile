@@ -43,7 +43,9 @@ function addMinutes(date, minutes) {
 function cutString(stringToCut) {
 	var shortedString=stringToCut;
 	var w=$(window).width();
-	var nbCharacter=Math.floor(w/31 - 1);
+	var p=parseInt($("#nom-salle").css("font-size"),10);
+	if (w>350) var nbCharacter=Math.floor(w/p);
+	else var nbCharacter=Math.floor(0.7*w/p);
 	if (nbCharacter<6) nbCharacter=5;
 	n=stringToCut.length;
 	if (n>nbCharacter) {
@@ -57,6 +59,8 @@ function generalDisplay() {
 	var sel=$("#frise");
 	var w=$(window).width();
 	var h=$(window).height();
+	
+	//console.log("w="+w+" et h="+h);
 
 	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+10)+"px");
 	else $("body").css("font-size",40+"px");
@@ -68,16 +72,10 @@ function generalDisplay() {
 	else $("#info-res").show();
 	
 	if (h>w) {
-	
-		if (h<350)
+
+		if (h<400)
 		{
-			$("body").css("font-size",((w*h/100000)+10)+"px");
-			$("#info-salle").css("top", 0.5+"em");
 			sel.css("height","20%").css("padding-bottom","");
-			$("#sub").css("font-size","110%");
-		}
-		else if (h<400)
-		{
 			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			sel.css("height","22%").css("padding-bottom","");
@@ -85,7 +83,6 @@ function generalDisplay() {
 		}
 		else if (h<600)
 		{
-			$("body").css("font-size",((w*h/60000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			sel.css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","150%");
@@ -105,10 +102,8 @@ function generalDisplay() {
 	}
 	else {
 	
-	console.log(h);
 		if (h<600)
 		{
-			$("body").css("font-size",((w*h/100000)+10)+"px");
 			$("#info-salle").css("top", 0.2+"em");
 			sel.css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","95%");
