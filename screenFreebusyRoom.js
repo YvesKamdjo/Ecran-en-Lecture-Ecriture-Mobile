@@ -44,10 +44,8 @@ function cutString(stringToCut) {
 	var shortedString=stringToCut;
 	var w=$(window).width();
 	var p=parseInt($("#nom-salle").css("font-size"),10);
-	console.log(p);
 	if (w>350) var nbCharacter=Math.floor(w/p);
 	else var nbCharacter=Math.floor(0.7*w/p);
-	console.log(nbCharacter);
 	if (nbCharacter<6) nbCharacter=5;
 	n=stringToCut.length;
 	if (n>nbCharacter) {
@@ -60,6 +58,8 @@ function cutString(stringToCut) {
 function generalDisplay() {
 	var w=$(window).width();
 	var h=$(window).height();
+	
+	//console.log("w="+w+" et h="+h);
 
 	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+10)+"px");
 	else $("body").css("font-size",40+"px");
@@ -100,7 +100,6 @@ function generalDisplay() {
 	}
 	else {
 	
-	console.log(h);
 		if (h<600)
 		{
 			$("#info-salle").css("top", 0.2+"em");
