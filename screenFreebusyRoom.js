@@ -845,10 +845,9 @@ function getNextFreeTime() {
 	else if (min<45) quarter=3;
 	else quarter=4;
 	var i=hour;
-	console.log("test");
+
 	while (i<20) {
 		var I=i+'';
-		console.log("test1");
 		if (i==hour) j=quarter;
 		else j=0;
 		while (j<5) {
