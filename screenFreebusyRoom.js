@@ -149,7 +149,6 @@ function initDocument(){
 	setlanguage();
 	setBackLinkUrl();
 	FreebusyRoom.getBookingToStop="false";
-	//pingServeur();
 	if (FreebusyRoom.tactile!="capacitive") $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
@@ -211,6 +210,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	console.log(FreebusyRoom.connectProtocol);
 	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
 	FreebusyRoom.lang="fr";// par defaut on utilise le fran�ais!
+	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	var t;
 	t=allArg.replace("?","");//pour enlever le ? au debut des parametres de l'url
 	var t1=[];
@@ -464,6 +464,8 @@ function sortResList(list) {
 
 function fillResInfos(list) {	
 	var now=getTime();
+	var sub=$("#sub");
+	var etat=$("#etat");
 	var nowPlusTemp=addTime(now,"0:30");
 	
 	FreebusyRoom.state="free";//marque la salle comme libre!
@@ -475,19 +477,19 @@ function fillResInfos(list) {
 				var temps=FreebusyRoom.jusquOrUntil+res[0];
 				var dureeLibre=substractTime(res[0],now);
 				if ((compareTime(dureeLibre,"1:00"))&&($("#b_res60").length==0)) {
-					$("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+					sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
 				}
 				if ((compareTime(dureeLibre,"1:30"))&&($("#b_res90").length==0)) {
-					$("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+					sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
 				}
 				if ((compareTime(dureeLibre,"2:00"))&&($("#b_res120").length==0)) {
-					$("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+					sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 				}
 				var w=$(window).width();
 				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 				$("#screenBorder").css({"background-color":"#38b54d"});
 				$("#nom-salle").css({"color":"#d7f0db"});
-				$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
+				etat.html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
 				$("#temps").html(temps);
 				if (FreebusyRoom.tactile!="readonly") $(".btn_res").show();
 				else $(".btn_res").hide();
@@ -521,7 +523,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"});//FreebusyRoom.indisOrUnav="Indisponible"
+			etat.html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"});//FreebusyRoom.indisOrUnav="Indisponible"
 			$(".loadgif").hide();
 			$("#b_conf").hide();
 			$("#b_vide").hide();
@@ -539,7 +541,7 @@ function fillResInfos(list) {
 			$("body").css({"background-color":"#fad2d3"});
 			$("#screenBorder").css({"background-color":"#ed1b24"});
 			$("#nom-salle").css({"color":"#fad2d3"});
-			$("#etat").html(FreebusyRoom.occOrBusy).css({"color":"#ed1b24"});
+			etat.html(FreebusyRoom.occOrBusy).css({"color":"#ed1b24"});
 			$("#temps").html(temps);
 			if (FreebusyRoom.tactile!="readonly") {
 				if(compareTime(resStartTimePlusTemp, now)) {
@@ -582,15 +584,15 @@ function fillResInfos(list) {
 	else {//il n'y a pas de r�servation d'ici la fin de la journ�e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 //-------Salle libre-----------
-			if ($("#b_res60").length==0) $("#sub").append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
-			if ($("#b_res90").length==0) $("#sub").append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
-			if ($("#b_res120").length==0) $("#sub").append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+			if ($("#b_res60").length==0) sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+			if ($("#b_res90").length==0) sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+			if ($("#b_res120").length==0) sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
 			var w=$(window).width();
 			$('#info-res-presta').html('');
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
 			$("#screenBorder").css({"background-color":"#38b54d"});
 			$("#nom-salle").css({"color":"#d7f0db"});
-			$("#etat").html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
+			etat.html(FreebusyRoom.freeOrLibre).css({"color":"#38b54d"});
 			if (FreebusyRoom.tactile!="readonly") $(".btn_res").show();
 			else $(".btn_res").hide();
 			$("#info-res-title").html(FreebusyRoom.mAutreReun);//"Pas d'autre r&eacuteservation pr&eacutevue aujourd'hui"=mAutreReun
@@ -605,7 +607,7 @@ function fillResInfos(list) {
 		$("body").css({"background-color":"#fad2d3"});
 		$("#screenBorder").css({"background-color":"#ed1b24"});
 		$("#nom-salle").css({"color":"#fad2d3"});
-		$("#etat").html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"}).css({"padding-left":"19%"});
+		etat.html(FreebusyRoom.indisOrUnav).css({"color":"#ed1b24"}).css({"padding-left":"19%"});
 		$(".loadgif").hide();
 		$("#b_vide").hide();
 		$(".btn_res").hide();
@@ -688,11 +690,11 @@ if(FreebusyRoom.lang=="fr"){
 else if(FreebusyRoom.lang="en"){
 	sel.html('Do you really want to vacate this room?<br><input type="button" value="YES" size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="NO"></input>');
 }
-sel.css({"width":"40%","heigth":"40%","position":"absolute",
+sel.css({		"width":"60%","heigth":"40%","position":"absolute",
 				"border-radius":"5px","margin":"0 auto",
 				"background":"#5e8894","display":"block",
-				"left":"30%","top":"15%","text-align":"center","z-index":"2",
-				"font-size":"1.25em","font-weight":"600","color":"#fad2d3"});
+				"left":"20%","top":"15%","text-align":"center","z-index":"2",
+				"font-size":"1.55em","font-weight":"600","color":"#ffffff"});
 
 $("#confirmerStop input:first").click(function(){
 	sel.remove();
@@ -772,8 +774,9 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 }
 
 function button_res() {
+var sub=$("#sub");
 	if (FreebusyRoom.bResPushed) {
-		$("#sub").hide();
+		sub.hide();
 		$("#sub li").hide();
 		$(".menu_hour").hide();
 		FreebusyRoom.bResPushed=false;
@@ -781,7 +784,7 @@ function button_res() {
 	}
 	else {
 		document.getElementById("b_res_arrow").src = "arrow_u.png";
-		$("#sub").show();
+		sub.show();
 		$("#sub li").show();
 		$(".menu_hour").show();
 		FreebusyRoom.bResPushed=true;
@@ -815,9 +818,11 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var tmp1, tmp2;
 	var startH, startMin;
 	var endH, endMin;
+	var lig1=$("#ligne1");
+	var lig2=$("#ligne2");
 	for (i=8;i<20;i++){
-		$("#ligne1").append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
-		$("#ligne2").append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+		lig1.append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
+		lig2.append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 		var selection=$("#ligne3");
 		selection.css({"position":"relative","z-index":"10"});
 		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
@@ -847,9 +852,13 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				deb=1+startm/15;//calcul du quart d'heure à partir duquel commence la résa
 				else
 				deb=1;
+				var round=0;
 				for(l=deb;l<=quartHeure;l++){
 				var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
-				$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
+				if(round==0){
+				$("#"+idcasedebut).css({'background':'red'});
+				round++;
+				}
 				}
 			}
 		else{
@@ -867,7 +876,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 						var l;
 						for(l=1;l<=quartHeure;l++){
 						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-						$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
+						$("#"+idcasedebut).css({'background':'red'});
 						}
 					}
 					else if (k==starth){
@@ -881,13 +890,13 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 						var l;
 						for(l=quartHeure;l<=4;l++){
 							var idcasedebut="case"+k+""+l;
-						$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
+						$("#"+idcasedebut).css({'background':'red'});
 						}
 					}
 					else{
 						for(l=1;l<=4;l++){
 							var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-							$("#"+idcasedebut).css({'background':'red',"z-index":"12"});
+							$("#"+idcasedebut).css({'background':'red'});
 							}
 					}
 
