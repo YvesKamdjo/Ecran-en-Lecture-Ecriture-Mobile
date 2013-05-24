@@ -705,15 +705,13 @@ $("#confirmerStop input:first").click(function(){
 			dataType : 'jsonp',
 			jsonpCallback:"changeEndTime"
 			})
-}).css({"border-radius": "0.1em", "-moz-box-shadow": "2px 2px 1px #888",
-		"-webkit-box-shadow": "2px 2px 1px #888","margin":"0.5em",
-		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
+}).css({"border-radius": "0.1em", "margin":"0.5em",
+		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});//"-moz-box-shadow": "2px 2px 1px #888","-webkit-box-shadow": "2px 2px 1px #888",
 $("#confirmerStop input:last").click(function(){
 	FreebusyRoom.getBookingToStop="false";
 	sel.remove();
-	$("#blockDiv").remove();
-}).css({"border-radius": "0.1em", 
-		"-webkit-box-shadow": "2px 2px 1px #888","margin":"0.5em",
+	$("#blockDiv").remove();//"-webkit-box-shadow": "2px 2px 1px #888",
+}).css({"border-radius": "0.1em", "margin":"0.5em",
 		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
 }
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
@@ -852,13 +850,9 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				deb=1+startm/15;//calcul du quart d'heure Ã  partir duquel commence la rÃ©sa
 				else
 				deb=1;
-				var round=0;
 				for(l=deb;l<=quartHeure;l++){
 				var idcasedebut="case"+starth+""+l;//l'id de la case Ã  colorier en rouge
-				if(round==0){
 				$("#"+idcasedebut).css({'background':'red'});
-				round++;
-				}
 				}
 			}
 		else{
