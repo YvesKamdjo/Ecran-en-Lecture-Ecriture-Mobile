@@ -532,7 +532,7 @@ function fillResInfos(list) {
 		}
 		else {//la reservation commence dans moins d'une demi-heure ou a commence
 //------Salle occupee----------------
-			var temps=FreebusyRoom.jusquOrUntil+getNextFreeTimeStart();;//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
+			var temps=FreebusyRoom.jusquOrUntil+getNextFreeTime();//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
 			$('#info-res-presta').html('');
 			$("#entete").css({"background-color":"#233a40"});
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
@@ -552,7 +552,7 @@ function fillResInfos(list) {
 				}
 			}
 			else $("#b_vide").hide();
-			if (res[6]) $("#b_conf").hide();
+			if ((res[6])||(compareTime(res[0],now))) $("#b_conf").hide();
 			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")) $("#b_conf").show();
 			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
@@ -832,8 +832,9 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	}
 }
 
-function getNextFreeTimeStart() {
+function getNextFreeTime() {
 	var freeFifteenMinutes=[];
+	console.log(freeFifteenMinutes.length);
 	var now=[];
 	now=getTime().split(":");
 	var hour=parseInt(now[0],10);
@@ -845,8 +846,9 @@ function getNextFreeTimeStart() {
 	else quarter=4;
 	var i=hour;
 	console.log("test");
-	while ((freeFifteenMinutes.length<3)&&(i<20)) {
+	while (i<20) {
 		var I=i+'';
+		console.log("test1");
 		if (i==hour) j=quarter;
 		else j=0;
 		while (j<5) {
@@ -862,8 +864,9 @@ function getNextFreeTimeStart() {
 			}
 			j++;
 		}
+		i++;
 	}
-	console.log(freeFifteenMinutes[0]);
+	if (!freeFifteenMinutes[0]) freeFifteenMinutes[0]="la fin de la journ&eacutee" ;
 	return freeFifteenMinutes[0];
 }
 
@@ -939,7 +942,8 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				}
 			}
 	});
-
+	var test=getNextFreeTime();
+	console.log(test);
 	setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
