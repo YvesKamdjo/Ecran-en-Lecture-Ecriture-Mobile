@@ -203,14 +203,13 @@ body, html{
 #info-res {
 	height:auto;
 	position:absolute;
-	font-size:115%;
 	font-weight:600;
 	color:#2f464c;
 	z-index:-1;
 }
 
 #info-res-presta{
-	padding-left:0.3em;
+	padding-left:1em;
 }
 
 #b_res_arrow {
