@@ -552,8 +552,8 @@ function fillResInfos(list) {
 				}
 			}
 			else $("#b_vide").hide();
-			if ((res[6])||(compareTime(res[0],now))) $("#b_conf").hide();
-			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")) $("#b_conf").show();
+			if (res[6]) $("#b_conf").hide();
+			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")&&(compareTime(now,res[0]))) $("#b_conf").show();
 			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
 			$(".btn_res").hide();
@@ -942,8 +942,6 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				}
 			}
 	});
-	var test=getNextFreeTime();
-	console.log(test);
 	setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
