@@ -173,13 +173,14 @@ function initDocument(){
 	afficherHeureSurFrise();
 	});
 	
-	if (FreebusyRoom.home!=("room-"+FreebusyRoom.ID)) {
+	if (FreebusyRoom.home!=("room_"+FreebusyRoom.ID)) {
 		inactivityTimeout();
 	}
 }
 
 function inactivityTimeout() {
 	var homeTimeout;
+	console.log("inactivity");
 	document.onmousemove = function(){
 		clearTimeout(homeTimeout);
 		homeTimeout = setTimeout(function(){returnHome();}, 300000);
@@ -197,16 +198,18 @@ function returnHome() {
 	}
 	else {
 		var homeParam=[];
-		homeParam=FreebusyRoom.home.split("-");
+		var home=FreebusyRoom.home;
+		homeParam=home.split("_");
 		var homeBaseAddress=""+homeParam[0];
 		var homeID=""+homeParam[1];
 	}
+	console.log(homeBaseAddress);
 
 	var linkHome="";
 	
-	if (homeBaseAddress=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html";
-	else if (homeBaseAddress=="room") "http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr";
-	
+	if (homeBaseAddress=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
+	else if (homeBaseAddress=="room") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+
 	window.location.href = linkHome;
 }
 
@@ -282,7 +285,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		break;
 		case "home":
 			if (tmp[1]!="undefined") FreebusyRoom.home=tmp[1];
-			else FreebusyRoom.home="room-"+FreebusyRoom.ID;
+			else FreebusyRoom.home="room_"+FreebusyRoom.ID;
 		break;
 		}
 	}

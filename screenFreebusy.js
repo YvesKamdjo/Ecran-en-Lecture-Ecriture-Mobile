@@ -65,20 +65,20 @@ function inactivityTimeout() {
 }
 
 function returnHome() {
-	if (FreebusyRoom.home.indexOf("-")!=-1) {
+	if (Freebusy.home.indexOf("-")!=-1) {
 		var homeBaseAddress=""+Freebusy.home;
 	}
 	else {
 		var homeParam=[];
-		homeParam=Freebusy.home.split("-");
+		homeParam=Freebusy.home.split("_");
 		var homeBaseAddress=""+homeParam[0];
 		var homeID=""+homeParam[1];
 	}
 
 	var linkHome="";
 	
-	if (homeBaseAddress=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html";
-	else if (homeBaseAddress=="room") "http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr";
+	if (homeBaseAddress=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&home="+Freebusy.home;
+	else if (homeBaseAddress=="room") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 	
 	window.location.href = linkHome;
 }
