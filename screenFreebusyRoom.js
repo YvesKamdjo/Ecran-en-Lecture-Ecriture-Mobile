@@ -135,7 +135,7 @@ function generalDisplay() {
 
 	}
 }
-function setBackLinkUrl(){
+function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
 	var href;
 	var cook;
 	cook=jaaulde.utils.cookies.get('linkBack');
@@ -289,7 +289,7 @@ function bookingConfirmationMess(roomName,st,en,lang){//genere le message de con
 		return 'You have booked the room '+roomName+' from '+st+' to '+en;
 }
 
-function deOrFromAndAOrTo(debut,fin){
+function deOrFromAndAOrTo(debut,fin){//traduction français<=>anglais
 	if(FreebusyRoom.lang=="fr")
 		return "De "+debut+" &Agrave "+fin;
 	else if(FreebusyRoom.lang=="en")
@@ -355,22 +355,15 @@ function pingServeur(){//permet de récupérer l'heure sur l'api public timeapi.or
 }
 
 function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
-	var t=[];
 	var w=new Date(server.dateString);
 	var serverTime=w.toUTCString();
+	var tmpTime=serverTime.replace(" GMT","");
+	var tmpServ=Date.parse(tmpTime);//conversion en milliseconds
 	var tempo= new Date();
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
-	var text=[];
-	text=serverTime.split(" ");
-	var nt=all.split(" ");
-	var hms=[];
-	hms=nt[4].split(":");
-	var m= parseInt(hms[1],10);
-	var h= parseInt(hms[0],10);
-	t=text[4].split(":");
-	var m2=parseInt(t[1],10);
-	var h2=parseInt(t[0],10);
-	if (h-h2!=0 || Math.abs(m-m2)>=10)// s'il y a un décalage d'aumoins 15 minutes alors signaler!
+	var local=all.replace(" GMT","");
+	var tmpLocal=Date.parse(local);//conversion en milliseconds
+	if(Math.abs(tmpLocal-tmpServ)>900000)//s'il y a un décalage d'aumoins 15 minutes=900000 ms alors signaler!
 		alert(langForHoursChecking(FreebusyRoom.lang,text[4],nt[4]));//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
 
@@ -819,8 +812,9 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	var lig1=$("#ligne1");
 	var lig2=$("#ligne2");
 	for (i=8;i<20;i++){
-		lig1.append('<td width="8.33%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
-		lig2.append('<td width="8.33%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
+		var percent= 100/12;
+		lig1.append('<td width=percent+"%" class="caseFrise heureFrise" colspan="4">'+i+'h</td>');
+		lig2.append('<td width=percent+"%" style="font-size:25%" class="caseFrise traitSeparation" colspan="4">&nbsp;</td>');
 		var selection=$("#ligne3");
 		selection.css({"position":"relative","z-index":"10"});
 		for(var j=1; j<=4; j++){// division de chaque tranche d'heure en quatre (graduation selon le 1/4 d'heure)
@@ -936,37 +930,39 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 				}
 	});
 	
-
+		console.log($(window).width());
 		setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
 	var sel=$("#frise");
-	var uniteHeure=$(window).width()*0.0833;// calcul de la taille d'heure en pixel. 0.0833 est la largeur en pourcentage d'une unité d'heure.
+	var uniteHeure=$(window).width()/12;// calcul de la taille d'heure en pixel. La division par 12 parce qu'il y a 12 tranches horaires (de 8h à 20h).
 	var uniteMinute=uniteHeure/60;// calcul d'une minute en pixel
 	t = getTime();
 	var t2=[];
 	t2=t.split(":");
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
-	if(h<20){
+	if(h<20){//après 20heures local, la frise n'affiche plus le curseur
 		var temp=h-8;
-		var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle en pixel
+		var pos= temp*uniteHeure+m*uniteMinute-1;//calcul de la position en fonction de l'heure actuelle en pixel
 		if(FreebusyRoom.state=="free")
 			sel.css('background-image','url(curseur-vert.png)');
 		else
 			if(FreebusyRoom.state=="busy")
 				sel.css('background-image','url(curseur-rouge.png)');
-		sel.css('background-position',pos-2);
+		sel.css('background-position',pos);
 		sel.css('background-size','1% 100%');
-		grisageFrise(pos+2);
+		grisageFrise(pos+4);
 	}
 }
 
-function grisageFrise(pos){
+function grisageFrise(pos){//pos= position de la frise à chaque minute
 var select=$("#ligne3");
 var position= select.position();
 var h= select.height();
+//var col=$("#ligne3 td").eq(2).css("background-color");
+//console.log(col);
 	$("#grisage").css({//,
 	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.6",
 	"top":position.top,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos});
