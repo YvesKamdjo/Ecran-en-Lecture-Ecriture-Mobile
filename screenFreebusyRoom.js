@@ -532,7 +532,7 @@ function fillResInfos(list) {
 		}
 		else {//la reservation commence dans moins d'une demi-heure ou a commence
 //------Salle occupee----------------
-			var temps=FreebusyRoom.jusquOrUntil+res[1];//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
+			var temps=FreebusyRoom.jusquOrUntil+getNextFreeTime();//FreebusyRoom.jusquOrUntil="jusqu'&agrave;  "
 			$('#info-res-presta').html('');
 			$("#entete").css({"background-color":"#233a40"});
 			var resStartTimePlusTemp=addTime(res[0],"0:15");
@@ -553,7 +553,7 @@ function fillResInfos(list) {
 			}
 			else $("#b_vide").hide();
 			if (res[6]) $("#b_conf").hide();
-			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")) $("#b_conf").show();
+			else if ((!res[6])&&(FreebusyRoom.tactile!="readonly")&&(FreebusyRoom.btnConf=="true")&&(compareTime(now,res[0]))) $("#b_conf").show();
 			$("#info-res-title").html(FreebusyRoom.mReunionAct);//"R&eacuteunion actuelle:"= mReunionAct
 			$(".loadgif").hide();
 			$(".btn_res").hide();
@@ -829,6 +829,44 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 		}
 	}
 }
+
+function getNextFreeTime() {
+	var freeFifteenMinutes=[];
+	console.log(freeFifteenMinutes.length);
+	var now=[];
+	now=getTime().split(":");
+	var hour=parseInt(now[0],10);
+	var min=parseInt(now[1],10);
+	var quarter;
+	if (min<15) quarter=1;
+	else if (min<30) quarter=2;
+	else if (min<45) quarter=3;
+	else quarter=4;
+	var i=hour;
+
+	while (i<20) {
+		var I=i+'';
+		if (i==hour) j=quarter;
+		else j=0;
+		while (j<5) {
+			var J=j+'';
+			if (freeFifteenMinutes.length<3){
+				if ($("#case"+I+J).css("background-color")=="rgb(255, 255, 255)") {
+					var minutes=(j-1)*15;
+					if (minutes==0) minutes=minutes+'0';
+					freeFifteenMinutes.push(I+":"+minutes);
+					
+				}
+				else freeFifteenMinutes.length=0;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (!freeFifteenMinutes[0]) freeFifteenMinutes[0]="la fin de la journ&eacutee" ;
+	return freeFifteenMinutes[0];
+}
+
 function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge/vert selon les occupations
 	$.each(json, function(key, value){
 		var all=[];
