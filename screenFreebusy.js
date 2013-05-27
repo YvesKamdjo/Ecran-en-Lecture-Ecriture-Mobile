@@ -121,10 +121,8 @@ function getUrlParameters(){//permet de récupérer les identifiants des salles 
 					switch(valeur[0]){
 						case"resources"://le mot clé utilisé pour lister les salles à afficher est "resources"
 						blockedRoom= valeur[1].split(",");
-						console.log(valeur[1]);
 						break;
 						case "lang":
-						console.log(valeur[1]);
 						Freebusy.lang=valeur[1];
 						break;
 						case "home":
@@ -143,6 +141,7 @@ function setPageLanguage(){
 	case "en":
 		$("#salles-libres").html("Free Rooms");
 		$("#salles-occupees").html("Busy Rooms");
+		$('title').html("Room Occupation");
 		Freebusy.messFinOrEnd="Until the end of the day";
 		Freebusy.pendantOrFor="for ";
 		Freebusy.indispoOrUnava="Unavailable";
@@ -153,6 +152,7 @@ function setPageLanguage(){
 		Freebusy.messFinOrEnd="jusqu'&agrave; la fin de la journ&eacute;e";
 		Freebusy.pendantOrFor="pendant ";
 		Freebusy.indispoOrUnava="Indisponible";
+		$('title').html("Occupation des salles ");
 	break;
 	}
 }

@@ -840,7 +840,7 @@ function res_demand(minutes) {
 				"left":"25%","top":"35%","text-align":"center","z-index":"2",
 				"font-size":"2em","font-weight":"600","color":"#ffffff"});
 			sel.fadeIn(30000,function () {
-			setTimeout(function() {sel.fadeOut(3000);},1500);
+			setTimeout(function() {sel.fadeOut(5000);},1500);
 			}); 
 			setTimeout(function() {
 				getUrbaToken(sendRes);
@@ -971,8 +971,6 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 					}
 				}
 	});
-	
-		console.log($(window).width());
 		setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
@@ -1003,8 +1001,6 @@ function grisageFrise(pos){//pos= position de la frise à chaque minute
 var select=$("#ligne3");
 var position= select.position();
 var h= select.height();
-//var col=$("#ligne3 td").eq(2).css("background-color");
-//console.log(col);
 	$("#grisage").css({//,
 	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.6",
 	"top":position.top,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos});
