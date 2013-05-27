@@ -52,15 +52,15 @@ function initDocument(){
 }
 
 function inactivityTimeout() {
-	var homeTimeout;
+	var homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	document.onmousemove = function(){
 		clearTimeout(homeTimeout);
-		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+		homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	}
 
 	document.ontouchmove = function(){
 		clearTimeout(homeTimeout);
-		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+		homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	}
 }
 
