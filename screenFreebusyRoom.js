@@ -838,67 +838,68 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
-		if(starth==endh){//si la resa a une duree inferieure a 1 heure
-				var quartHeure;
-				if(endm!=0)
-					quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la resa
-				else
-					quartHeure=1;
-				var l;
-				var deb;
-				if (startm!=0)
-				deb=1+startm/15;//calcul du quart d'heure à partir duquel commence la résa
-				else
-				deb=1;
-				for(l=deb;l<=quartHeure;l++){
-				var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
-				$("#"+idcasedebut).css({'background':'red'});
+			if(starth==endh){//si la resa a une duree inferieure a 1 heure
+					var quartHeure;
+					if(endm!=0)
+						quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la resa
+					else
+						quartHeure=1;
+					var l;
+					var deb;
+					if (startm!=0)
+					deb=1+startm/15;//calcul du quart d'heure à partir duquel commence la résa
+					else
+					deb=1;
+					for(l=deb;l<=quartHeure;l++){
+					var idcasedebut="case"+starth+""+l;//l'id de la case à colorier en rouge
+					$("#"+idcasedebut).css({'background':'red'});
+					}
 				}
-			}
-		else{
-		
-			var k;
-			for(k=starth;k<=endh;k++){
-					if (k==endh){
-						var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
-						if(endm!=0){
-						
-							quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
-							}
-						else
-							quartHeure=0;// l'heure de fin de resa est du genre xh00
-						var l;
-						for(l=1;l<=quartHeure;l++){
-						var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
-						$("#"+idcasedebut).css({'background':'red'});
-						}
-					}
-					else if (k==starth){
-						var l;
-						var deb;
-						if(startm!=0){
-							quartHeure=1+startm/15;
-						}
-						else
-							quartHeure=1;
-						var l;
-						for(l=quartHeure;l<=4;l++){
-							var idcasedebut="case"+k+""+l;
-						$("#"+idcasedebut).css({'background':'red'});
-						}
-					}
-					else{
-						for(l=1;l<=4;l++){
+			else{
+			
+				var k;
+				for(k=starth;k<=endh;k++){
+						if (k==endh){
+							var quartHeure; // calcul du quart d'heure à partir duquel commence la résa
+							if(endm!=0){
+							
+								quartHeure= endm/15; // calcul du quart d'heure jusqu'auquel se termine la résa
+								}
+							else
+								quartHeure=0;// l'heure de fin de resa est du genre xh00
+							var l;
+							for(l=1;l<=quartHeure;l++){
 							var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
 							$("#"+idcasedebut).css({'background':'red'});
 							}
+						}
+						else if (k==starth){
+							var l;
+							var deb;
+							if(startm!=0){
+								quartHeure=1+startm/15;
+							}
+							else
+								quartHeure=1;
+							var l;
+							for(l=quartHeure;l<=4;l++){
+								var idcasedebut="case"+k+""+l;
+							$("#"+idcasedebut).css({'background':'red'});
+							}
+						}
+						else{
+							for(l=1;l<=4;l++){
+								var idcasedebut="case"+k+""+l;//l'id de la case à colorier en rouge
+								$("#"+idcasedebut).css({'background':'red'});
+								}
+						}
+
 					}
-
 				}
-			}
 	});
+	
 
-	setInterval(function(){afficherHeureSurFrise()},1000);
+		setInterval(function(){afficherHeureSurFrise()},1000);
 }
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
@@ -910,16 +911,18 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 	t2=t.split(":");
 	var h=parseInt(t2[0],10);
 	var m=parseInt(t2[1],10);
-	var temp=h-8;
-	var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle en pixel
-	if(FreebusyRoom.state=="free")
-		sel.css('background-image','url(curseur-vert.png)');
-	else
-		if(FreebusyRoom.state=="busy")
-			sel.css('background-image','url(curseur-rouge.png)');
-	sel.css('background-position',pos-2);
-	sel.css('background-size','1% 100%');
-	grisageFrise(pos+2);
+	if(h<20){
+		var temp=h-8;
+		var pos= temp*uniteHeure+m*uniteMinute-1;// calcul de la position en fonction de l'heure actuelle en pixel
+		if(FreebusyRoom.state=="free")
+			sel.css('background-image','url(curseur-vert.png)');
+		else
+			if(FreebusyRoom.state=="busy")
+				sel.css('background-image','url(curseur-rouge.png)');
+		sel.css('background-position',pos-2);
+		sel.css('background-size','1% 100%');
+		grisageFrise(pos+2);
+	}
 }
 
 function grisageFrise(pos){
