@@ -45,7 +45,42 @@ function initDocument(){
 	//var textareaWidth = document.getElementById("textarea").scrollWidth;
 	//document.getElementById("wrapper").style.width = textareaWidth + "px";
 	
+	if (Freebusy.home!="list") {
+		inactivityTimeout();
+	}
 
+}
+
+function inactivityTimeout() {
+	var homeTimeout;
+	document.onmousemove = function(){
+		clearTimeout(homeTimeout);
+		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+	}
+
+	document.ontouchmove = function(){
+		clearTimeout(homeTimeout);
+		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+	}
+}
+
+function returnHome() {
+	if (Freebusy.home.indexOf("-")!=-1) {
+		var homeBaseAddress=""+Freebusy.home;
+	}
+	else {
+		var homeParam=[];
+		homeParam=Freebusy.home.split("_");
+		var homeBaseAddress=""+homeParam[0];
+		var homeID=""+homeParam[1];
+	}
+
+	var linkHome="";
+	
+	if (homeBaseAddress=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&home="+Freebusy.home;
+	else if (homeBaseAddress=="room") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+	
+	window.location.href = linkHome;
 }
 				
  function getUrbaToken(nextFunction){
@@ -89,6 +124,11 @@ function getUrlParameters(){//permet de récupérer les identifiants des salles 
 						break;
 						case "lang":
 						Freebusy.lang=valeur[1];
+						break;
+						case "home":
+						console.log(valeur[1]);
+							if (valeur[1]!="undefined") Freebusy.home=valeur[1];
+							else Freebusy.home="list";
 						break;
 					}
 				}
@@ -395,7 +435,7 @@ var tmp= blockedRoom.join(' ');
 	setTimeout(function(){location.reload();},300000);
 }
 
-function setHideParameters(ho,hp,hs,hb,hc){
+function setUrlParameters(ho,hp,hs,hb,hc){
 Freebusy.hideOw=ho;
 Freebusy.hidePh=hp;
 Freebusy.hideSub=hs;
@@ -422,11 +462,11 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			}
 		time=Freebusy.pendantOrFor+duree;//Freebusy.pendantOrFor="pendant "
 	}
-setHideParameters(false,false,false,"capacitive",true);
+setUrlParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-html.push(Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+html.push(Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&home='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 html.push('<img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
@@ -446,11 +486,11 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
-setHideParameters(false,false,false,"capacitive",true);
+setUrlParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'">');
+html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&home='+Freebusy.home+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
