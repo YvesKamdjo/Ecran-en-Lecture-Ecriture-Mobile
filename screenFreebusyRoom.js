@@ -709,13 +709,14 @@ function sendRes(){
 function getBookingToStop(){//recupère la resa à terminer!
 var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
 $("body").append($('<span id="blockDiv"></span>'));
-$("#blockDiv").css({
+var blockDiv=$("#blockDiv");
+blockDiv.css({
     "position": "absolute","left": "0",
     "right": "0","height": "100%",
     "width": "100%","z-index": "999",
 	"background-color": "rgba(0, 0, 0, 0.8)"
 });
-$("#blockDiv").append($('<span id="confirmerStop"></span>'));
+blockDiv.append($('<span id="confirmerStop"></span>'));
 var sel=$("#confirmerStop");
 if(FreebusyRoom.lang=="fr"){
 	sel.html('Souhaitez-vous vraiment lib&eacuterer cette r&eacuteservation?<br><input type="button" value=" OUI " size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" NON "></input>');
@@ -731,7 +732,7 @@ sel.css({		"width":"60%","heigth":"40%","position":"absolute",
 
 $("#confirmerStop input:first").click(function(){
 	sel.remove();
-	$("#blockDiv").remove();
+	blockDiv.remove();
 	$.ajax({
 			type: "GET",
 			url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
@@ -743,7 +744,7 @@ $("#confirmerStop input:first").click(function(){
 $("#confirmerStop input:last").click(function(){
 	FreebusyRoom.getBookingToStop="false";
 	sel.remove();
-	$("#blockDiv").remove();//"-webkit-box-shadow": "2px 2px 1px #888",
+	blockDiv.remove();
 }).css({"border-radius": "0.1em", "margin":"0.5em",
 		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
 }
@@ -836,7 +837,7 @@ function res_demand(minutes) {
 				"left":"25%","top":"35%","text-align":"center","z-index":"2",
 				"font-size":"2em","font-weight":"600","color":"#ffffff"});
 			sel.fadeIn(30000,function () {
-			setTimeout(function() {sel.fadeOut(1500);},1500);
+			setTimeout(function() {sel.fadeOut(3000);},1500);
 			}); 
 			setTimeout(function() {
 				getUrbaToken(sendRes);
