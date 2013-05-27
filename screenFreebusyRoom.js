@@ -830,7 +830,7 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	}
 }
 
-function getNextFreeTime() {
+function getNextFreeTime() {// cherche la prochaine plage de temps libre suffisante pour pouvoir réserver
 	var freeFifteenMinutes=[];
 	console.log(freeFifteenMinutes.length);
 	var now=[];
@@ -844,10 +844,10 @@ function getNextFreeTime() {
 	else quarter=4;
 	var i=hour;
 
-	while (i<20) {
+	while (i<20) {// parcour la frise à la recherche de cette plage horaire
 		var I=i+'';
 		if (i==hour) j=quarter;
-		else j=0;
+		else j=1;
 		while (j<5) {
 			var J=j+'';
 			if (freeFifteenMinutes.length<3){
