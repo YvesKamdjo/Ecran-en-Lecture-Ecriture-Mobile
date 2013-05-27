@@ -402,8 +402,6 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 					var presenceConf=false;
 					var resID=objJson[ligne].id;
 					
-					console.log(objJson[ligne].presenceConfirmedDate);
-					
 					if (objJson[ligne].presenceConfirmedDate)
 						presenceConf=true;
 					
@@ -824,9 +822,8 @@ function construireLaFrise(){// juste dessiner le squelette de la frise.
 	}
 }
 
-function getNextFreeTime() {
+function getNextFreeTime() {// cherche la prochaine plage de temps libre suffisante pour pouvoir réserver
 	var freeFifteenMinutes=[];
-	console.log(freeFifteenMinutes.length);
 	var now=[];
 	now=getTime().split(":");
 	var hour=parseInt(now[0],10);
@@ -838,18 +835,17 @@ function getNextFreeTime() {
 	else quarter=4;
 	var i=hour;
 
-	while (i<20) {
+	while (i<20) {// parcour la frise à la recherche de cette plage horaire
 		var I=i+'';
 		if (i==hour) j=quarter;
-		else j=0;
+		else j=1;
 		while (j<5) {
 			var J=j+'';
-			if (freeFifteenMinutes.length<3){
+			if (freeFifteenMinutes.length<2){
 				if ($("#case"+I+J).css("background-color")=="rgb(255, 255, 255)") {
 					var minutes=(j-1)*15;
 					if (minutes==0) minutes=minutes+'0';
 					freeFifteenMinutes.push(I+":"+minutes);
-					
 				}
 				else freeFifteenMinutes.length=0;
 			}
