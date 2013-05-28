@@ -50,7 +50,7 @@ $("#scrollDown").bind("click", function(event) {
 });
 
 function scrollContent(direction) {
-    var amount = (direction === "up" ? "-=5px" : "+=5px");
+    var amount = (direction === "up" ? "-=50px" : "+=50px");
     $("#textarea").animate({
         scrollTop: amount
     }, 1, function() {
