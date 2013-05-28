@@ -1,9 +1,9 @@
-var ecranEnLecture= new Object();
+var screenGuestOrientation= new Object();
 var refresh=false;
 
 function setIdentification(log, pass){
-	ecranEnLecture.login=log;
-	ecranEnLecture.password=pass;
+	screenGuestOrientation.login=log;
+	screenGuestOrientation.password=pass;
 	}
 
 
@@ -59,6 +59,25 @@ function initDocument(){
 	getUrbaToken();
 }
 
+function getUrlParam(){
+screenGuestOrientation.lang="fr";//langue par defaut c'est le français
+var allArg;
+	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
+	var t;
+	t=allArg.replace("?","");//pour enlever le ? au debut des parametres de l'url
+	var tmp=[];
+	tmp=t[i].split("=");
+	if(tmp[0]=="lang")
+		screenGuestOrientation.lang= tmp[1];
+	}
+function setLanguage(){
+
+switch(screenGuestOrientation.lang){
+	case "fr":
+		$("#entete td").eq(0).html("
+	break;
+}
+}
 function refreshScreen(){
 	try{
 	if (!refresh) {
@@ -75,7 +94,7 @@ function refreshScreen(){
  function getUrbaToken(){
  try{
  $.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
+		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',			
 	})
@@ -88,7 +107,7 @@ function refreshScreen(){
 
 function setValidToken(newToken){
 	try { 
-	ecranEnLecture.validToken= newToken.Token;
+	screenGuestOrientation.validToken= newToken.Token;
 	}
 	catch(e){
 	console.log(e);
@@ -114,7 +133,7 @@ function getUrbaJson(){
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+ecranEnLecture.validToken,
+			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillNewJson',		
 		})
@@ -234,9 +253,9 @@ function getnbLinesToUpdate(){//permet de récupérer l'intervalle de temps pend
 function displayNewJson(SortedJson){
 	var ligne=0;
 	var items = [];
-	ecranEnLecture.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
-	ecranEnLecture.nbResToShow=getnbLinesToUpdate();//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-	if ((ecranEnLecture.nbResToShow=="")||(ecranEnLecture.nbResToShow>ecranEnLecture.nbDisplayedRes)) ecranEnLecture.nbResToShow=ecranEnLecture.nbDisplayedRes;
+	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
+	screenGuestOrientation.nbResToShow=getnbLinesToUpdate();//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+	if ((screenGuestOrientation.nbResToShow=="")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
 	var today= new Date();
 	now=getTime();
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
@@ -265,7 +284,7 @@ function displayNewJson(SortedJson){
 	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
 		$('#entete').hide();
 		items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
-		for (i=1; i<ecranEnLecture.nbDisplayedRes; i++) {
+		for (i=1; i<screenGuestOrientation.nbDisplayedRes; i++) {
 			items.push('<td colspan="4">&nbsp;</td>');
 		}		
 		$('<tr>', {
@@ -277,7 +296,7 @@ function displayNewJson(SortedJson){
 	}
 	else {// s'il y a des réservations
 //--------------il doit y avoir une erreur dans le paragraphe suivant:
-		var l=(ligne-ecranEnLecture.nbDisplayedRes)%ecranEnLecture.nbResToShow;
+		var l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
 		if (!l==0) {//on rajoute un certain nombre de lignes vides afin d'obtenir des pages complètes
 			do {
 			items.push('<td colspan="4">&nbsp;</td>');
@@ -288,17 +307,17 @@ function displayNewJson(SortedJson){
 			   }).appendTo('table');
 			   items.length = 0;
 			   ligne++;
-			   l=(ligne-ecranEnLecture.nbDisplayedRes)%ecranEnLecture.nbResToShow;
+			   l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
 			}while (!l==0)
 		}
 		
 		var nbCycles=5;// nombre complètement arbitraire de cycles de rafraichissement
 	
-		if (ligne>ecranEnLecture.nbDisplayedRes){// s'il y a plus d'une page
-			for (i=ecranEnLecture.nbDisplayedRes; i<ligne; i++) {//on cache toutes les lignes des pages suivantes
+		if (ligne>screenGuestOrientation.nbDisplayedRes){// s'il y a plus d'une page
+			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {//on cache toutes les lignes des pages suivantes
 				$('#'+i).hide(0);
 			}
-			var nbRefreshToShowAll=Math.ceil((ligne-ecranEnLecture.nbDisplayedRes)/ecranEnLecture.nbResToShow);
+			var nbRefreshToShowAll=Math.ceil((ligne-screenGuestOrientation.nbDisplayedRes)/screenGuestOrientation.nbResToShow);
 			console.log(nbRefreshToShowAll);
 			var k=1;
 			var interval = setInterval(function(){//toutes les 10s (toujours complètement arbitraire)
@@ -333,9 +352,9 @@ function nextRes(iteration) {// fonction qui "tourne la page"
 		this.stop().css("background-color", highlightBg).animate({backgroundColor: originalBg}, animateMs);
 	};
 //on définit les lignes qui appartiennent à cette page
-	var intervalStart=iteration*ecranEnLecture.nbResToShow;
-	var intervalEnd=(iteration*ecranEnLecture.nbResToShow)+ecranEnLecture.nbDisplayedRes;
-	var previousEnd=((iteration-1)*ecranEnLecture.nbResToShow)+ecranEnLecture.nbDisplayedRes;
+	var intervalStart=iteration*screenGuestOrientation.nbResToShow;
+	var intervalEnd=(iteration*screenGuestOrientation.nbResToShow)+screenGuestOrientation.nbDisplayedRes;
+	var previousEnd=((iteration-1)*screenGuestOrientation.nbResToShow)+screenGuestOrientation.nbDisplayedRes;
 	
 	//$(".refresh").hide(0);//on cache toutes les lignes - sans exception (ça prend moins de temps)
 	for (i=0;i<intervalStart;i++) {//on montre toutes les lignes qui appartiennent à la page que l'on veut montrer
@@ -356,7 +375,7 @@ function showFirstPage() {
 	};
 
 	$(".refresh").hide(0);//on cache toutes les lignes
-	for (i=0;i<ecranEnLecture.nbDisplayedRes;i++) {//on montre les premières
+	for (i=0;i<screenGuestOrientation.nbDisplayedRes;i++) {//on montre les premières
 		$('#'+i).show(0);
 			$('#'+i).animateHighlight('#ffa500',1000);	
 	}

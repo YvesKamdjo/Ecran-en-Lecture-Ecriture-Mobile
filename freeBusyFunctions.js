@@ -1,4 +1,10 @@
 var Common={};//variable globale pour ce fichier
+function launcher(){
+	setIdentification('gallain@lucca.fr', 'gallain');
+		$(document).ready(function() {
+		initDocument();
+		});			
+}
 function getTime(){// retourne l'heure au format "hh:mm"
 	var myDate = new Date(); 
 	var hour = myDate.getHours(); 

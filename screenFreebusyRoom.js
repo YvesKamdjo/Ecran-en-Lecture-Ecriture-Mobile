@@ -145,6 +145,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 }
 
 function initDocument(){
+	pingServeur();
 	getUrlParameters();
 	setlanguage();
 	setBackLinkUrl();
@@ -173,22 +174,22 @@ function initDocument(){
 	afficherHeureSurFrise();
 	});
 	
-	if (FreebusyRoom.home!=("room_"+FreebusyRoom.ID)) {
+	if ((FreebusyRoom.home!=("room_"+FreebusyRoom.ID))&&(FreebusyRoom.home!="none")) {
 		inactivityTimeout();
 	}
 }
 
 function inactivityTimeout() {
-	var homeTimeout;
+	var homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	console.log("inactivity");
 	document.onmousemove = function(){
 		clearTimeout(homeTimeout);
-		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+		homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	}
 
 	document.ontouchmove = function(){
 		clearTimeout(homeTimeout);
-		homeTimeout = setTimeout(function(){returnHome();}, 300000);
+		homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	}
 }
 
@@ -285,7 +286,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		break;
 		case "home":
 			if (tmp[1]!="undefined") FreebusyRoom.home=tmp[1];
-			else FreebusyRoom.home="room_"+FreebusyRoom.ID;
+			else FreebusyRoom.home="none";
 		break;
 		}
 	}
