@@ -131,7 +131,6 @@ function fillNewJson(objJson){
 	var intervalInMin=getTimeInterval();
 	intervalInMin=parseInt(intervalInMin, 10);
 	interval=""+Math.floor(intervalInMin/60)+":"+intervalInMin%60;
-	try {
 		var j=0;
 		var newJson = [];
 		var stH="";
@@ -147,11 +146,6 @@ function fillNewJson(objJson){
 				j=j+1;
 			}
 		});
-	}
-
-	catch(e){
-	console.log(e);
-	getUrbaJson();
 	}
 	sortNewJson(newJson,"heuresDeResa");
 }
