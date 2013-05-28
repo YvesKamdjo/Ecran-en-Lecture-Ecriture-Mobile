@@ -72,13 +72,13 @@ switch(screenGuestOrientation.lang){
 	case "fr":
 		$("#entete td").eq(0).html("Début");
 		$("#entete td").eq(1).html("Organisateur");
-		$("#entete td").eq(1).html("Salle");
+		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
 		$("#entete td").eq(1).html("Owner");
-		$("#entete td").eq(1).html("Room name");
+		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
 	break;
 }
