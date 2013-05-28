@@ -14,10 +14,18 @@ body {
 	overflow:hidden;
 }
 
+#wrapper_resistive {
+}
+
 #textarea {
 	width:100%;
 	height:100%;
 	overflow:auto;
+}
+
+#textarea_resistive {
+	width:100%;
+	height:100%;
 }
 
 .loadgif {

@@ -19,15 +19,10 @@ $("#scrollUp").bind("click", function(event) {
     $("#textarea").animate({
         scrollTop: "-=" + Freebusy.scrollingStep + "px"
     });
-}).bind("mouseover", function(event) {
+}).bind("mousedown", function(event) {
     Freebusy.scrolling = true;
     scrollContent("up");
-}).bind("mouseout", function(event) {
-    Freebusy.scrolling = false;
-}).bind("touchstart", function(event) {
-    Freebusy.scrolling = true;
-    scrollContent("up");
-}).bind("touchend", function(event) {
+}).bind("mouseup", function(event) {
     Freebusy.scrolling = false;
 });
 
@@ -37,15 +32,10 @@ $("#scrollDown").bind("click", function(event) {
     $("#textarea").animate({
         scrollTop: "+=" + Freebusy.scrollingSstep + "px"
     });
-}).bind("mouseover", function(event) {
+}).bind("mousedown", function(event) {
     Freebusy.scrolling = true;
     scrollContent("down");
-}).bind("mouseout", function(event) {
-    Freebusy.scrolling = false;
-}).bind("touchstart", function(event) {
-    Freebusy.scrolling = true;
-    scrollContent("down");
-}).bind("touchend", function(event) {
+}).bind("mouseup", function(event) {
     Freebusy.scrolling = false;
 });
 
@@ -105,7 +95,8 @@ function initDocument(){
 	});
 	
 	if (Freebusy.screen=="resistive") {
-		$("#scrollDown").show();
+		$("#wrapper").attr("id","#wrapper_resistive");
+		$("#textarea").attr("id","#textarea_resistive");
 	}
 
 	getUrbaToken(getRoomList);
