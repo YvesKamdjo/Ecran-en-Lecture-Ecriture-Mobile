@@ -173,3 +173,29 @@ a img
 {
 border: none;
 } 
+
+#scrollUp {
+	position:absolute;
+	top:0.5em;
+	display:none;
+}
+
+#scrollDown {
+	position:absolute;
+	bottom:0.5em;
+	display:none;
+}
+
+.scroll_btn {
+	font-size:200%;
+	width:10%;
+	margin:0 45%;
+	height:3em;
+	text-align:center;
+	z-index:5;
+}
+
+.scroll_img {
+	height:100%;
+	width:auto;
+}
