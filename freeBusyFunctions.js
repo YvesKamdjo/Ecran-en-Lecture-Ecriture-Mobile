@@ -38,7 +38,6 @@ function addTime(time1, time2) {//ajoute deux heures au format "hh:mm" et retour
 	return time3;
 }
 function substractTime(t1, t2) {// soustrait deux heures au format "hh:mm" et retourne la différence dans le même format
-	console.log(t1);
 	var time1=[];
 	var time2=[];
 	var time1=t1.split(":");

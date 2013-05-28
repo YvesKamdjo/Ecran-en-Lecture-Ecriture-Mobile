@@ -1,5 +1,4 @@
 var ecranEnLecture= new Object();
-var refresh=false;
 
 function setIdentification(log, pass){
 	ecranEnLecture.login=log;
@@ -57,44 +56,24 @@ function initDocument(){
 	});
 	
 	getUrbaToken();
+	getUrbaJson();
 }
 
 function refreshScreen(){
-	try{
-	if (!refresh) {
 		getUrbaToken();
-		refresh=true;
-	}
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}
 }
 
  function getUrbaToken(){
- try{
- $.ajax({
+	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+ecranEnLecture.login+'&password='+ecranEnLecture.password,
 		dataType : 'jsonp',
+		async:false,
 		jsonpCallback: 'setValidToken',			
-	})
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}	
+	})	
 }
 
 function setValidToken(newToken){
-	try { 
 	ecranEnLecture.validToken= newToken.Token;
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}
-	getUrbaJson();
 }
 
 function createStartDate() {
@@ -110,47 +89,35 @@ function createEndDate() {
 }
 
 function getUrbaJson(){
-	try{
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+ecranEnLecture.validToken,
 			dataType : 'jsonp',
+			async:false,
 			jsonpCallback: 'fillNewJson',		
 		})
-		}
-	catch(e){
-	console.log(e);
-	getUrbaJson();
-	}
 }
 	
 function fillNewJson(objJson){
 	var intervalInMin=getTimeInterval();
 	intervalInMin=parseInt(intervalInMin, 10);
 	interval=""+Math.floor(intervalInMin/60)+":"+intervalInMin%60;
-	try {
-		var j=0;
-		var newJson = [];
-		var stH="";
-		var endH="";
-		var begun;
-		var now=getTime();
-		$.each(objJson, function(key, value) {
-			stH=getTimeFromUrbaFormat(value.startDate);
-			endH=getTimeFromUrbaFormat(value.endDate);
-			var startMinusInterval=substractTime(stH, interval);
-			if (compareTime(endH,now) && compareTime(now,startMinusInterval)) {// formation d'un nouveau JSON
-				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-				j=j+1;
-			}
-		});
-	}
-
-	catch(e){
-	console.log(e);
-	getUrbaJson();
-	}
+	var j=0;
+	var newJson = [];
+	var stH="";
+	var endH="";
+	var begun;
+	var now=getTime();
+	$.each(objJson, function(key, value) {
+		stH=getTimeFromUrbaFormat(value.startDate);
+		endH=getTimeFromUrbaFormat(value.endDate);
+		var startMinusInterval=substractTime(stH, interval);
+		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) {// formation d'un nouveau JSON
+			newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+			j=j+1;
+		}
+	});
 	sortNewJson(newJson,"heuresDeResa");
 }
 
@@ -260,8 +227,6 @@ function displayNewJson(SortedJson){
 
 	});
 	
-	refresh=false;
-	
 	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
 		$('#entete').hide();
 		items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
@@ -299,17 +264,14 @@ function displayNewJson(SortedJson){
 				$('#'+i).hide(0);
 			}
 			var nbRefreshToShowAll=Math.ceil((ligne-ecranEnLecture.nbDisplayedRes)/ecranEnLecture.nbResToShow);
-			console.log(nbRefreshToShowAll);
 			var k=1;
 			var interval = setInterval(function(){//toutes les 10s (toujours complètement arbitraire)
 				if (k<=nbRefreshToShowAll){// s'il y a toujours des pages à afficher, on passe à la suivante
-					console.log("nextRes");
 					nextRes(k, ligne);
 					k++;
 				}
 				else {// sinon on repasse à la première page
 					if (nbCycles>0) {
-						console.log("showfirst");
 						showFirstPage();
 						k=1;
 						nbCycles--;
