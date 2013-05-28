@@ -1,10 +1,17 @@
 var Common={};//variable globale pour ce fichier
-function launcher(){
+function launcher(){//le lanceur du programme
 	setIdentification('gallain@lucca.fr', 'gallain');
 		$(document).ready(function() {
 		initDocument();
 		});			
 }
+
+function getURLParameter(name) {//recupere les parametres de l'url. name= nom du paramètre à recuperer
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
 function getTime(){// retourne l'heure au format "hh:mm"
 	var myDate = new Date(); 
 	var hour = myDate.getHours(); 

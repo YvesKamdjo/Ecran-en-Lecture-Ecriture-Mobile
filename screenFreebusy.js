@@ -10,7 +10,7 @@ function setIdentification(log, pass){
 function initDocument(){
 	var h=$(window).height();
 	var w=$(window).width();
-	getUrlParameters();
+	setUrlParameters();
 	setPageLanguage();
 	
 	if (h<w) {
@@ -100,40 +100,19 @@ function setValidToken(newToken){
 	Freebusy.validToken= newToken.Token;
 }
 
-/*function addRoomToDisplay(roomID){
-	blockedRoom.push(roomID);
-}*/
-
-function getUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
-	var p=document.location.search;
+function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 	Freebusy.lang="fr";//la langue par defaut est le français!
-	var tmp1;
-	var tmp=[];
-	if (p!=""){
-	var query=p.replace("?","");
-		tmp=query.split("&");
-		var i=tmp.length;
-			if (i!=0){
-			var j;
-				for(j=0;j<i;j++){
-				var valeur=[];
-				valeur=tmp[j].split("=");
-					switch(valeur[0]){
-						case"resources"://le mot clé utilisé pour lister les salles à afficher est "resources"
-						blockedRoom= valeur[1].split(",");
-						break;
-						case "lang":
-						Freebusy.lang=valeur[1];
-						break;
-						case "home":
-						console.log(valeur[1]);
-							if (valeur[1]!="undefined") Freebusy.home=valeur[1];
-							else Freebusy.home="none";
-						break;
-					}
-				}
-			}
-	}
+	console.log(Freebusy.lang);
+	var resources=getURLParameter("resource");
+	console.log(resources);
+	if(resources!="null")
+	blockedRoom= resources.split(",");
+	Freebusy.lang=getURLParameter("lang");
+	var h=getURLParameter("home");
+	if (h!="undefined") 
+		Freebusy.home=h;
+	else 
+		Freebusy.home="none";
 }
 
 function setPageLanguage(){
@@ -389,8 +368,6 @@ function compareRoomLists() {//compare les listes des salles libres à la liste 
 
 
 function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux listes : salles libres et salles occupées
-
-//getUrlParameters();
 var tmp= blockedRoom.join(' ');
 	for (i=0;i<freeRooms.length;i++){
 
@@ -435,7 +412,7 @@ var tmp= blockedRoom.join(' ');
 	setTimeout(function(){location.reload();},300000);
 }
 
-function setUrlParameters(ho,hp,hs,hb,hc){
+function transfertUrlParameters(ho,hp,hs,hb,hc){
 Freebusy.hideOw=ho;
 Freebusy.hidePh=hp;
 Freebusy.hideSub=hs;
@@ -462,7 +439,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			}
 		time=Freebusy.pendantOrFor+duree;//Freebusy.pendantOrFor="pendant "
 	}
-setUrlParameters(false,false,false,"capacitive",true);
+transfertUrlParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
@@ -486,7 +463,7 @@ $('#listes-salles-libres').listview('refresh');
 
 
 function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
-setUrlParameters(false,false,false,"capacitive",true);
+transfertUrlParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);

@@ -145,8 +145,8 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 }
 
 function initDocument(){
+	setUrlParameters();
 	pingServeur();
-	getUrlParameters();
 	setlanguage();
 	setBackLinkUrl();
 	FreebusyRoom.getBookingToStop="false";
@@ -246,50 +246,22 @@ function createEndDate() {
 	return endDate;
 }
 
-function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
-	var allArg;
-	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
-	console.log(FreebusyRoom.connectProtocol);
-	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
+function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
 	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
-	var t;
-	t=allArg.replace("?","");//pour enlever le ? au debut des parametres de l'url
-	var t1=[];
-	t1=t.split("&");
-	var i;
-	for(i=0;i<t1.length;i++){
-		var tmp=[];
-		tmp=t1[i].split("=");
-		switch (tmp[0]){
-		case "resource":
-		FreebusyRoom.ID= tmp[1];
-		break;
-		case "hideOwner":
-		FreebusyRoom.hideOwner= tmp[1];
-		console.log(FreebusyRoom.hideOwner);
-		break;
-		case "hidePhone":
-		FreebusyRoom.hidePhone= tmp[1];
-		break;
-		case "hideSubject":
-		FreebusyRoom.hideSubject= tmp[1];
-		break;
-		case "screen":
-		FreebusyRoom.tactile= tmp[1];
-		break;
-		case "presenceConfirmation":
-		FreebusyRoom.btnConf= tmp[1];
-		break;
-		case "lang":
-		FreebusyRoom.lang=tmp[1];
-		break;
-		case "home":
-			if (tmp[1]!="undefined") FreebusyRoom.home=tmp[1];
-			else FreebusyRoom.home="none";
-		break;
-		}
-	}
+	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
+	FreebusyRoom.ID= getURLParameter("resource");
+	FreebusyRoom.hideOwner= getURLParameter("hideOwner");
+	FreebusyRoom.hidePhone= getURLParameter("hidePhone");
+	FreebusyRoom.hideSubject= getURLParameter("hideSubject");
+	FreebusyRoom.tactile= getURLParameter("screen");
+	FreebusyRoom.btnConf= getURLParameter("presenceConfirmation");
+	FreebusyRoom.lang=getURLParameter("lang");
+	var h=getURLParameter("home")
+	if (h!="undefined") 
+		FreebusyRoom.home=h;
+	else 
+		FreebusyRoom.home="none";
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
