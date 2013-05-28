@@ -73,11 +73,13 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(0).html("Début");
 		$("#entete td").eq(1).html("Organisateur");
 		$("#entete td").eq(1).html("Salle");
+		screenGuestOrientation.enCours="en cours";
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
 		$("#entete td").eq(1).html("Owner");
 		$("#entete td").eq(1).html("Room name");
+		screenGuestOrientation.enCours="In progress";
 	break;
 }
 }
@@ -245,7 +247,7 @@ function displayNewJson(SortedJson){
 		items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
 		items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
 		items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
-		if (!compareTime(SortedJson[ligne].heuresDeResa,now)) items.push('<td class="debut">en cours</td>');
+		if (!compareTime(SortedJson[ligne].heuresDeResa,now)) items.push('<td class="debut">'+screenGuestOrientation.enCours+'</td>');//screenGuestOrientation.enCours=en cours
 		else items.push('<td class="debut"></td>');		
 		$('<tr>', {
 		   'class': 'ligne'+p+' refresh',
