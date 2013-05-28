@@ -64,8 +64,9 @@ function initDocument(){
 }
 
 function setUrlParameters(){
-screenGuestOrientation.lang="fr";//langue par defaut c'est le français
+//langue par defaut c'est le français
 screenGuestOrientation.lang=getURLParameter("lang");
+if (screenGuestOrientation.lang=="null") screenGuestOrientation.lang="fr";
 }
 function setLanguage(){
 switch(screenGuestOrientation.lang){
