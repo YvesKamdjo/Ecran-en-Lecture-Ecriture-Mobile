@@ -173,7 +173,7 @@ function initDocument(){
 	afficherHeureSurFrise();
 	});
 	
-	if (FreebusyRoom.home!=("room_"+FreebusyRoom.ID)) {
+	if ((FreebusyRoom.home!=("room_"+FreebusyRoom.ID))&&(FreebusyRoom.home!="none")) {
 		inactivityTimeout();
 	}
 }
@@ -285,7 +285,7 @@ function getUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		break;
 		case "home":
 			if (tmp[1]!="undefined") FreebusyRoom.home=tmp[1];
-			else FreebusyRoom.home="room_"+FreebusyRoom.ID;
+			else FreebusyRoom.home="none";
 		break;
 		}
 	}

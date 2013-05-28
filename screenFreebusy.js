@@ -45,7 +45,7 @@ function initDocument(){
 	//var textareaWidth = document.getElementById("textarea").scrollWidth;
 	//document.getElementById("wrapper").style.width = textareaWidth + "px";
 	
-	if (Freebusy.home!="list") {
+	if ((Freebusy.home!="list")&&(Freebusy.home!="none")) {
 		inactivityTimeout();
 	}
 
@@ -128,7 +128,7 @@ function getUrlParameters(){//permet de récupérer les identifiants des salles 
 						case "home":
 						console.log(valeur[1]);
 							if (valeur[1]!="undefined") Freebusy.home=valeur[1];
-							else Freebusy.home="list";
+							else Freebusy.home="none";
 						break;
 					}
 				}
