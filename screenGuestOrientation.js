@@ -84,6 +84,8 @@ switch(screenGuestOrientation.lang){
 */
 function refreshScreen(){
 		getUrbaToken();
+		getUrbaJson();
+		displayNewJson(screenGuestOrientation.json);
 }
 
  function getUrbaToken(){
