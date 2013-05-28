@@ -145,6 +145,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 }
 
 function initDocument(){
+	pingServeur();
 	getUrlParameters();
 	setlanguage();
 	setBackLinkUrl();
