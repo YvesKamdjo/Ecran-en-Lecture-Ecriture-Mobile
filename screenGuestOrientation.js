@@ -57,8 +57,10 @@ function initDocument(){
 	});
 	
 	getUrbaToken();
+	getUrbaJson();
+	displayNewJson(screenGuestOrientation.json);
 }
-
+/*
 function getUrlParam(){
 screenGuestOrientation.lang="fr";//langue par defaut c'est le français
 var allArg;
@@ -77,43 +79,24 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(0).html("
 	break;
 }
+
 }
+*/
 function refreshScreen(){
-	try{
-	if (!refresh) {
 		getUrbaToken();
-		refresh=true;
-	}
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}
 }
 
  function getUrbaToken(){
- try{
- $.ajax({
+	$.ajax({
 		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
 		dataType : 'jsonp',
+		async : false,
 		jsonpCallback: 'setValidToken',			
-	})
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}	
+	})	
 }
 
 function setValidToken(newToken){
-	try { 
 	screenGuestOrientation.validToken= newToken.Token;
-	}
-	catch(e){
-	console.log(e);
-	getUrbaToken();
-	}
-	getUrbaJson();
 }
 
 function createStartDate() {
@@ -129,19 +112,14 @@ function createEndDate() {
 }
 
 function getUrbaJson(){
-	try{
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	$.ajax({
 			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
+			async : false,
 			jsonpCallback: 'fillNewJson',		
 		})
-		}
-	catch(e){
-	console.log(e);
-	getUrbaJson();
-	}
 }
 	
 function fillNewJson(objJson){
@@ -183,7 +161,7 @@ function sortNewJson(jsonToSort, prop) {
 		y=B[0]+""+B[1];
 		return parseInt(x, 10)-parseInt(y, 10);
     });
-	displayNewJson(jsonToSort);
+	screenGuestOrientation.json=jsonToSort;
 }
 
 function getTimeInterval(){//permet de récupérer l'intervalle de temps pendant lequel les réservations suivantes peuvent commencer
@@ -278,8 +256,6 @@ function displayNewJson(SortedJson){
 		   ligne++;
 
 	});
-	
-	refresh=false;
 	
 	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
 		$('#entete').hide();
