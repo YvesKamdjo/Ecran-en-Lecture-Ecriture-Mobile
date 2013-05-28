@@ -39,6 +39,8 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 
 function initDocument(){
 	var i=0;
+	setUrlParameters();
+	setLanguage();
 	var w=$(window).width();
 	var h=$(window).height();
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
@@ -60,28 +62,26 @@ function initDocument(){
 	getUrbaJson();
 	displayNewJson(screenGuestOrientation.json);
 }
-/*
-function getUrlParam(){
-screenGuestOrientation.lang="fr";//langue par defaut c'est le français
-var allArg;
-	allArg= document.location.search;//recuperation de la requete contenue dans l'URL
-	var t;
-	t=allArg.replace("?","");//pour enlever le ? au debut des parametres de l'url
-	var tmp=[];
-	tmp=t[i].split("=");
-	if(tmp[0]=="lang")
-		screenGuestOrientation.lang= tmp[1];
-	}
-function setLanguage(){
 
+function setUrlParameters(){
+screenGuestOrientation.lang="fr";//langue par defaut c'est le français
+screenGuestOrientation.lang=getURLParameter("lang");
+}
+function setLanguage(){
 switch(screenGuestOrientation.lang){
 	case "fr":
-		$("#entete td").eq(0).html("
+		$("#entete td").eq(0).html("Début");
+		$("#entete td").eq(1).html("Organisateur");
+		$("#entete td").eq(1).html("Salle");
+	break;
+	case "en":
+		$("#entete td").eq(0).html("Start time");
+		$("#entete td").eq(1).html("Owner");
+		$("#entete td").eq(1).html("Room name");
 	break;
 }
-
 }
-*/
+
 function refreshScreen(){
 		getUrbaToken();
 }
