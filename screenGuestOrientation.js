@@ -131,22 +131,22 @@ function fillNewJson(objJson){
 	var intervalInMin=getTimeInterval();
 	intervalInMin=parseInt(intervalInMin, 10);
 	interval=""+Math.floor(intervalInMin/60)+":"+intervalInMin%60;
-		var j=0;
-		var newJson = [];
-		var stH="";
-		var endH="";
-		var begun;
-		var now=getTime();
-		$.each(objJson, function(key, value) {
-			stH=getTimeFromUrbaFormat(value.startDate);
-			endH=getTimeFromUrbaFormat(value.endDate);
-			var startMinusInterval=substractTime(stH, interval);
-			if (compareTime(endH,now) && compareTime(now,startMinusInterval)) {// formation d'un nouveau JSON
-				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-				j=j+1;
-			}
-		});
-	}
+	var j=0;
+	var newJson = [];
+	var stH="";
+	var endH="";
+	var begun;
+	var now=getTime();
+	$.each(objJson, function(key, value) {
+		stH=getTimeFromUrbaFormat(value.startDate);
+		endH=getTimeFromUrbaFormat(value.endDate);
+		var startMinusInterval=substractTime(stH, interval);
+		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) {// formation d'un nouveau JSON
+			newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+			j=j+1;
+		}
+	});
+
 	sortNewJson(newJson,"heuresDeResa");
 }
 
