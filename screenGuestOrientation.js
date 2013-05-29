@@ -59,8 +59,6 @@ function setDisplay() {
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
 	$(".refresh").css("height",((h-25*h/100)/10)+"px");
 	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
-	$("#title").css("font-size",125+"%");
-	$("#pages").css("font-size",125+"%");
 }
 
 function initDocument(){
@@ -361,7 +359,7 @@ function nextRes(iteration) {// fonction qui "tourne la page"
 	}
 	for (i=previousEnd;i<intervalEnd;i++) {//on montre toutes les lignes qui appartiennent à la page que l'on veut montrer
 		$('#'+i).show(0);
-		$('#'+i).animateHighlight('#ffa500',1000);
+		//$('#'+i).animateHighlight('#ffa500',1000);
 	}
 }
 
@@ -376,6 +374,6 @@ function showFirstPage() {
 	$(".refresh").hide(0);//on cache toutes les lignes
 	for (i=0;i<screenGuestOrientation.nbDisplayedRes;i++) {//on montre les premières
 		$('#'+i).show(0);
-			$('#'+i).animateHighlight('#ffa500',1000);	
+		//$('#'+i).animateHighlight('#ffa500',1000);	
 	}
 }

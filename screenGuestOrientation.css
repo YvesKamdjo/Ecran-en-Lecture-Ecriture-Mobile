@@ -25,7 +25,6 @@ html, body
 	position:relative;
 	left:15%;
 	display:table;
-	font-size:160%
 }
 
 .leftBorder
@@ -53,9 +52,11 @@ html, body
  
  #title
  {
-	padding-left:0.3em;
+	padding-left:0.25em;
+	margin:0.5em 0;
 	color: #ffffff;
 	text-align:left;
+	font-size:200%;
  }
 
 #hourPanel
@@ -75,6 +76,7 @@ html, body
 	padding-top:1%;
 	padding-bottom:1%;
 	width:100%;
+	font-size:160%;
 }
 
 .ligne0
@@ -142,6 +144,7 @@ html, body
 	width:50%;
 	color: #ffffff;
 	font-weight:700;
+	font-size:200%;
 }
 
 #page
