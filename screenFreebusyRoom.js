@@ -304,9 +304,9 @@ function setlanguage(){// permet de changer de langue d'affichage
 
 function bookingConfirmationMess(roomName,st,en,lang){//genere le message de confirmation lors d'une reservation.
 	if(lang=="fr")
-		return 'Vous avez reserv&eacute; la salle '+roomName+' de '+st+' &agrave; '+en;
+		return 'Vous avez reserv&eacute; la salle '+roomName+' jusqu\'&agrave; '+en;
 	else if(lang=="en")
-		return 'You have booked the room '+roomName+' from '+st+' to '+en;
+		return 'You have booked the room '+roomName+' until '+en;
 }
 
 function deOrFromAndAOrTo(debut,fin){//traduction français<=>anglais
@@ -487,14 +487,17 @@ function fillResInfos(list) {
 //-----------Salle libre--------------
 				var temps=FreebusyRoom.jusquOrUntil+res[0];
 				var dureeLibre=substractTime(res[0],now);
-				if ((compareTime(dureeLibre,"1:00"))&&($("#b_res60").length==0)) {
-					sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
+				if (compareTime("0:45",dureeLibre)) {
+					$("#b_res60").attr("onClick","res_demand(30)");
 				}
-				if ((compareTime(dureeLibre,"1:30"))&&($("#b_res90").length==0)) {
-					sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
+				if ((compareTime(dureeLibre,"1:15"))&&($("#b_res60").length==0)) {
+					sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(75)"> 1 h </div></li>');
 				}
-				if ((compareTime(dureeLibre,"2:00"))&&($("#b_res120").length==0)) {
-					sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+				if ((compareTime(dureeLibre,"1:45"))&&($("#b_res90").length==0)) {
+					sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(105)"> 1 h 30 </div></li>');
+				}
+				if ((compareTime(dureeLibre,"2:15"))&&($("#b_res120").length==0)) {
+					sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(135)"> 2 h </div></li>');
 				}
 				var w=$(window).width();
 				$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});
@@ -595,9 +598,9 @@ function fillResInfos(list) {
 	else {//il n'y a pas de rï¿½servation d'ici la fin de la journï¿½e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 //-------Salle libre-----------
-			if ($("#b_res60").length==0) sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(60)"> 1 h </div></li>');
-			if ($("#b_res90").length==0) sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(90)"> 1 h 30 </div></li>');
-			if ($("#b_res120").length==0) sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(120)"> 2 h </div></li>');
+			if ($("#b_res60").length==0) sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(75)"> 1 h </div></li>');
+			if ($("#b_res90").length==0) sub.append('<li><div type="button" id="b_res90" class="menu_hour" onClick="res_demand(105)"> 1 h 30 </div></li>');
+			if ($("#b_res120").length==0) sub.append('<li><div type="button" id="b_res120" class="menu_hour" onClick="res_demand(135)"> 2 h </div></li>');
 			var w=$(window).width();
 			$('#info-res-presta').html('');
 			$("body").css({"background-color":"#d7f0db"});//.css({"outline-left":"10px solid #38b54d"});

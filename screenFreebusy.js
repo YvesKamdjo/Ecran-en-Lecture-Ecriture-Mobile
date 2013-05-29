@@ -205,9 +205,8 @@ function fillRoomList(objJson) {//remplit un tableau contenant la liste des sall
 	var j=0;
 	var allRoomList = [];
 	while (objJson[i]){
-		if ((objJson[i].location.id==85)||(objJson[i].location.id==89)) {
-			allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity, "owner":""};
-			j++;}
+		allRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":objJson[i].resourceProfil.endTime, "capacity":objJson[i].capacity, "owner":""};
+		j++;
 		i++;
 		}
 
@@ -256,20 +255,11 @@ function fillFreeRoomList(objJson){// remplit un tableau avec la liste des salle
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
 	while (objJson[i]){
-		if (objJson[i].location.id==85) {//si c'est une petite salle
-			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
-			j++;
-			}
-		}
-		else if (objJson[i].location.id==89) {//si c'est une grande salle
-			if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
-			freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
-			j++;
-			}
+		if (compareTime(objJson[i].resourceProfil.endTime,nowPlusTemp)){
+		freeRoomList[j]={"id":objJson[i].id, "name":objJson[i].displayName, "time":""/*objJson[i].resourceProfil.endTime*/, "capacity":objJson[i].capacity};
+		j++;
 		}
 		i++;
-		
 	}
 	
 	Freebusy.freeRoomList=freeRoomList;
