@@ -38,28 +38,26 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 	return ""+hhmm[0]+":"+hhmm[1]; // l'heure au format hh:mm
 }
 
+function setDisplay() {
+	var w=$(window).width();
+	var h=$(window).height();
+
+	$("#entete").css("height",((h-25*h/100)/10)+"px");
+	$(".refresh").css("height",((h-25*h/100)/10)+"px");
+	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
+	if (w/h<1.3) $("#title").css("font-size",150+"%");
+	else $("#title").css("font-size",200+"%");
+}
+
 function initDocument(){
 	var i=0;
 	setUrlParameters();
 	setLanguage();
 	screenGuestOrientation.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
-	var w=$(window).width();
-	var h=$(window).height();
-	$("#entete").css("height",((h-25*h/100)/10)+"px");
-	$(".refresh").css("height",((h-25*h/100)/10)+"px");
-	$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
-	$(".tableau").css("font-size",((w*h/1000000)+1)+"em");
-	$("#title").css("font-size",((w*h/1000000)+1)+"em");
+	setDisplay();
 	$(window).resize(function(){
-		var w=$(window).width();
-		var h=$(window).height();
-		$("#entete").css("height",((h-25*h/100)/10)+"px");
-		$(".refresh").css("height",((h-25*h/100)/10)+"px");
-		$("#hourPanel").css("font-size",((w*h/1000000)+2)+"em");
-		$(".tableau").css("font-size",((w*h/1000000)+1)+"em");
-		$("#title").css("font-size",((w*h/1000000)+1)+"em");
+		setDisplay();
 	});
-	
 	getUrbaToken();
 	getUrbaJson();
 	displayNewJson(screenGuestOrientation.json);
