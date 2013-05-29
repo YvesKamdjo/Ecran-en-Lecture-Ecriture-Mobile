@@ -65,7 +65,9 @@ function initDocument(){
 
 function setUrlParameters(){
 screenGuestOrientation.lang="fr";//langue par defaut c'est le français
-screenGuestOrientation.lang=getURLParameter("lang");
+var l=getURLParameter("lang");
+if(l!="undefined")
+	screenGuestOrientation.lang=l;
 }
 function setLanguage(){
 switch(screenGuestOrientation.lang){
