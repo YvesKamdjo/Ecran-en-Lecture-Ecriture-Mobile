@@ -9,15 +9,23 @@ function setIdentification(log, pass,url){
 
 
 function getDMY() {
-	var months = ["Janvier", "Février", "Mars", 
+	var mois = ["Janvier", "Février", "Mars", 
 					"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
 					"Octobre", "Novembre", "Décembre"];
+	var months = [ "January", "February", "March", "April", "May", "June",
+							"July", "August", "September", "October", "November", "December" ];
 	var myDate = new Date();
 	var day = myDate.getDate(); 
-	var month = months[myDate.getMonth()]; 
+	if(screenGuestOrientation.lang=="fr"){
+	var month = mois[myDate.getMonth()]; 
 	var year = myDate.getFullYear(); 
-	
 	theDate = "" + day + "/" + month + "/" + year;
+	}
+	else if(screenGuestOrientation.lang=="en"){
+		var month = months[myDate.getMonth()]; 
+	var year = myDate.getFullYear(); 
+	theDate = "" +month+ "/" +day +"/" + year;
+	}
 	
 	return theDate;
 }
@@ -27,7 +35,12 @@ function showDate(){
 	var date=[];
 	d = getDMY()
 	date = d.split("/");
-	var theDate = 'Réunions du <span class="date">' + date[0] +" "+ date[1] +" "+ date[2] +'</span>';
+	if(screenGuestOrientation.lang=="fr"){
+		var theDate = 'Réunions du <span class="date">' + date[0] +" "+ date[1] +" "+ date[2] +'</span>';
+	}
+	else if(screenGuestOrientation.lang=="en"){
+		var theDate = 'Bookings for <span class="date">' + date[0] +" "+ date[1] +", "+ date[2] +'</span>';
+	}
 	document.getElementById('title').innerHTML=theDate;
 	setTimeout("showDate();",60000);
 }
@@ -78,12 +91,14 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(1).html("Organisateur");
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
+		$("title").html('Orientation des visiteurs');
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
 		$("#entete td").eq(1).html("Owner");
 		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
+		$("title").html('Guest Orientation');
 	break;
 }
 }
