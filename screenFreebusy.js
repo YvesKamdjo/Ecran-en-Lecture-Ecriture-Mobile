@@ -380,9 +380,18 @@ function smallestStartTime(a, b) {//tri par heure de départ croissante
 }
 
 function sortRoomsByCapacity(a, b) {//tri par nombre de place croissant
-		var A=a.capacity;
-		var B=b.capacity;
+	var A=a.capacity;
+	var B=b.capacity;
+	console.log(A+' et '+B);
+	if ((A==0)&&(B>0)) {
+		return 1;
+	}
+	if ((A>0)&&(B==0)) {
+		return -1;
+	}
+	else if ((A>0)&&(B>0)) {
 		return parseInt(A, 10)-parseInt(B, 10);
+	}
 }
 
 function sortRoomsByFreeTime(a, b) {//tri par durée libre croissante
