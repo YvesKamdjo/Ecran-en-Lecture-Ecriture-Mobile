@@ -181,6 +181,7 @@ function setPageLanguage(){
 		Freebusy.messFinOrEnd="Until the end of the day";
 		Freebusy.pendantOrFor="for ";
 		Freebusy.indispoOrUnava="Unavailable";
+		Freebusy.nbPlaces="seat"
 	break;
 	case "fr":
 		$("#salles-libres").html("Salles Libres");
@@ -189,6 +190,7 @@ function setPageLanguage(){
 		Freebusy.pendantOrFor="pendant ";
 		Freebusy.indispoOrUnava="Indisponible";
 		$('title').html("Occupation des salles ");
+		Freebusy.nbPlaces="place"
 	break;
 	}
 }
@@ -488,10 +490,19 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 	}
 transfertUrlParameters(false,false,false,"capacitive",true);
 var html=[];
+if (nBseats!=1) var placeS=Freebusy.nbPlaces+"s";
+else var placeS=Freebusy.nbPlaces;
+if (nBseats==0)
+	nbPlaces="";
+else if (nBseats==1)
+	nbPlaces='<img class="seats-icon">'+nBseats+' '+Freebusy.nbPlaces;
+else if (nBseats>1)
+	nbPlaces='<img class="seats-icon">'+nBseats+' '+Freebusy.nbPlaces+'s';
+
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
 html.push(Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&home='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
-html.push('<img class="seats-icon">'+nBseats+' places</div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
+html.push(nbPlaces+' </div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
 	$(this).css('background','#cedfd0');
@@ -499,7 +510,6 @@ $("li.une-salle-libre").mouseover(function() {
 $("li.une-salle-libre").mouseout(function() {
 	$(this).css('background','#ecf3ed');
 });
-
 $(".duree-icon:even").attr('src','icon-duree-light.png');
 $(".seats-icon:even").attr('src','icon-seats-light.png');
 $(".duree-icon:odd").attr('src','icon-duree-dark.png');
