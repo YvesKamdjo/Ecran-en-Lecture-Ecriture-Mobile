@@ -1,9 +1,15 @@
 var Common={};//variable globale pour ce fichier
 function launcher(){//le lanceur du programme
-	setIdentification('gallain@lucca.fr', 'gallain', '//demo.urbaonline.com/pjeecran/');
+$.getJSON('conf.json', function(json) {
+		Common.login = json[0].login;
+		Common.password = json[0].password;
+		Common.baseUrl = json[0].baseUrl;
+	}).done(function() {
+		setIdentification(Common.login, Common.password, Common.baseUrl);
 		$(document).ready(function() {
-		initDocument();
-		});			
+			initDocument();
+		});
+	});
 }
 
 function getURLParameter(name) {//recupere les parametres de l'url. name= nom du paramètre à recuperer
