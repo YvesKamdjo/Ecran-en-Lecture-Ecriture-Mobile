@@ -163,7 +163,7 @@ function setUrlParameters(){//permet de récupérer les identifiants des salles 
 	if (screen!="null")
 		Freebusy.screen=screen;
 	else
-		Freebus.screen="capacitive";
+		Freebusy.screen="capacitive";
 	var h=getURLParameter("home");
 	if (h!="null") 
 		Freebusy.home=h;
