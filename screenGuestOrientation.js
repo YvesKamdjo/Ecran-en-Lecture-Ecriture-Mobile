@@ -10,8 +10,8 @@ function setIdentification(log, pass,url){
 
 function getDMY() {
 	var months = ["Janvier", "Février", "Mars", 
-"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
-"Octobre", "Novembre", "Décembre"];
+					"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
+					"Octobre", "Novembre", "Décembre"];
 	var myDate = new Date();
 	var day = myDate.getDate(); 
 	var month = months[myDate.getMonth()]; 
