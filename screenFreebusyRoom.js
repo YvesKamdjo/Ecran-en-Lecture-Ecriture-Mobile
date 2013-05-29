@@ -139,10 +139,10 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	var resources=jaaulde.utils.cookies.get('resourcesList');
 	console.log(resources);
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
-		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home+"&resource="+resources;
+		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&listResourccesDisplayed="+resources;
 		}
 	else{
-		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
+		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home;
 		}
 	$("#link_back").attr("href",href);
 }
