@@ -1,9 +1,10 @@
 var screenGuestOrientation= new Object();
 var refresh=false;
 
-function setIdentification(log, pass){
+function setIdentification(log, pass,url){
 	screenGuestOrientation.login=log;
 	screenGuestOrientation.password=pass;
+	screenGuestOrientation.url=url;
 	}
 
 
@@ -41,6 +42,7 @@ function initDocument(){
 	var i=0;
 	setUrlParameters();
 	setLanguage();
+	screenGuestOrientation.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	var w=$(window).width();
 	var h=$(window).height();
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
@@ -64,9 +66,9 @@ function initDocument(){
 }
 
 function setUrlParameters(){
-//langue par defaut c'est le français
+screenGuestOrientation.lang="fr";//langue par defaut c'est le français
 var l=getURLParameter("lang");
-if(l!="undefined")
+if(l!="null")
 	screenGuestOrientation.lang=l;
 }
 function setLanguage(){
@@ -94,7 +96,7 @@ function refreshScreen(){
 
  function getUrbaToken(){
 	$.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
+		url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
 		dataType : 'jsonp',
 		async : false,
 		jsonpCallback: 'setValidToken',			
@@ -121,7 +123,7 @@ function getUrbaJson(){
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
+			url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
 			async : false,
 			jsonpCallback: 'fillNewJson',		

@@ -1,6 +1,6 @@
 var Common={};//variable globale pour ce fichier
 function launcher(){//le lanceur du programme
-	setIdentification('gallain@lucca.fr', 'gallain');
+	setIdentification('gallain@lucca.fr', 'gallain', '//demo.urbaonline.com/pjeecran/');
 		$(document).ready(function() {
 		initDocument();
 		});			

@@ -1,9 +1,10 @@
 var FreebusyRoom= new Object();
 FreebusyRoom.pushed=0;
 
-function setIdentification(log, pass){
+function setIdentification(log, pass, url){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
+	FreebusyRoom.url=url;
 	}
 
 		  
@@ -194,15 +195,15 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (FreebusyRoom.home=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
-	else linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+	if (FreebusyRoom.home=="list") linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusy.html?lang='+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
+	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 
 	window.location.href = linkHome;
 }
 
  function getUrbaToken(function1, param1){
  $.ajax({
-		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
+		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
@@ -302,7 +303,7 @@ function deOrFromAndAOrTo(debut,fin){//traduction français<=>anglais
 
 function getRoomInfo(){
 	$.ajax({
-			url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
+			url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
 			crossDomain: 'true'
@@ -312,7 +313,7 @@ function getRoomInfo(){
 function getFreeRoomList(){
 	$.ajax({
 			type: "GET",
-			url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
 			dataType:  'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -375,7 +376,7 @@ function getResInfo() {
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
-			url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -421,7 +422,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 function getOrder(id) {
 	$.ajax({	
 		type: "GET",
-		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'fillOrder',
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -661,7 +662,7 @@ function sendRes(){
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings?Token="+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings?Token='+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -697,7 +698,7 @@ $("#confirmerStop input:first").click(function(){
 	blockDiv.remove();
 	$.ajax({
 			type: "GET",
-			url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+			url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback:"changeEndTime"
 			})
@@ -732,7 +733,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
+		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -742,7 +743,7 @@ var json=JSON.stringify(jsonF);
 function getRes() {
 	console.log(FreebusyRoom.connectProtocol);
 	var geturl=$.ajax({
-		url : FreebusyRoom.connectProtocol+'//demo.urbaonline.com/pjeecran/api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -759,7 +760,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+"//demo.urbaonline.com/pjeecran/api/v1/Bookings/"+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
+		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {

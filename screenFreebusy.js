@@ -2,9 +2,10 @@ var Freebusy= new Object();
 var blockedRoom=[];
 Freebusy.scrollStep=25;
 Freebusy.scrolling=false;
-function setIdentification(log, pass){
+function setIdentification(log, pass,url){
 	Freebusy.login=log;
 	Freebusy.password=pass;
+	Freebusy.url=url;
 }
 
 $.fn.scrollBottom = function() { 
@@ -63,6 +64,7 @@ function scrollContent(direction) {
 function initDocument(){
 	var h=$(window).height();
 	var w=$(window).width();
+	Freebusy.connectProtocol=window.location.protocol;
 	setUrlParameters();
 	setPageLanguage();
 	
@@ -125,8 +127,8 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (Freebusy.home=="list") linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&home="+Freebusy.home;
-	else linkHome="http://demo.urbaonline.com/pjeecran/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+	if (Freebusy.home=="list") linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&home="+Freebusy.home;
+	else linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 	
 	window.location.href = linkHome;
 }
@@ -134,7 +136,7 @@ function returnHome() {
  function getUrbaToken(nextFunction){
 
 	$.ajax({
-		url : 'http://demo.urbaonline.com/pjeecran/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
+		url : Freebusy.connectProtocol+Freebusy.url+'/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
@@ -190,7 +192,7 @@ function setPageLanguage(){
 }
 function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
-			'url' : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?Token='+Freebusy.validToken,
+			'url' : Freebusy.connectProtocol+Freebusy.url+'/api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList'		
 		});
@@ -239,7 +241,7 @@ function createDuration(){//traduit l'intervale de temps entre maintenant et une
 
 function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Freebusy.url+'/api/v1/resources?free=between,'+createDuration()+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList'		
 		});
@@ -290,7 +292,7 @@ function getResInfo() {//demande à l'API la liste des réservations de la journ
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : 'http://demo.urbaonline.com/pjeecran/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Freebusy.url+'/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRooms'		
 		});
