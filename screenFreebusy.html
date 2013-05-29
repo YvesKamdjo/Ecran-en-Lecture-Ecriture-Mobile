@@ -10,16 +10,18 @@
 	</head>
 	<body>
 		<div data-role="page" id="wrapper">
-		<div data-role="content" class="contenu" id="textarea"><!-- le contenu-->
-			<ul id="listes-salles-libres" class="pour-les-salles" data-role="listview" >
-				<li data-role="list-divider" id="salles-libres"></li>
-			</ul>
-			<img src="load_green.gif" class="loadgif">
-			<ul id="listes-salles-occupees" class="pour-les-salles" data-role="listview">
-				<li data-role="list-divider" id="salles-occupees"></li>
-			</ul>
-			<img src="load_red.gif" class="loadgif">
-		</div>
+			<div id="scrollUp" class="scroll_btn"><img src="scrollup_arrow.png" class="scroll_img"></div>
+			<div data-role="content" class="contenu" id="textarea"><!-- le contenu-->
+				<ul id="listes-salles-libres" class="pour-les-salles" data-role="listview" >
+					<li data-role="list-divider" id="salles-libres"></li>
+				</ul>
+				<img src="load_green.gif" class="loadgif">
+				<ul id="listes-salles-occupees" class="pour-les-salles" data-role="listview">
+					<li data-role="list-divider" id="salles-occupees"></li>
+				</ul>
+				<img src="load_red.gif" class="loadgif">
+			</div>
+			<div id="scrollDown" class="scroll_btn"><img src="scrolldown_arrow.png" class="scroll_img"></div>
 		</div>
 		</body>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

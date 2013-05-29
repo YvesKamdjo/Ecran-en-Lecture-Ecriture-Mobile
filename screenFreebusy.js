@@ -1,8 +1,61 @@
 var Freebusy= new Object();
 var blockedRoom=[];
+Freebusy.scrollStep=25;
+Freebusy.scrolling=false;
 function setIdentification(log, pass){
 	Freebusy.login=log;
 	Freebusy.password=pass;
+}
+
+$.fn.scrollBottom = function() { 
+  return ($(window).height()+$("#textarea").scrollTop()-$("#listes-salles-libres").height()-$("#listes-salles-occupees").height());
+};
+
+// Wire up events for the 'scrollUp' link:
+$("#scrollUp").bind("click", function(event) {
+    event.preventDefault();
+    // Animates the scrollTop property by the specified
+    // step.
+    $("#textarea").animate({
+        scrollTop: "-=" + Freebusy.scrollingStep + "px"
+    });
+}).bind("mousedown", function(event) {
+    Freebusy.scrolling = true;
+    scrollContent("up");
+}).bind("mouseup", function(event) {
+    Freebusy.scrolling = false;
+});
+
+
+$("#scrollDown").bind("click", function(event) {
+    event.preventDefault();
+    $("#textarea").animate({
+        scrollTop: "+=" + Freebusy.scrollingSstep + "px"
+    });
+}).bind("mousedown", function(event) {
+    Freebusy.scrolling = true;
+    scrollContent("down");
+}).bind("mouseup", function(event) {
+    Freebusy.scrolling = false;
+});
+
+function scrollContent(direction) {
+    var amount = (direction === "up" ? "-=50px" : "+=50px");
+    $("#textarea").animate({
+        scrollTop: amount
+    }, 1, function() {
+        if (Freebusy.scrolling) {
+            scrollContent(direction);
+        }
+    });
+	if ($("#textarea").scrollTop()==0) $("#scrollUp").hide();
+	else $("#scrollUp").show();
+
+	var a=$(window).height()+$("#textarea").scrollTop();
+	var b=$("#listes-salles-libres").height()+$("#listes-salles-occupees").height()+50;
+	console.log((a-b)/a);
+	if (Math.abs((a-b)/a)<0.0099) $("#scrollDown").hide();
+	else $("#scrollDown").show();
 }
 
 
@@ -40,6 +93,11 @@ function initDocument(){
 		$(".duree-icon").css("height",(h/2500+1+"em"));
 		$(".seats-icon").css("height",(h/2500+1+"em"));
 	});
+	
+	if (Freebusy.screen=="resistive") {
+		$("#wrapper").attr("id","#wrapper_resistive");
+		$("#textarea").attr("id","#textarea_resistive");
+	}
 
 	getUrbaToken(getRoomList);
 	//var textareaWidth = document.getElementById("textarea").scrollWidth;
@@ -98,6 +156,11 @@ function setUrlParameters(){//permet de récupérer les identifiants des salles 
 	if(resources!="null")
 	blockedRoom= resources.split(",");
 	Freebusy.lang=getURLParameter("lang");
+	var screen=getURLParameter("screen");
+	if (screen!="undefined")
+		Freebusy.screen=screen;
+	else
+		Freebus.screen="capacitive";
 	var h=getURLParameter("home");
 	if (h!="undefined") 
 		Freebusy.home=h;
