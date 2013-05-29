@@ -152,19 +152,20 @@ function setValidToken(newToken){
 
 function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 	Freebusy.lang="fr";//la langue par defaut est le français!
-	console.log(Freebusy.lang);
 	var resources=getURLParameter("resource");
 	console.log(resources);
 	if(resources!="null")
 	blockedRoom= resources.split(",");
-	Freebusy.lang=getURLParameter("lang");
+	var l=getURLParameter("lang");
+	if(l!="null")
+	Freebusy.lang=l;
 	var screen=getURLParameter("screen");
-	if (screen!="undefined")
+	if (screen!="null")
 		Freebusy.screen=screen;
 	else
 		Freebus.screen="capacitive";
 	var h=getURLParameter("home");
-	if (h!="undefined") 
+	if (h!="null") 
 		Freebusy.home=h;
 	else 
 		Freebusy.home="none";
