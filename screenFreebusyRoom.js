@@ -136,10 +136,11 @@ function generalDisplay() {
 }
 function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
 	var href;
-	var cook;
-	cook=jaaulde.utils.cookies.get('linkBack');
-	console.log(cook);
-	href="screenFreebusy.html"+cook;
+	var resources=jaaulde.utils.cookies.get('resourcesList');
+	if(resources!="null")//tiens compte si les salles ont été regroupées, par exemple par étage,...
+		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home+"&resource="+resources;
+	else
+		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
 	$("#link_back").attr("href",href);
 }
 
@@ -159,9 +160,6 @@ function initDocument(){
 	$("#sub li").hide();
 	$(".menu_hour").hide();
 	$("#b_conf").hide();
-	
-	$("#link_back").attr("href", "screenFreebusy.html?lang="+FreebusyRoom.lang+"&home="+FreebusyRoom.home);
-	
 	generalDisplay();
 	
 	$(window).resize(function(){

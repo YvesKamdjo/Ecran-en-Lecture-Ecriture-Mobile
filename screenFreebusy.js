@@ -153,9 +153,10 @@ function setValidToken(newToken){
 function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 	Freebusy.lang="fr";//la langue par defaut est le français!
 	var resources=getURLParameter("resource");
-	console.log(resources);
-	if(resources!="null")
+	if(resources!="null"){
+	Freebusy.resourcesList=resources;//la liste des ressources groupees à afficher
 	blockedRoom= resources.split(",");
+	}
 	var l=getURLParameter("lang");
 	if(l!="null")
 	Freebusy.lang=l;
@@ -542,19 +543,21 @@ $(".indisponible").css('display','none');
 $("a:even").css('color','#5e8894');
 $('ul').listview('refresh');
 }
-
+function saveParamInCookies(){//permet de sauvegarder certains parametre dans les cookies
+jaaulde.utils.cookies.set('resourcesList',Freebusy.resourcesList);//la liste des salles à afficher dans les cookies
+}
 //Fin Interface graphique
 // Evenements sur les cliques des listes
 function getNameFreeRoomDisplayed(salle){
 	Freebusy.nomSalle=salle;
-	jaaulde.utils.cookies.set('linkBack',document.location.search);//dans les cookies
+	saveParamInCookies();
 }
 function setNameFreeRoomDisplayed(){
 	$("#nom-salle").html(Freebusy.nomSalle);
 }
 function getNameBusyRoomDisplayed(salle){
 	Freebusy.nomSalle=salle;
-	jaaulde.utils.cookies.set('linkBack',document.location.search);//dans les cookies
+	saveParamInCookies();
 }
 function setNameBusyRoomDisplayed(){
 	$("#nom-salle").html(Freebusy.nomSalle);
