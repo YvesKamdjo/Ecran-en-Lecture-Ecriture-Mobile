@@ -131,3 +131,32 @@ html, body
 {
 	text-align : center;
 }
+
+#pages
+{
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:100%;
+	padding-bottom:5%;
+}
+
+#page, #nbPages
+{
+	font-size:200%;
+	display:inline-block;
+	width:50%;
+	color: #5e8894;
+	font-weight:700;
+}
+
+#page
+{
+	text-align:right;
+}
+
+
+#nbPages
+{
+	text-align:left;
+}

@@ -65,6 +65,8 @@ function setDisplay() {
 function initDocument(){
 	var i=0;
 	setUrlParameters();
+	showTime();
+	showDate();
 	setLanguage();
 	screenGuestOrientation.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	setDisplay();
@@ -305,23 +307,28 @@ function displayNewJson(SortedJson){
 		var nbCycles=5;// nombre complètement arbitraire de cycles de rafraichissement
 	
 		if (ligne>screenGuestOrientation.nbDisplayedRes){// s'il y a plus d'une page
+			console.log("test");
 			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {//on cache toutes les lignes des pages suivantes
 				$('#'+i).hide(0);
 			}
 			var nbRefreshToShowAll=Math.ceil((ligne-screenGuestOrientation.nbDisplayedRes)/screenGuestOrientation.nbResToShow);
-			console.log(nbRefreshToShowAll);
 			var k=1;
+			$("#page").html(k);
+			$("#nbPages").html("/"+(nbRefreshToShowAll+1));
 			var interval = setInterval(function(){//toutes les 10s (toujours complètement arbitraire)
+				
 				if (k<=nbRefreshToShowAll){// s'il y a toujours des pages à afficher, on passe à la suivante
 					console.log("nextRes");
 					nextRes(k, ligne);
 					k++;
+					$("#page").html(k);
 				}
 				else {// sinon on repasse à la première page
 					if (nbCycles>0) {
 						console.log("showfirst");
 						showFirstPage();
 						k=1;
+						$("#page").html(k);
 						nbCycles--;
 					}
 					else if (nbCycles==0) {// si on a fait tous les cycles, on rafraichit tout
@@ -329,7 +336,7 @@ function displayNewJson(SortedJson){
 						refreshScreen();
 					}
 				}
-			}, 5000);
+			}, 8000);
 		}
 	}
 }
