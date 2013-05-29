@@ -250,16 +250,16 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var hid=getURLParameter("hideSubject");
 	if(hid!="null")
 		FreebusyRoom.hideSubject= hid;
-	var scre=getURLParameter("screen");
+	var scre=getURLParameter("touchScreenType");
 	if(scre!="null")
 		FreebusyRoom.tactile= scre;
-	var conf=getURLParameter("presenceConfirmation");
+	var conf=getURLParameter("confirmationButton");
 	if(conf!="null")
 	FreebusyRoom.btnConf= conf;
 	var l=getURLParameter("lang");
 	if(l!="null")
 		FreebusyRoom.lang=l
-	var h=getURLParameter("home")
+	var h=getURLParameter("defaultPage")
 	if (h!="null") 
 		FreebusyRoom.home=h;
 	else 
