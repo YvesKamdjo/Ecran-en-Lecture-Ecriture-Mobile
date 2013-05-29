@@ -19,7 +19,8 @@ function getDMY() {
 	if(screenGuestOrientation.lang=="fr"){
 	var month = mois[myDate.getMonth()]; 
 	var year = myDate.getFullYear(); 
-	theDate = "" + day + "/" + month + "/" + year;
+	//theDate = "" + day + "/" + month + "/" + year;
+	theDate = "" + day + "/Septembre/" + year;
 	}
 	else if(screenGuestOrientation.lang=="en"){
 		var month = months[myDate.getMonth()]; 
@@ -58,8 +59,8 @@ function setDisplay() {
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
 	$(".refresh").css("height",((h-25*h/100)/10)+"px");
 	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
-	if (w/h<1.3) $("#title").css("font-size",150+"%");
-	else $("#title").css("font-size",200+"%");
+	$("#title").css("font-size",125+"%");
+	$("#pages").css("font-size",125+"%");
 }
 
 function initDocument(){

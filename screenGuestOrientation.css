@@ -53,10 +53,9 @@ html, body
  
  #title
  {
-	padding-left:4%;
+	padding-left:0.3em;
 	color: #ffffff;
 	text-align:left;
-	font-size:220%
  }
 
 #hourPanel
@@ -134,19 +133,14 @@ html, body
 
 #pages
 {
-	position:absolute;
-	left:0;
-	bottom:0;
-	width:100%;
-	padding-bottom:5%;
+	padding:1% 5% 0 0;
 }
 
 #page, #nbPages
 {
-	font-size:200%;
 	display:inline-block;
 	width:50%;
-	color: #5e8894;
+	color: #ffffff;
 	font-weight:700;
 }
 
