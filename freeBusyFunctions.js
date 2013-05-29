@@ -27,7 +27,7 @@ function getTime(){// retourne l'heure au format "hh:mm"
 }
 function showTime(){//écrit l'heure dans l'élément d'id 'hourpanel', se rafraichit toutes les secondes
 	var t;
-	t = getTime();
+	t =getTime();
 	document.getElementById('hourPanel').innerHTML=t;
 	setTimeout("showTime();",1000);
 }
