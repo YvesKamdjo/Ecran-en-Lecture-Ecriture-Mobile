@@ -127,8 +127,8 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (Freebusy.home=="list") linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&home="+Freebusy.home;
-	else linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+	if (Freebusy.home=="list") linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&defaultPage="+Freebusy.home;
+	else linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&touchScreenType=capacitive&confirmationButton=true&lang=fr&defaultPage=room_"+homeID;
 	
 	window.location.href = linkHome;
 }
@@ -152,7 +152,7 @@ function setValidToken(newToken){
 
 function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 	Freebusy.lang="fr";//la langue par defaut est le français!
-	var resources=getURLParameter("resource");
+	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
 	if(resources!="null"){
 	Freebusy.resourcesList=resources;//la liste des ressources groupees à afficher
 	blockedRoom= resources.split(",");
@@ -160,12 +160,12 @@ function setUrlParameters(){//permet de récupérer les identifiants des salles 
 	var l=getURLParameter("lang");
 	if(l!="null")
 	Freebusy.lang=l;
-	var screen=getURLParameter("screen");
+	var screen=getURLParameter("touchScreenType");
 	if (screen!="null")
 		Freebusy.screen=screen;
 	else
 		Freebusy.screen="capacitive";
-	var h=getURLParameter("home");
+	var h=getURLParameter("defaultPage");
 	if (h!="null") 
 		Freebusy.home=h;
 	else 
@@ -501,7 +501,7 @@ else if (nBseats>1)
 
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-html.push(Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&home='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 html.push(nbPlaces+' </div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
@@ -524,7 +524,7 @@ transfertUrlParameters(false,false,false,"capacitive",true);
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&screen='+Freebusy.isTactile+'&presenceConfirmation='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&home='+Freebusy.home+'">');
+html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
