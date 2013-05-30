@@ -127,8 +127,7 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (Freebusy.home=="list") linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&defaultPage="+Freebusy.home;
-	else linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&touchScreenType=capacitive&confirmationButton=true&lang=fr&defaultPage=room_"+homeID;
+	if (Freebusy.home!="list") linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
 	
 	window.location.href = linkHome;
 }
@@ -428,7 +427,8 @@ function compareRoomLists() {//compare les listes des salles libres à la liste 
 
 
 function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux listes : salles libres et salles occupées
-var tmp= displayedRoom.join(' ');
+	transfertUrlParameters();
+	var tmp= displayedRoom.join(' ');
 	for (i=0;i<freeRooms.length;i++){
 
 		if (displayedRoom.length>0){
@@ -508,7 +508,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 		time+=duree;
 
 	}
-transfertUrlParameters();
+
 var html=[];
 if (nBseats!=1) var placeS=Freebusy.nbPlaces+"s";
 else var placeS=Freebusy.nbPlaces;
@@ -538,9 +538,8 @@ $("a:even").css('color','#5e8894');
 $('#listes-salles-libres').listview('refresh');
 }
 
-
 function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
-transfertUrlParameters();
+
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);

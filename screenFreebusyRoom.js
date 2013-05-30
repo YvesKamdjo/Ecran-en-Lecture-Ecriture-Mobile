@@ -144,14 +144,14 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 		href+="&listResourccesDisplayed="+resources;
 		}
 	
-	$("#link_back").attr("href",href);
+	return href;
 }
 
 function initDocument(){
 	setUrlParameters();
 	pingServeur();
 	setlanguage();
-	setBackLinkUrl();
+	$("#link_back").attr("href",setBackLinkUrl());
 	FreebusyRoom.getBookingToStop="false";
 	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.btnList=="false")) $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
@@ -197,7 +197,7 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (FreebusyRoom.home=="list") linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusy.html?lang='+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home;
+	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
 	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 
 	window.location.href = linkHome;
