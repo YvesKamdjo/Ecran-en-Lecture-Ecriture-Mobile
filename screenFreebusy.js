@@ -54,7 +54,7 @@ function scrollContent(direction) {
 
 	var a=$(window).height()+$("#textarea").scrollTop();
 	var b=$("#listes-salles-libres").height()+$("#listes-salles-occupees").height()+50;
-	console.log((a-b)/a);
+
 	if (Math.abs((a-b)/a)<0.0099) $("#scrollDown").hide();
 	else $("#scrollDown").show();
 }
@@ -127,8 +127,7 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (Freebusy.home=="list") linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusy.html?lang="+Freebusy.lang+"&defaultPage="+Freebusy.home;
-	else linkHome=Freebusy.connectProtocol+Freebusy.url+"/Hd/pjeecran/ecran/screenFreebusyRoom.html?resource="+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&touchScreenType=capacitive&confirmationButton=true&lang=fr&defaultPage=room_"+homeID;
+	if (Freebusy.home!="list") linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
 	
 	window.location.href = linkHome;
 }
@@ -384,7 +383,7 @@ function smallestStartTime(a, b) {//tri par heure de départ croissante
 function sortRoomsByCapacity(a, b) {//tri par nombre de place croissant
 	var A=a.capacity;
 	var B=b.capacity;
-	console.log(A+' et '+B);
+
 	if ((A==0)&&(B>0)) {
 		return 1;
 	}
@@ -428,7 +427,8 @@ function compareRoomLists() {//compare les listes des salles libres à la liste 
 
 
 function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux listes : salles libres et salles occupées
-var tmp= displayedRoom.join(' ');
+	transfertUrlParameters();
+	var tmp= displayedRoom.join(' ');
 	for (i=0;i<freeRooms.length;i++){
 
 		if (displayedRoom.length>0){
@@ -472,19 +472,22 @@ var tmp= displayedRoom.join(' ');
 	setTimeout(function(){location.reload();},300000);
 }
 
-function transfertUrlParameters(ho,hp,hs,hb,hc){
-Freebusy.hideOw=ho;
-Freebusy.hidePh=hp;
-Freebusy.hideSub=hs;
-Freebusy.isTactile=hb;
-Freebusy.btnConf=hc;
+function transfertUrlParameters(){
+	var parameters=[];
+	var parameters=jaaulde.utils.cookies.get('FBRconf').split(",");
+	
+	Freebusy.isTactile=parameters[0];
+	Freebusy.hideOw=parameters[1];
+	Freebusy.hidePh=parameters[2];
+	Freebusy.hideSub=parameters[3];
+	Freebusy.btnConf=parameters[4];
 }
 
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la salle dans la liste des salles libres
 	var time="";
 	var moreThanFiveH=false;
-	if (timeFree=="") {time=Freebusy.messFinOrEnd;}//Freebusy.messFinOrEnd="jusqu'à la fin de la journée"
+	if ((timeFree=="")||(timeFree.charAt(0)=="-")) {time=Freebusy.messFinOrEnd;}//Freebusy.messFinOrEnd="jusqu'à la fin de la journée"
 	else {
 		var duree=timeFree;
 		if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="30 min";
@@ -500,12 +503,12 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			duree=Freebusy.jusquaOrUntil+ heure[0]+"h";
 			moreThanFiveH=true;
 			}
-		else alert(duree);
+		else alert(duree.charAt(0));
 		if (!moreThanFiveH) time= Freebusy.pendantOrFor;//Freebusy.pendantOrFor="pendant "
 		time+=duree;
 
 	}
-transfertUrlParameters(false,false,false,"capacitive",true);
+
 var html=[];
 if (nBseats!=1) var placeS=Freebusy.nbPlaces+"s";
 else var placeS=Freebusy.nbPlaces;
@@ -518,7 +521,7 @@ else if (nBseats>1)
 
 html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 html.push(nbPlaces+' </div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 $("#listes-salles-libres").append(html.join(''));
 $("li.une-salle-libre").mouseover(function() {
@@ -535,13 +538,12 @@ $("a:even").css('color','#5e8894');
 $('#listes-salles-libres').listview('refresh');
 }
 
-
 function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans la liste des salles occupées
-transfertUrlParameters(false,false,false,"capacitive",true);
+
 var html=[];
 html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'">');
+html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'">');
 html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
@@ -561,7 +563,8 @@ $("a:even").css('color','#5e8894');
 $('ul').listview('refresh');
 }
 function saveParamInCookies(){//permet de sauvegarder certains parametre dans les cookies
-jaaulde.utils.cookies.set('resourcesList',Freebusy.resourcesList);//la liste des salles à afficher dans les cookies
+	jaaulde.utils.cookies.set('resourcesList',Freebusy.resourcesList);//la liste des salles à afficher dans les cookies
+	jaaulde.utils.cookies.set('screenList',Freebusy.screen);//le type d'écran utilisé
 }
 //Fin Interface graphique
 // Evenements sur les cliques des listes

@@ -135,25 +135,25 @@ function generalDisplay() {
 	}
 }
 function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
-	var href;
+	var screen=jaaulde.utils.cookies.get('screenList');
+	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen;
 	var resources=jaaulde.utils.cookies.get('resourcesList');
 	console.log(resources);
+	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
-		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&listResourccesDisplayed="+resources;
+		href+="&listResourccesDisplayed="+resources;
 		}
-	else{
-		href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home;
-		}
-	$("#link_back").attr("href",href);
+	
+	return href;
 }
 
 function initDocument(){
 	setUrlParameters();
 	pingServeur();
 	setlanguage();
-	setBackLinkUrl();
+	$("#link_back").attr("href",setBackLinkUrl());
 	FreebusyRoom.getBookingToStop="false";
-	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.listLink=="false")) $("#link_back").hide();
+	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.btnList=="false")) $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -164,6 +164,7 @@ function initDocument(){
 	$(".menu_hour").hide();
 	$("#b_conf").hide();
 	generalDisplay();
+	saveParamInCookies();
 	
 	$(window).resize(function(){
 		generalDisplay();
@@ -196,7 +197,7 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (FreebusyRoom.home=="list") linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusy.html?lang='+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home;
+	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
 	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 
 	window.location.href = linkHome;
@@ -266,7 +267,7 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		FreebusyRoom.home="none";
 	var list=getURLParameter("roomListButton")
 	if (list!="null") 
-		FreebusyRoom.listLink=list;
+		FreebusyRoom.btnList=list;
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
@@ -986,4 +987,9 @@ var h= select.height();
 	$("#grisage").css({//,
 	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.6",
 	"top":position.top,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos});
+}
+
+function saveParamInCookies(){//permet de sauvegarder certains parametre dans les cookies
+	paramCookie=""+FreebusyRoom.tactile+","+FreebusyRoom.hideOwner+","+FreebusyRoom.hidePhone+","+FreebusyRoom.hideSubject+","+FreebusyRoom.btnConf;
+	jaaulde.utils.cookies.set('FBRconf',paramCookie);
 }

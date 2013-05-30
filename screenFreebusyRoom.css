@@ -330,4 +330,9 @@ table{
 a img
 {
 border: none;
-} 
+}
+
+.ui-icon-loading 
+{
+    background: url(http://code.jquery.com/mobile/1.1.0-rc.1/images/ajax-loader.png) !important;
+}
