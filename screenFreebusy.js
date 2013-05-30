@@ -483,7 +483,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 	var time="";
 	if (timeFree=="") {time=Freebusy.messFinOrEnd;}//Freebusy.messFinOrEnd="jusqu'à la fin de la journée"
 	else {
-		var duree=timeFree;
+		var duree=Math.abs(timeFree);
 		if ((compareTime(duree,"0:30"))&&(compareTime("1:0",duree))) duree="30 min";
 		else if ((compareTime(duree,"1:0"))&&(compareTime("1:30",duree))) duree="1h";
 		else if ((compareTime(duree,"1:30"))&&(compareTime("2:0",duree))) duree="1h30";
