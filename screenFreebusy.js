@@ -179,6 +179,7 @@ function setPageLanguage(){
 		$("#salles-occupees").html("Busy Rooms");
 		$('title').html("Room Occupation");
 		Freebusy.messFinOrEnd="Until the end of the day";
+		Freebusy.jusquaOrUntil="Until ";
 		Freebusy.pendantOrFor="for ";
 		Freebusy.indispoOrUnava="Unavailable";
 		Freebusy.nbPlaces="seat"
@@ -187,6 +188,7 @@ function setPageLanguage(){
 		$("#salles-libres").html("Salles Libres");
 		$("#salles-occupees").html("Salles Occup&eacute;es");
 		Freebusy.messFinOrEnd="jusqu'&agrave; la fin de la journ&eacute;e";
+		Freebusy.jusquaOrUntil="jusqu'&agrave; ";
 		Freebusy.pendantOrFor="pendant ";
 		Freebusy.indispoOrUnava="Indisponible";
 		$('title').html("Occupation des salles ");
@@ -481,6 +483,7 @@ Freebusy.btnConf=hc;
 // Interface graphique En JQuery Mobile
 function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la salle dans la liste des salles libres
 	var time="";
+	var moreThanFiveH=false;
 	if (timeFree=="") {time=Freebusy.messFinOrEnd;}//Freebusy.messFinOrEnd="jusqu'à la fin de la journée"
 	else {
 		var duree=timeFree;
@@ -492,11 +495,15 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 		else if ((compareTime(duree,"4:0"))&&(compareTime("5:0",duree))) duree="4h";
 		else if (compareTime(duree,"5:0")) {
 			var heure=[];
-			heure=duree.split(":");
-			duree="jusqu'à "+ heure[0]+"h";
+			var now= getTime(); 
+			heure=addTime(duree, now).split(":");
+			duree=Freebusy.jusquaOrUntil+ heure[0]+"h";
+			moreThanFiveH=true;
 			}
 		else alert(duree);
-		time=Freebusy.pendantOrFor+duree;//Freebusy.pendantOrFor="pendant "
+		if (!moreThanFiveH) time= Freebusy.pendantOrFor;//Freebusy.pendantOrFor="pendant "
+		time+=duree;
+
 	}
 transfertUrlParameters(false,false,false,"capacitive",true);
 var html=[];
