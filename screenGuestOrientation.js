@@ -1,5 +1,6 @@
 var screenGuestOrientation= new Object();
-var refresh=false;
+//var refresh=false;
+var displayedRoomForGuest=[];
 
 function setIdentification(log, pass,url){
 	screenGuestOrientation.login=log;
@@ -9,7 +10,7 @@ function setIdentification(log, pass,url){
 
 
 function getDMY() {
-	var theDate;
+	var theDate=[];
 	var mois = ["Janvier", "Février", "Mars", 
 					"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
 					"Octobre", "Novembre", "Décembre"];
@@ -17,25 +18,25 @@ function getDMY() {
 							"July", "August", "September", "October", "November", "December" ];
 	var myDate = new Date();
 	var day = myDate.getDate(); 
+	var year = myDate.getFullYear(); 
 	if(screenGuestOrientation.lang=="fr"){
 	var month = mois[myDate.getMonth()]; 
-	var year = myDate.getFullYear(); 
-	theDate = "" + day + "/Septembre/" + year;
+	theDate.push(day);
+	theDate.push(month);
+	theDate.push(year);
 	}
 	else if(screenGuestOrientation.lang=="en"){
 		var month = months[myDate.getMonth()]; 
-	var year = myDate.getFullYear(); 
-	theDate = "" +month+ "/" +day +"/" + year;
+	theDate.push(day);
+	theDate.push(month);
+	theDate.push(year);
 	}
 	
 	return theDate;
 }
   
 function showDate(){
-	var d;
-	var date=[];
-	d = getDMY()
-	date = d.split("/");
+	var date=getDMY();
 	if(screenGuestOrientation.lang=="fr"){
 		var theDate = 'Réunions du <span class="date">' + date[0] +" "+ date[1] +" "+ date[2] +'</span>';
 	}
@@ -55,7 +56,6 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 function setDisplay() {
 	var w=$(window).width();
 	var h=$(window).height();
-
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
 	$(".refresh").css("height",((h-25*h/100)/10)+"px");
 	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
@@ -84,9 +84,14 @@ if(l!="null")
 	screenGuestOrientation.lang=l;
 screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
 screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
+	if(resources!="null"){
+	screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
+	displayedRoomForGuest= resources.split(",");
+	}
 }
 
-function setLanguage(){
+function setLanguage(){//changement de langue
 switch(screenGuestOrientation.lang){
 	case "fr":
 		$("#entete td").eq(0).html("Début");
@@ -149,6 +154,7 @@ function getUrbaJson(){
 	
 function fillNewJson(objJson){
 	var intervalInMin=getTimeInterval();
+	var tmp=displayedRoomForGuest.join(' ');// liste des ID à afficher
 	intervalInMin=parseInt(intervalInMin, 10);
 	interval=""+Math.floor(intervalInMin/60)+":"+intervalInMin%60;
 	var j=0;
@@ -161,10 +167,18 @@ function fillNewJson(objJson){
 		stH=getTimeFromUrbaFormat(value.startDate);
 		endH=getTimeFromUrbaFormat(value.endDate);
 		var startMinusInterval=substractTime(stH, interval);
-		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) {// formation d'un nouveau JSON
-			newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-			j=j+1;
-		}
+		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) // formation d'un nouveau JSON
+			if(displayedRoomForGuest.length>0){// s'il y a des salles à afficher alors,
+				if( tmp.indexOf(value.resource.id)!=-1){//on verifie si elles font partie des bon id et on affiche 
+				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+				j=j+1;
+				}
+			}
+			else{
+				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+				j=j+1;
+			}
+			
 	});
 
 	sortNewJson(newJson,"heuresDeResa");
@@ -205,20 +219,21 @@ function displayNewJson(SortedJson){
 	$.each(SortedJson, function(key, value) {// pour chaque élément du json, on ajoute une ligne sur la page
 		if (ligne%2==0) p=1;
 		if (ligne%2==1) p=2;
-		var h=(SortedJson[ligne].heuresDeResa).split(":");
-		items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
-		items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
-		items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
-		if (!compareTime(SortedJson[ligne].heuresDeResa,now)) items.push('<td class="debut">'+screenGuestOrientation.enCours+'</td>');//screenGuestOrientation.enCours=en cours
-		else items.push('<td class="debut"></td>');		
-		$('<tr>', {
-		   'class': 'ligne'+p+' refresh',
-		   'id': ligne,
-		   html: items.join('')
-		   }).appendTo('table');
-		   items.length = 0;
-		   ligne++;
-
+				var h=(SortedJson[ligne].heuresDeResa).split(":");
+				items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
+				items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
+				items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
+				if (!compareTime(SortedJson[ligne].heuresDeResa,now)) 
+					items.push('<td class="debut">'+screenGuestOrientation.enCours+'</td>');//screenGuestOrientation.enCours=en cours ou In Progress
+				else 
+					items.push('<td class="debut"></td>');		
+				$('<tr>', {
+				   'class': 'ligne'+p+' refresh',
+				   'id': ligne,
+				   html: items.join('')
+				   }).appendTo('table');
+				   items.length = 0;  
+				   ligne++;
 	});
 	
 	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
