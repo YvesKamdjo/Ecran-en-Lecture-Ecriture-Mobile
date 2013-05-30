@@ -386,6 +386,7 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
 	var local=all.replace(" GMT","");
 	var tmpLocal=Date.parse(local);//conversion en milliseconds
+	console.log(local>tmpTime);
 	if(Math.abs(tmpLocal-tmpServ)>900000)//s'il y a un décalage d'aumoins 15 minutes=900000 ms alors signaler!
 		alert(langForHoursChecking(FreebusyRoom.lang,text[4],nt[4]));//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
@@ -598,7 +599,7 @@ function fillResInfos(list) {
 			}
 		}
 	}
-	else {//il n'y a pas de rï¿½servation d'ici la fin de la journï¿½e
+	else {//il n'y a pas de reservation d'ici la fin de la journï¿½e
 		if (FreebusyRoom.vacancy) {//si la salle est libre (et non-indisponible)
 //-------Salle libre-----------
 			if ($("#b_res60").length==0) sub.append('<li><div type="button" id="b_res60" class="menu_hour" onClick="res_demand(75)"> 1 h </div></li>');
@@ -957,7 +958,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la frise
 	var t;
 	var sel=$("#frise");
-	var uniteHeure=$(window).width()/12;// calcul de la taille d'heure en pixel. La division par 12 parce qu'il y a 12 tranches horaires (de 8h à 20h).
+	var uniteHeure=$(window).width()/12;// calcul de la taille de l'heure en pixel. La division par 12 parce qu'il y a 12 tranches horaires (de 8h à 20h).
 	var uniteMinute=uniteHeure/60;// calcul d'une minute en pixel
 	t = getTime();
 	var t2=[];

@@ -94,7 +94,7 @@ var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour li
 function setLanguage(){//changement de langue
 switch(screenGuestOrientation.lang){
 	case "fr":
-		$("#entete td").eq(0).html("Début");
+		$("#entete td").eq(0).html("D&eacutebut");
 		$("#entete td").eq(1).html("Organisateur");
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
