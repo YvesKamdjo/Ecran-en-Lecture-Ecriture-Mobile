@@ -153,7 +153,7 @@ function initDocument(){
 	setlanguage();
 	setBackLinkUrl();
 	FreebusyRoom.getBookingToStop="false";
-	if (FreebusyRoom.tactile!="capacitive") $("#link_back").hide();
+	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.listLink=="false")) $("#link_back").hide();
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
@@ -264,6 +264,9 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		FreebusyRoom.home=h;
 	else 
 		FreebusyRoom.home="none";
+	var list=getURLParameter("roomListButton")
+	if (list!="null") 
+		FreebusyRoom.listLink=list;
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
