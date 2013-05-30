@@ -495,6 +495,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 			heure=duree.split(":");
 			duree="jusqu'à "+ heure[0]+"h";
 			}
+		else alert(duree);
 		time=Freebusy.pendantOrFor+duree;//Freebusy.pendantOrFor="pendant "
 	}
 transfertUrlParameters(false,false,false,"capacitive",true);
