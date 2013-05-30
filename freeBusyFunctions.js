@@ -23,12 +23,9 @@ function getTime(){// retourne l'heure au format "hh:mm"
 	var hour = myDate.getHours(); 
 	var minute = myDate.getMinutes(); 
 	var theTime;
-	 
 	if (hour < 10) { hour = "0" + hour; } 
 	if (minute < 10) { minute = "0" + minute; } 
-	
 	theTime = "" + hour + ":" + minute;
-	
 	return theTime;
 }
 function showTime(){//écrit l'heure dans l'élément d'id 'hourpanel', se rafraichit toutes les secondes

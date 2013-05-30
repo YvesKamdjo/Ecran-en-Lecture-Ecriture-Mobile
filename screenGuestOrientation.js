@@ -9,6 +9,7 @@ function setIdentification(log, pass,url){
 
 
 function getDMY() {
+	var theDate;
 	var mois = ["Janvier", "Février", "Mars", 
 					"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
 					"Octobre", "Novembre", "Décembre"];
@@ -19,7 +20,6 @@ function getDMY() {
 	if(screenGuestOrientation.lang=="fr"){
 	var month = mois[myDate.getMonth()]; 
 	var year = myDate.getFullYear(); 
-	//theDate = "" + day + "/" + month + "/" + year;
 	theDate = "" + day + "/Septembre/" + year;
 	}
 	else if(screenGuestOrientation.lang=="en"){
@@ -82,7 +82,10 @@ screenGuestOrientation.lang="fr";//langue par defaut c'est le français
 var l=getURLParameter("lang");
 if(l!="null")
 	screenGuestOrientation.lang=l;
+screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
+screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
 }
+
 function setLanguage(){
 switch(screenGuestOrientation.lang){
 	case "fr":
@@ -181,75 +184,20 @@ function sortNewJson(jsonToSort, prop) {
 }
 
 function getTimeInterval(){//permet de récupérer l'intervalle de temps pendant lequel les réservations suivantes peuvent commencer
-	var query= document.location.search;
-	var tmp1=[];
-	var tmp=[];
-	if (query.indexOf("?")>=0){
-		tmp1= query.split("?");
-		if (tmp1[1].indexOf("&")>=0){
-			tmp=tmp1[1].split("&");
-			var timeInt=false;
-			for (i=0;i<tmp.length;i++) {
-				var t=[];
-				t=tmp[i].split("=");
-				if(t[0]=="timeNextBookings"){
-					var timeNextBookings= t[1];
-					timeInt=true;
-					return timeNextBookings;
-				}
-			}
-			if (!timeInt) return 120;
-		}
-		else {
-			tmp=tmp1[1].split("=");
-			if(tmp[0]=="timeNextBookings"){
-				var timeNextBookings= tmp[1];
-				return timeNextBookings;
-			}
-			else return 120;
-		}
+	if(screenGuestOrientation.timeNextBookings){
+		return screenGuestOrientation.timeNextBookings;
 	}
-	else return 120;
+	else 
+		return 120;
 }
 
-function getnbLinesToUpdate(){//permet de récupérer l'intervalle de temps pendant lequel les réservations suivantes peuvent commencer
-	var query= document.location.search;
-	var tmp1=[];
-	var tmp=[];
-	if (query.indexOf("?")>=0){
-		tmp1= query.split("?");
-		if (tmp1[1].indexOf("&")>=0){
-			tmp=tmp1[1].split("&");
-			var nbLineUp=false;
-			for (i=0;i<tmp.length;i++) {
-				var t=[];
-				t=tmp[i].split("=");
-				if(t[0]=="nbLinesToUpdate"){
-					var nbLinesToUpdate= t[1];
-					nbLineUp=true;
-					return nbLinesToUpdate;
-				}
-			}
-			if (!nbLineUp) return "";
-		}
-		else {
-			tmp=tmp1[1].split("=");
-			if(tmp[0]=="nbLinesToUpdate"){
-				var nbLinesToUpdate= tmp[1];
-				return nbLinesToUpdate;
-			}
-			else return "";
-		}
-	}
-	else return "";
-}
 
 function displayNewJson(SortedJson){
 	var ligne=0;
 	var items = [];
 	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
-	screenGuestOrientation.nbResToShow=getnbLinesToUpdate();//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-	if ((screenGuestOrientation.nbResToShow=="")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
+	//screenGuestOrientation.nbResToShow=nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+	if ((screenGuestOrientation.nbResToShow=="null")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
 	var today= new Date();
 	now=getTime();
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
@@ -306,7 +254,6 @@ function displayNewJson(SortedJson){
 		var nbCycles=5;// nombre complètement arbitraire de cycles de rafraichissement
 	
 		if (ligne>screenGuestOrientation.nbDisplayedRes){// s'il y a plus d'une page
-			console.log("test");
 			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {//on cache toutes les lignes des pages suivantes
 				$('#'+i).hide(0);
 			}
@@ -317,7 +264,6 @@ function displayNewJson(SortedJson){
 			var interval = setInterval(function(){//toutes les 10s (toujours complètement arbitraire)
 				
 				if (k<=nbRefreshToShowAll){// s'il y a toujours des pages à afficher, on passe à la suivante
-					console.log("nextRes");
 					nextRes(k, ligne);
 					k++;
 					$("#page").html(k);
