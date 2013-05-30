@@ -1,5 +1,5 @@
 var Freebusy= new Object();
-var blockedRoom=[];
+var displayedRoom=[];
 Freebusy.scrollStep=25;
 Freebusy.scrolling=false;
 function setIdentification(log, pass,url){
@@ -155,7 +155,7 @@ function setUrlParameters(){//permet de récupérer les identifiants des salles 
 	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
 	if(resources!="null"){
 	Freebusy.resourcesList=resources;//la liste des ressources groupees à afficher
-	blockedRoom= resources.split(",");
+	displayedRoom= resources.split(",");
 	}
 	var l=getURLParameter("lang");
 	if(l!="null")
@@ -428,11 +428,11 @@ function compareRoomLists() {//compare les listes des salles libres à la liste 
 
 
 function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux listes : salles libres et salles occupées
-var tmp= blockedRoom.join(' ');
+var tmp= displayedRoom.join(' ');
 	for (i=0;i<freeRooms.length;i++){
 
-		if (blockedRoom.length>0){
-				//console.log(blockedRoom[0]+" "+freeRooms[i].id+" "+tmp.indexOf(freeRooms[i].id));
+		if (displayedRoom.length>0){
+				//console.log(displayedRoom[0]+" "+freeRooms[i].id+" "+tmp.indexOf(freeRooms[i].id));
 				if (tmp.indexOf(freeRooms[i].id)!=-1){//vérification si l'ID est bien présente dans les paramètres de l'URL
 				ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity, freeRooms[i].time);
 				}
@@ -441,7 +441,7 @@ var tmp= blockedRoom.join(' ');
 			ajouterSalleLibre(freeRooms[i].name, freeRooms[i].id, freeRooms[i].capacity, freeRooms[i].time);
 	}
 	for (j=0;j<busyRooms.length;j++){
-		if (blockedRoom.length>0){
+		if (displayedRoom.length>0){
 			if (tmp.indexOf(busyRooms[j].id)!=-1){
 			ajouterSalleOccupee(busyRooms[j].name, busyRooms[j].id, busyRooms[j].owner);
 			}
