@@ -196,7 +196,7 @@ function inactivityTimeout() {
 function returnHome() {
 	var linkHome="";
 	
-	if (FreebusyRoom.home=="list") linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusy.html?lang='+FreebusyRoom.lang+"&home="+FreebusyRoom.home;
+	if (FreebusyRoom.home=="list") linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusy.html?lang='+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home;
 	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 
 	window.location.href = linkHome;

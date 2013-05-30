@@ -10,7 +10,7 @@ function setIdentification(log, pass,url){
 
 
 function getDMY() {
-	var theDate;
+	var theDate=[];
 	var mois = ["Janvier", "Février", "Mars", 
 					"Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", 
 					"Octobre", "Novembre", "Décembre"];
@@ -18,25 +18,25 @@ function getDMY() {
 							"July", "August", "September", "October", "November", "December" ];
 	var myDate = new Date();
 	var day = myDate.getDate(); 
+	var year = myDate.getFullYear(); 
 	if(screenGuestOrientation.lang=="fr"){
 	var month = mois[myDate.getMonth()]; 
-	var year = myDate.getFullYear(); 
-	theDate = "" + day + "/Septembre/" + year;
+	theDate.push(day);
+	theDate.push(month);
+	theDate.push(year);
 	}
 	else if(screenGuestOrientation.lang=="en"){
 		var month = months[myDate.getMonth()]; 
-	var year = myDate.getFullYear(); 
-	theDate = "" +month+ "/" +day +"/" + year;
+	theDate.push(day);
+	theDate.push(month);
+	theDate.push(year);
 	}
 	
 	return theDate;
 }
   
 function showDate(){
-	var d;
-	var date=[];
-	d = getDMY()
-	date = d.split("/");
+	var date=getDMY();
 	if(screenGuestOrientation.lang=="fr"){
 		var theDate = 'Réunions du <span class="date">' + date[0] +" "+ date[1] +" "+ date[2] +'</span>';
 	}
@@ -56,7 +56,6 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 function setDisplay() {
 	var w=$(window).width();
 	var h=$(window).height();
-
 	$("#entete").css("height",((h-25*h/100)/10)+"px");
 	$(".refresh").css("height",((h-25*h/100)/10)+"px");
 	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
