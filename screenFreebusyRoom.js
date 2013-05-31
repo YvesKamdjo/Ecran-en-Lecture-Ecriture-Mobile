@@ -243,7 +243,6 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var list=getURLParameter("roomListButton")
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
-	console.log(FreebusyRoom.home);
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
@@ -363,7 +362,6 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 	var all=tempo.toUTCString();//la date locale est convertie au temps UTC ce qui permet de gérer les changements d'heures
 	var local=all.replace(" GMT","");
 	var tmpLocal=Date.parse(local);//conversion en milliseconds
-	console.log(local>tmpTime);
 	if(Math.abs(tmpLocal-tmpServ)>900000)//s'il y a un décalage d'aumoins 15 minutes=900000 ms alors signaler!
 		alert(langForHoursChecking(FreebusyRoom.lang,text[4],nt[4]));//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
