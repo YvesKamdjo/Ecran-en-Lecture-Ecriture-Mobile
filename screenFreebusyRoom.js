@@ -5,26 +5,16 @@ function setIdentification(log, pass, url){
 	FreebusyRoom.login=log;
 	FreebusyRoom.password=pass;
 	FreebusyRoom.url=url;
-	}
-
-		  
-function compareTime(time, ref) {
-	var r=ref.split(":");
-	var t=time.split(":");
-	if (parseInt(t[0],10)<parseInt(r[0],10)) return false;
-	else if ((parseInt(t[0],10)==parseInt(r[0],10))&&(parseInt(t[1],10)<=parseInt(r[1],10))) return false;
-	else return true;
-	
 }
 
-function createDuration(){
+function createDuration(min){//créer une duree au format urba (impossible de demander moins de 30 min) ex:"2013-05-31T10:42:00,2013-05-31T11:12:00"
 	var now= new Date();
 	var hour = now.getHours(); 
 	var minute = now.getMinutes();
 	if (hour < 10) { hour = "0" + hour; } 
 	if (minute < 10) { minute = "0" + minute; }
 	
-	var later=addMinutes(now,30);
+	var later=addMinutes(now,min);
 	var hourBis = later.getHours(); 
 	var minuteBis = later.getMinutes();
 	if (hourBis < 10) { hourBis = "0" + hourBis; } 
@@ -41,7 +31,7 @@ function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes*60000);
 }
 
-function cutString(stringToCut) {
+function cutLongRoomName(stringToCut) {//Coupe le nom de la salle quand trop long ex: sur un portable en portrait "Bureau des geeks" devient "Bureau d..."
 	var shortedString=stringToCut;
 	var w=$(window).width();
 	var p=parseInt($("#nom-salle").css("font-size"),10);
@@ -56,7 +46,7 @@ function cutString(stringToCut) {
 	return shortedString;
 }
 
-function generalDisplay() {
+function generalDisplay() {// gère l'apparence de la page
 	var sel=$("#frise");
 	var w=$(window).width();
 	var h=$(window).height();
@@ -64,26 +54,22 @@ function generalDisplay() {
 	if ((w*h)<1000000) $("body").css("font-size",((w*h/40000)+10)+"px");
 	else $("body").css("font-size",40+"px");
 
-	if (FreebusyRoom.roomName) $("#nom-salle").html(cutString(FreebusyRoom.roomName));
+	if (FreebusyRoom.roomName) $("#nom-salle").html(cutLongRoomName(FreebusyRoom.roomName));//raccourci le nom de la salle si besoin est
 	
-	if (h>w) {
-
-		if (h<400)
-		{
+	if (h>w) {//si on est en mode portrait
+		if (h<400) {
 			sel.css("height","20%").css("padding-bottom","");
 			$("body").css("font-size",((w*h/70000)+10)+"px");
 			$("#info-salle").css("top", 1+"em");
 			sel.css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","120%");
 		}
-		else if (h<600)
-		{
+		else if (h<600) {
 			$("#info-salle").css("top", 1+"em");
 			sel.css("height","22%").css("padding-bottom","");
 			$("#sub").css("font-size","150%");
 		}
-		else
-		{
+		else {
 			$("#info-salle").css("top", 1.5+"em");
 			sel.css("height","15%");
 			$("#sub").css("font-size","150%");
@@ -95,8 +81,7 @@ function generalDisplay() {
 		$("#etat-libre").css("width", "70%");
 		$("#info-res").css("bottom","25%").css("width", "80%").css("font-size", 115+"%").css("margin-left","");
 	}
-	else {
-
+	else {// si on est en mode paysage
 		if (w<350) $("#bouton").attr("class", "b_res_h btn_res");
 		else $("#bouton").attr("class", "b_res_w btn_res");
 	
@@ -112,16 +97,12 @@ function generalDisplay() {
 		if (h<350) $("#info-res").css("font-size", 80+"%").css("margin-left","1em");
 		else $("#info-res").css("font-size", 115+"%").css("margin-left","");
 	
-		if (h<600)
-		{
+		if (h<600) {
 			$("#info-salle").css("top", 0.2+"em");
 			sel.css("height","").css("padding-bottom",0.5+"em");
 			$("#sub").css("font-size","90%");
-			
-			
 		}
-		else
-		{
+		else {
 			$("#info-salle").css("top", 1+"em");
 			sel.css("height","").css("padding-bottom",1+"em");
 			$("#sub").css("font-size","100%");
@@ -134,6 +115,7 @@ function generalDisplay() {
 
 	}
 }
+
 function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
 	var screen=jaaulde.utils.cookies.get('screenList');
 	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen;
@@ -332,7 +314,7 @@ function getRoomInfo(){
 function getFreeRoomList(){
 	$.ajax({
 			type: "GET",
-			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources?free=between,'+createDuration()+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+FreebusyRoom.validToken,
 			dataType:  'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -361,8 +343,8 @@ function fillRoomInfo(objJson){
 	var w=$(window).width();
 	var h=$(window).height();
 	$("title").html('Salle '+objJson.displayName);
-	if (h>w) var roomName=cutString(objJson.displayName,10);
-	else var roomName=cutString(objJson.displayName,20);
+	if (h>w) var roomName=cutLongRoomName(objJson.displayName,10);
+	else var roomName=cutLongRoomName(objJson.displayName,20);
 	$("#nom-salle").html(roomName);
 	FreebusyRoom.roomName=objJson.displayName;
 	FreebusyRoom.startTime=objJson.resourceProfil.startTime;
