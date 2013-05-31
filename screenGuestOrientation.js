@@ -237,33 +237,13 @@ function displayNewJson(SortedJson){
 	});
 	
 	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
-		$('#entete').hide();
-		items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
-		for (i=1; i<screenGuestOrientation.nbDisplayedRes; i++) {
-			items.push('<td colspan="4">&nbsp;</td>');
-		}		
-		$('<tr>', {
-		   'class': 'ligne1 refresh',
-		   html: items.join('')
-		   }).appendTo('table');
-		   items.length = 0;
-		   setTimeout("refreshScreen();", 300000)
+		displayNoRes(items);
+		setTimeout("refreshScreen();", 300000)
 	}
 	else {// s'il y a des réservations
-//--------------il doit y avoir une erreur dans le paragraphe suivant:
 		var l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
 		if (!l==0) {//on rajoute un certain nombre de lignes vides afin d'obtenir des pages complètes
-			do {
-			items.push('<td colspan="4">&nbsp;</td>');
-			$('<tr>', {
-			   'class': 'ligne1 refresh',
-			   'id': ligne,
-			   html: items.join('')
-			   }).appendTo('table');
-			   items.length = 0;
-			   ligne++;
-			   l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
-			}while (!l==0)
+			ligne=addBlancLines(items,ligne); 
 		}
 		
 		var nbCycles=5;// nombre complètement arbitraire de cycles de rafraichissement
@@ -299,6 +279,41 @@ function displayNewJson(SortedJson){
 			}, 8000);
 		}
 	}
+}
+
+function displayNoRes(items) {//quand il n'y a pas de réservation
+	$('#entete').hide();
+	items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
+	$('<tr>', {
+	   'class': 'ligne1 refresh',
+	   html: items.join('')
+	   }).appendTo('table');
+	   items.length = 0;
+	   
+	for (l=1; l<8; l++) {
+		items.push('<td colspan="4">&nbsp;</td>');
+		$('<tr>', {
+		   'class': 'ligne1 refresh',
+		   html: items.join('')
+		   }).appendTo('table');	 
+			console.log("test");
+			items.length = 0;
+	}
+}
+
+function addBlancLines(items,ligne) {//rajoute le nombre de lignes vide permettant d'obtenir un multiple de 8
+	do {
+	items.push('<td colspan="4">&nbsp;</td>');
+	$('<tr>', {
+	   'class': 'ligne1 refresh',
+	   'id': ligne,
+	   html: items.join('')
+	   }).appendTo('table');
+	   items.length = 0;
+	   ligne++;
+	   l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
+	}while (!l==0)
+	return ligne;
 }
 
 function nextRes(iteration) {// fonction qui "tourne la page"

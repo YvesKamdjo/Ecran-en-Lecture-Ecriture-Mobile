@@ -117,7 +117,10 @@ function generalDisplay() {// gère l'apparence de la page
 }
 
 function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
-	var screen=jaaulde.utils.cookies.get('screenList');
+	var screen="";
+	if (screen=jaaulde.utils.cookies.get('screenList'))
+		var screen=jaaulde.utils.cookies.get('screenList');
+	else screen="capacitive";
 	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen;
 	var resources=jaaulde.utils.cookies.get('resourcesList');
 	console.log(resources);
