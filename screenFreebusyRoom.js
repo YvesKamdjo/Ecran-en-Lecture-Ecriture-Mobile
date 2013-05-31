@@ -129,40 +129,38 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	return href;
 }
 
-function initDocument(){
-	setUrlParameters();
-	pingServeur();
+function initDocument(){//initialisation
+	setUrlParameters();//récupère les paramètres url
+	pingServeur();//vérification de l'heure
 	setlanguage();
-	$("#link_back").attr("href",setBackLinkUrl());
+	$("#link_back").attr("href",setBackLinkUrl());//donne la bonne adresse au lien vers la liste des salles (avec les bons paramètres)
 	FreebusyRoom.getBookingToStop="false";
-	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.btnList=="false")) $("#link_back").hide();
+	if ((FreebusyRoom.tactile=="readonly")||(FreebusyRoom.btnList=="false")) $("#link_back").hide();//cache le bouton de retour si les paramètres le demandent
 	FreebusyRoom.vacancy=false;
 	FreebusyRoom.bResPushed=false;
 	FreebusyRoom.timeRes="";
-	showTime();
+	showTime();//montre l'heure
 	$(".btn_res").hide();
 	$("#sub").hide();
 	$("#sub li").hide();
 	$(".menu_hour").hide();
 	$("#b_conf").hide();
-	generalDisplay();
-	saveParamInCookies();
+	generalDisplay();//met en place le design de la page
+	saveParamInCookies();//sauve les paramètres dans des cookies pour qu'ils puissent être réutilisés depuis la liste des salles
 	
-	$(window).resize(function(){
+	$(window).resize(function(){// en cas de redimensionnement de la fenêtre, l'affichage s'adapte
 		generalDisplay();
+		afficherHeureSurFrise();
 	});
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
-	$(window).resize(function(){
-	afficherHeureSurFrise();
-	});
 	
-	if ((FreebusyRoom.home!=FreebusyRoom.ID)&&(FreebusyRoom.home!="none")) {
-		inactivityTimeout();
+	if ((FreebusyRoom.home!=FreebusyRoom.ID)&&(FreebusyRoom.home!="none")) {//si la page par défaut n'est pas la page actuelle...
+		inactivityTimeout();//on commence le compte à rebours pour y retourner en cas d'inactivité
 	}
 }
 
-function inactivityTimeout() {
+function inactivityTimeout() {//si la page est inactive plus de 2 min, on retourne à la page par défaut
 	var homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	console.log("inactivity");
 	document.onmousemove = function(){
@@ -176,7 +174,7 @@ function inactivityTimeout() {
 	}
 }
 
-function returnHome() {
+function returnHome() {//liens vers la page par défaut
 	var linkHome="";
 	
 	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
@@ -185,7 +183,7 @@ function returnHome() {
 	window.location.href = linkHome;
 }
 
- function getUrbaToken(function1, param1){
+ function getUrbaToken(function1, param1){// récupération d'un token dans le but de faire un appel ajax à l'api
  $.ajax({
 		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
@@ -200,18 +198,17 @@ function returnHome() {
 	});
 }
 
-
 function setValidToken(newToken){
 	FreebusyRoom.validToken= newToken.Token;
 }
 
-function createStartDate() {
+function createStartDate() {//minuit le matin du jour même en format urba
 	var today= new Date();
 	startDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T00:00:00";
 	return startDate;
 }
 
-function createEndDate() {
+function createEndDate() {//minuit le soir du jour même en format urba
 	var today= new Date();
 	endDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T23:59:59";
 	return endDate;
@@ -302,7 +299,7 @@ function deOrFromAndAOrTo(debut,fin){//traduction français<=>anglais
 		return "From "+debut+" To "+fin;
 }
 
-function getRoomInfo(){
+function getRoomInfo(){// récupère les informations de la salle
 	$.ajax({
 			url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
@@ -311,7 +308,7 @@ function getRoomInfo(){
 		});
 }
 
-function getFreeRoomList(){
+function getFreeRoomList(){// récupère la liste des salles libres
 	$.ajax({
 			type: "GET",
 			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+FreebusyRoom.validToken,
@@ -323,7 +320,7 @@ function getFreeRoomList(){
 		}).fail(function() {console.log("211"); getUrbaToken(getFreeRoomList);});
 }
 
-function checkRoomVacancy(objJson) {
+function checkRoomVacancy(objJson) {//vérifie si la salle est dans la liste des salles libres
 	var i=0;
 	var now=getTime();
 	var nowPlusTemp=addTime(now,"0:30");
@@ -374,7 +371,7 @@ function isDeviceOnTime(server){//permet de vérifier que le client est à l'heure
 		alert(langForHoursChecking(FreebusyRoom.lang,text[4],nt[4]));//"Attention l'heure de cet appareil doit etre verifiee!"= mHeure
 }
 
-function getResInfo() {
+function getResInfo() {//récupère les réservations
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
@@ -421,7 +418,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 	sortResList(resList);	
 }
 
-function getOrder(id) {
+function getOrder(id) {//les prestations associées à la réservation
 	$.ajax({	
 		type: "GET",
 		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
@@ -444,7 +441,7 @@ function fillOrder(json) {
 	}
 }
 
-function sortResList(list) {
+function sortResList(list) {//tri des réservation par ordre chronologique
 	if (list.length>1) {
 		list = list.sort(function(a, b) {
 			var A=a[0].split(":");
@@ -460,7 +457,7 @@ function sortResList(list) {
 	fillResInfos(list);
 }
 
-function fillResInfos(list) {	
+function fillResInfos(list) {//rempli les infos liées à la réservation sur la page
 	var now=getTime();
 	var sub=$("#sub");
 	var etat=$("#etat");
@@ -619,13 +616,13 @@ function fillResInfos(list) {
 	setTimeout(function() {refresh();},300000);
 }
 
-function refresh() {
+function refresh() {//fonction de rafraichissement
 	//location.reload();
 	getUrbaToken(getFreeRoomList);
 	generalDisplay();
 }
 
-function createDate() {
+function createDate() {//renvois la date d'aujourd'hui au format urba
 	var today= new Date();
 	var year=today.getFullYear();
 	var month=today.getMonth()+1;
@@ -638,7 +635,7 @@ function createDate() {
 	return theDate;
 }
 
-function createStartTime(){//faire commencer au quarteur précédent
+function createStartTime(){//faire commencer au quart d'heure précédent
 	var now=getTime();
 	var t=[];
 	t=now.split(":");
@@ -657,13 +654,13 @@ function createEndTime() {
 	return endTime;
 }
 
-function createJsonRes(){
+function createJsonRes(){//json de réservation
 	jsonToSend = '{"id":0,"date":"'+createDate()+'T00:00:00","startDate":"'+createDate()+'T'+createStartTime()+'","endDate":"'+createDate()+'T'+createEndTime()+'","fields":[{"name":"ecran","value":"Ecran","key":"Champ1"},{"name":null,"value":"Ecran","key":"Champ2"},{"name":null,"value":"","key":"Champ3"},{"name":null,"value":"","key":"Champ4"},{"name":null,"value":"","key":"Champ5"},{"name":null,"value":"","key":"Champ6"},{"name":null,"value":"","key":"Champ7"},{"name":null,"value":"","key":"Champ9"},{"name":null,"value":"","key":"Champ8"}],"status":null,"idReserveur":null,"idResaliee":null,"visit":{"id":0,"startDate":"'+createDate()+'T23:00:00","fields":[],"attendees":[{"id":0,"login":"tdieu","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dieu","surname":"ThÃ©o","mail":"theodieu@vdm.fr","department":"DSI"},{"id":0,"login":"hdumans","creationDate":null,"modificationDate":null,"statut":null,"fields":[],"name":"Dumans","surname":"Henriette","mail":"HenrietteDumans@vdm.fr","department":"Boucherie"}],"organisatorName":"Guillaume Allain","place":"salle 33","duration":200},"owner":null,"creator":null,"UID":"a85ebf5f-8051-4b9c-9ed9-0d8e6d02bc45","resource":{"id":'+FreebusyRoom.ID+'},"presenceConfirmedDate":"'+createDate()+'T00:00:00'+'"}'
 	
 	return jsonToSend;
 }
 
-function sendRes(){
+function sendRes(){//envois de la réservation
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
@@ -674,68 +671,71 @@ function sendRes(){
 		location.reload();
 	});
 }
+
 function getBookingToStop(){//recupère la resa à terminer!
-var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
-$("body").append($('<span id="blockDiv"></span>'));
-var blockDiv=$("#blockDiv");
-blockDiv.css({
-    "position": "absolute","left": "0",
-    "right": "0","height": "100%",
-    "width": "100%","z-index": "999",
-	"background-color": "rgba(0, 0, 0, 0.8)"
-});
-blockDiv.append($('<span id="confirmerStop"></span>'));
-var sel=$("#confirmerStop");
-if(FreebusyRoom.lang=="fr"){
-	sel.html('Souhaitez-vous vraiment lib&eacuterer cette r&eacuteservation?<br><input type="button" value=" OUI " size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" NON "></input>');
-}
-else if(FreebusyRoom.lang="en"){
-	sel.html('Do you really want to vacate this room?<br><input type="button" value="YES" size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="NO"></input>');
-}
-sel.css({		"width":"60%","heigth":"40%","position":"absolute",
-				"border-radius":"5px","margin":"0 auto",
-				"background":"#5e8894","display":"block",
-				"left":"20%","top":"15%","text-align":"center","z-index":"2",
-				"font-size":"1.55em","font-weight":"600","color":"#ffffff"});
+	var clic; //variable qui permet de savoir lequel des boutons a été cliqué!
+	$("body").append($('<span id="blockDiv"></span>'));
+	var blockDiv=$("#blockDiv");
+	blockDiv.css({
+		"position": "absolute","left": "0",
+		"right": "0","height": "100%",
+		"width": "100%","z-index": "999",
+		"background-color": "rgba(0, 0, 0, 0.8)"
+	});
+	blockDiv.append($('<span id="confirmerStop"></span>'));
+	var sel=$("#confirmerStop");
+	if(FreebusyRoom.lang=="fr"){
+		sel.html('Souhaitez-vous vraiment lib&eacuterer cette r&eacuteservation?<br><input type="button" value=" OUI " size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" NON "></input>');
+	}
+	else if(FreebusyRoom.lang="en"){
+		sel.html('Do you really want to vacate this room?<br><input type="button" value="YES" size="44"></input>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="NO"></input>');
+	}
+	sel.css({		"width":"60%","heigth":"40%","position":"absolute",
+					"border-radius":"5px","margin":"0 auto",
+					"background":"#5e8894","display":"block",
+					"left":"20%","top":"15%","text-align":"center","z-index":"2",
+					"font-size":"1.55em","font-weight":"600","color":"#ffffff"});
 
-$("#confirmerStop input:first").click(function(){
-	sel.remove();
-	blockDiv.remove();
-	$.ajax({
-			type: "GET",
-			url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
-			dataType : 'jsonp',
-			jsonpCallback:"changeEndTime"
-			})
-}).css({"border-radius": "0.1em", "margin":"0.5em",
-		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});//"-moz-box-shadow": "2px 2px 1px #888","-webkit-box-shadow": "2px 2px 1px #888",
-$("#confirmerStop input:last").click(function(){
-	FreebusyRoom.getBookingToStop="false";
-	sel.remove();
-	blockDiv.remove();
-}).css({"border-radius": "0.1em", "margin":"0.5em",
-		"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
+	$("#confirmerStop input:first").click(function(){
+		sel.remove();
+		blockDiv.remove();
+		$.ajax({
+				type: "GET",
+				url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+				dataType : 'jsonp',
+				jsonpCallback:"changeEndTime"
+				})
+	}).css({"border-radius": "0.1em", "margin":"0.5em", "padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});//"-moz-box-shadow": "2px 2px 1px #888","-webkit-box-shadow": "2px 2px 1px #888",
+	$("#confirmerStop input:last").click(function(){
+		FreebusyRoom.getBookingToStop="false";
+		sel.remove();
+		blockDiv.remove();
+	}).css({"border-radius": "0.1em", "margin":"0.5em",
+			"padding":"0.1em 1em","font-size":"1.00em","font-weight":"bold"});
 }
+
 function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de Urba
-var d= new Date();
-var d2=d.toJSON();//renvoie une date au format aaaa-mm-jjThh:mm:ss
-var d3=d.toTimeString()//renvoie une date au format hh:mm:ss GMT+002
-var d31=d3.split(" ");
-var d4=d2.split("T");
-var d5=d4[0]+"T"+d31[0];
-return d5;
+	var d= new Date();
+	var d2=d.toJSON();//renvoie une date au format aaaa-mm-jjThh:mm:ss
+	var d3=d.toTimeString()//renvoie une date au format hh:mm:ss GMT+002
+	var d31=d3.split(" ");
+	var d4=d2.split("T");
+	var d5=d4[0]+"T"+d31[0];
+	return d5;
 }
-function changeEndTime(json){// modification de l'heure de fin de la resa à terminer
-var t=toUrbaFormat();
 
-var t2=t.split(".");
-var t3=t2[0].split("T");//recuperation de la date du jour
-var heureFinale=t3[0]+"T"+createStartTime();//createStartTime(): renvoie l'heure actuelle au format hh:mm:00 reglee au quart precedent
-json.endDate=heureFinale;
-getUrbaToken(sendBookingToStop,json);
+function changeEndTime(json){// modification de l'heure de fin de la resa à terminer
+	var t=toUrbaFormat();
+
+	var t2=t.split(".");
+	var t3=t2[0].split("T");//recuperation de la date du jour
+	var heureFinale=t3[0]+"T"+createStartTime();//createStartTime(): renvoie l'heure actuelle au format hh:mm:00 reglee au quart precedent
+	json.endDate=heureFinale;
+	getUrbaToken(sendBookingToStop,json);
 }
+
 function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyant un JSON qui modifie l'heure de fin et rafraichit l'écran!
-var json=JSON.stringify(jsonF);
+	var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
 		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
@@ -745,6 +745,7 @@ var json=JSON.stringify(jsonF);
 			location.reload();
 			});
 }
+
 function getRes() {
 	console.log(FreebusyRoom.connectProtocol);
 	var geturl=$.ajax({
