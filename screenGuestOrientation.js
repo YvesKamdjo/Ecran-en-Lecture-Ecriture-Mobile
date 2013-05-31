@@ -217,72 +217,67 @@ function displayNewJson(SortedJson){
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
 	$('#entete').show(); // on remet l'entête (au cas où elle aurait été cachée quand il n'y a pas de réservation)
 	$.each(SortedJson, function(key, value) {// pour chaque élément du json, on ajoute une ligne sur la page
-		if (ligne%2==0) p=1;
-		if (ligne%2==1) p=2;
-				var h=(SortedJson[ligne].heuresDeResa).split(":");
-				items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
-				items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
-				items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
-				if (!compareTime(SortedJson[ligne].heuresDeResa,now)) 
-					items.push('<td class="debut">'+screenGuestOrientation.enCours+'</td>');//screenGuestOrientation.enCours=en cours ou In Progress
-				else 
-					items.push('<td class="debut"></td>');		
-				$('<tr>', {
-				   'class': 'ligne'+p+' refresh',
-				   'id': ligne,
-				   html: items.join('')
-				   }).appendTo('table');
-				   items.length = 0;  
-				   ligne++;
+		addRes(SortedJson, items, ligne)
+		ligne++;
 	});
 	
-	if (ligne==0) {// s'il n'y a pas de réservation, on cache l'entête et on affiche une ligne indiquant qu'il n'y a pas de réservation
-		displayNoRes(items);
-		setTimeout("refreshScreen();", 300000)
+	if (ligne==0) {// s'il n'y a pas de réservation,  
+		$('#entete').hide();//on cache l'entête
+		displayNoRes(items);//et on affiche une ligne indiquant qu'il n'y a pas de réservation
+		setTimeout("refreshScreen();", 300000);
 	}
 	else {// s'il y a des réservations
+	
+	//on regarde si le nombre de réservation est un multiple du nombre de réservation que l'on montre en une fois
 		var l=(ligne-screenGuestOrientation.nbDisplayedRes)%screenGuestOrientation.nbResToShow;
-		if (!l==0) {//on rajoute un certain nombre de lignes vides afin d'obtenir des pages complètes
+	//sinon, on rajoute un certain nombre de lignes vides afin d'obtenir des pages complètes	
+		if (!l==0) {
 			ligne=addBlancLines(items,ligne); 
 		}
 		
-		var nbCycles=5;// nombre complètement arbitraire de cycles de rafraichissement
-	
-		if (ligne>screenGuestOrientation.nbDisplayedRes){// s'il y a plus d'une page
-			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {//on cache toutes les lignes des pages suivantes
+	// s'il y a plus d'une page	
+		if (ligne>screenGuestOrientation.nbDisplayedRes){
+		
+			var nbCycles=5;// nombre complètement arbitraire du nombre de fois que l'on reviendra au début avant de rafraichir l'écran
+			
+		//on cache toutes les lignes des pages suivantes
+			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {
 				$('#'+i).hide(0);
 			}
-			var nbRefreshToShowAll=Math.ceil((ligne-screenGuestOrientation.nbDisplayedRes)/screenGuestOrientation.nbResToShow);
-			var k=1;
-			$("#page").html(k);
-			$("#nbPages").html("/"+(nbRefreshToShowAll+1));
-			var interval = setInterval(function(){//toutes les 10s (toujours complètement arbitraire)
-				
-				if (k<=nbRefreshToShowAll){// s'il y a toujours des pages à afficher, on passe à la suivante
-					nextRes(k, ligne);
-					k++;
-					$("#page").html(k);
-				}
-				else {// sinon on repasse à la première page
-					if (nbCycles>0) {
-						console.log("showfirst");
-						showFirstPage();
-						k=1;
-						$("#page").html(k);
-						nbCycles--;
-					}
-					else if (nbCycles==0) {// si on a fait tous les cycles, on rafraichit tout
-						clearInterval(interval);
-						refreshScreen();
-					}
-				}
-			}, 8000);
+			
+		//calcul du nombre de page total et initialisation du numéro de page
+			var nbPagesTotal=Math.ceil((ligne-screenGuestOrientation.nbDisplayedRes)/screenGuestOrientation.nbResToShow);
+			var page=1;
+		//on écrit le nombre de page sur le nombre de page total sur l'écran
+			$("#page").html(page);
+			$("#nbPages").html("/"+(nbPagesTotal+1));
+			$("#pages").show();			
+			turnPages(page, nbPagesTotal, ligne, nbCycles);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
 		}
+		else $("#pages").hide();
 	}
 }
 
+function addRes(SortedJson, items, ligne) {
+	if (ligne%2==0) p=1;
+	if (ligne%2==1) p=2;
+	var h=(SortedJson[ligne].heuresDeResa).split(":");
+	items.push('<td class="heure">'+h[0]+"h"+h[1]+'</td>');
+	items.push('<td class="organisateur">'+SortedJson[ligne].organisateurs+'</td>');                           
+	items.push('<td class="salle">'+SortedJson[ligne].salles+'</td>');
+	if (!compareTime(SortedJson[ligne].heuresDeResa,now)) 
+		items.push('<td class="debut">'+screenGuestOrientation.enCours+'</td>');//screenGuestOrientation.enCours=en cours ou In Progress
+	else 
+		items.push('<td class="debut"></td>');		
+	$('<tr>', {
+	   'class': 'ligne'+p+' refresh',
+	   'id': ligne,
+	   html: items.join('')
+	   }).appendTo('table');
+	   items.length = 0; 
+}
+
 function displayNoRes(items) {//quand il n'y a pas de réservation
-	$('#entete').hide();
 	items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
 	$('<tr>', {
 	   'class': 'ligne1 refresh',
@@ -299,6 +294,29 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 			console.log("test");
 			items.length = 0;
 	}
+}
+
+function turnPages(page, nbPagesTotal, ligne, nbCycles) {
+	var interval = setInterval(function(){//toutes les 8s (toujours complètement arbitraire)
+		
+		if (page<=nbPagesTotal){// s'il y a toujours des pages à afficher, on passe à la suivante
+			nextRes(page, ligne);
+			page++;
+			$("#page").html(page);
+		}
+		else {// sinon on repasse à la première page
+			if (nbCycles>0) {
+				showFirstPage();
+				page=1;
+				$("#page").html(page);
+				nbCycles--;
+			}
+			else if (nbCycles==0) {// si on a fait tous les cycles, on rafraichit tout
+				clearInterval(interval);
+				refreshScreen();
+			}
+		}
+	}, 8000);
 }
 
 function addBlancLines(items,ligne) {//rajoute le nombre de lignes vide permettant d'obtenir un multiple de 8

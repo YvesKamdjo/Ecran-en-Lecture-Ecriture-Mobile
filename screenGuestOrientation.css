@@ -135,6 +135,7 @@ html, body
 
 #pages
 {
+	display:none;
 	padding:1% 5% 0 0;
 }
 
