@@ -473,7 +473,9 @@ function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux liste
 
 function transfertUrlParameters(){//récupère les paramètres url des cookies
 	var parameters=[];
-	var parameters=jaaulde.utils.cookies.get('FBRconf').split(",");
+	if (jaaulde.utils.cookies.get('FBRconf'))
+		parameters=jaaulde.utils.cookies.get('FBRconf').split(",");
+	else parameters=[true,false,false,false,true];
 	Freebusy.isTactile=parameters[0];
 	if(parameters[1]!="undefined"){
 		Freebusy.hideOw=parameters[1];
