@@ -126,15 +126,15 @@ function inactivityTimeout() {//si la page est inactive plus de 2 min, on retour
 function returnHome() {//liens vers la page par défaut
 	var linkHome="";
 	
-	if (Freebusy.home!="list") linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
-	
+	if (Freebusy.home!="list") 
+		linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
 	window.location.href = linkHome;
 }
 				
  function getUrbaToken(nextFunction){// récupération d'un token dans le but de faire un appel ajax à l'api
 
 	$.ajax({
-		url : Freebusy.connectProtocol+Freebusy.url+'/authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
+		url : Freebusy.connectProtocol+Freebusy.url+'authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		success: function(jsonp) {
@@ -197,7 +197,7 @@ function setPageLanguage(){
 
 function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
-			'url' : Freebusy.connectProtocol+Freebusy.url+'/api/v1/resources?Token='+Freebusy.validToken,
+			'url' : Freebusy.connectProtocol+Freebusy.url+'api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList'		
 		});
@@ -244,7 +244,7 @@ function createDuration(min){//traduit l'intervale de temps entre maintenant et 
 
 function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
-			url : Freebusy.connectProtocol+Freebusy.url+'/api/v1/resources?free=between,'+createDuration(30)+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Freebusy.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList'		
 		});
@@ -286,7 +286,7 @@ function getResInfo() {//demande à l'API la liste des réservations de la journ
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : Freebusy.connectProtocol+Freebusy.url+'/api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Freebusy.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRooms'		
 		});
@@ -481,15 +481,16 @@ function transfertUrlParameters(){//récupère les paramètres url des cookies
 		Freebusy.hideOw=parameters[1];
 		Freebusy.hidePh=parameters[2];
 		Freebusy.hideSub=parameters[3];
-		Freebusy.btnConf=parameters[4];
-	}
+		}
 	else{//les valeurs par defauts
 		Freebusy.hideOw="false";
 		Freebusy.hidePh="false";
 		Freebusy.hideSub="false";
-		Freebusy.btnConf="false";
-	
 	}
+	if(parameters[4]!="undefined")
+		Freebusy.btnConf=parameters[4];
+	else
+		Freebusy.btnConf="true";
 }
 
 // Interface graphique En JQuery Mobile

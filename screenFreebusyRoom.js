@@ -724,7 +724,6 @@ function toUrbaFormat(){// renvoie l'heure locale à la seconde près au format de
 
 function changeEndTime(json){// modification de l'heure de fin de la resa à terminer
 	var t=toUrbaFormat();
-
 	var t2=t.split(".");
 	var t3=t2[0].split("T");//recuperation de la date du jour
 	var heureFinale=t3[0]+"T"+createStartTime();//createStartTime(): renvoie l'heure actuelle au format hh:mm:00 reglee au quart precedent
@@ -759,9 +758,7 @@ function updateResToConfirmPresence(json) {//modification du champ "presenceConf
 }
 
 function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la reservation courante. Elle met à jour le champ "presenceConfirmedDate" dans l'API avec la date du jour.
-
 	json=JSON.stringify(jsonUpdateConfPres);
-
 	$.ajax({
 		type: "POST",
 		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
@@ -872,7 +869,7 @@ function remplirLaFrise(json){// remplissage de la frise avec les couleurs rouge
 		var all=[];
 		all= value.startH.split(":");
 		var starth= parseInt(all[0],10);//l'heure de debut de la resa
-		var startm=parseInt(all[1],10);// les minutes de dï¿½but de la resa!
+		var startm=parseInt(all[1],10);// les minutes de debut de la resa!
 		all=value.endH.split(":");
 		var endh=parseInt(all[0],10);// l'heure de fin
 		var endm=parseInt(all[1],10);//les minutes de fin
