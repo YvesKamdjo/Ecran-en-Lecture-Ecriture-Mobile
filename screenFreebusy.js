@@ -474,12 +474,20 @@ function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux liste
 function transfertUrlParameters(){//récupère les paramètres url des cookies
 	var parameters=[];
 	var parameters=jaaulde.utils.cookies.get('FBRconf').split(",");
-	
 	Freebusy.isTactile=parameters[0];
-	Freebusy.hideOw=parameters[1];
-	Freebusy.hidePh=parameters[2];
-	Freebusy.hideSub=parameters[3];
-	Freebusy.btnConf=parameters[4];
+	if(parameters[1]!="undefined"){
+		Freebusy.hideOw=parameters[1];
+		Freebusy.hidePh=parameters[2];
+		Freebusy.hideSub=parameters[3];
+		Freebusy.btnConf=parameters[4];
+	}
+	else{//les valeurs par defauts
+		Freebusy.hideOw="false";
+		Freebusy.hidePh="false";
+		Freebusy.hideSub="false";
+		Freebusy.btnConf="false";
+	
+	}
 }
 
 // Interface graphique En JQuery Mobile

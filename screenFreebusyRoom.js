@@ -119,9 +119,7 @@ function generalDisplay() {// gère l'apparence de la page
 function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'interface recapitulative
 	var screen=jaaulde.utils.cookies.get('screenList');
 	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen;
-	var resources=jaaulde.utils.cookies.get('resourcesList');
-	console.log(resources);
-	
+	var resources=jaaulde.utils.cookies.get('resourcesList');	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
 		href+="&listResourccesDisplayed="+resources;
 		}
@@ -178,7 +176,7 @@ function returnHome() {//liens vers la page par défaut
 	var linkHome="";
 	
 	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
-	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'Hd/pjeecran/ecran/screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
+	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
 
 	window.location.href = linkHome;
 }
