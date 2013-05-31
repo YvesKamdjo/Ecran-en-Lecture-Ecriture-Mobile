@@ -177,10 +177,8 @@ function inactivityTimeout() {//si la page est inactive plus de 2 min, on retour
 
 function returnHome() {//liens vers la page par défaut
 	var linkHome="";
-	
 	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
-	else linkHome=FreebusyRoom.connectProtocol+FreebusyRoom.url+'screenFreebusyRoom.html?resource='+homeID+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&home=room_"+homeID;
-
+	else linkHome=document.location.protocol+"//"+document.location.host+""+document.location.pathname+'?resource='+FreebusyRoom.home+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&defaultPage="+FreebusyRoom.home;
 	window.location.href = linkHome;
 }
 
@@ -248,6 +246,7 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var list=getURLParameter("roomListButton")
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
+	console.log(FreebusyRoom.home);
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
