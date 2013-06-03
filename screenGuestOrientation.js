@@ -56,9 +56,11 @@ function getTimeFromUrbaFormat(date){// extrait l'heure dans une date au format 
 function setDisplay() {
 	var w=$(window).width();
 	var h=$(window).height();
-	$("#entete").css("height",((h-25*h/100)/10)+"px");
-	$(".refresh").css("height",((h-25*h/100)/10)+"px");
+	$("#entete").css("height",(100/9)+"%");
+	$(".refresh").css("height",(100/9)+"%");
 	$("body").css("font-size",((w*h/1500000)+0.6)+"em");
+	$("thead").css("height",20+"%");
+	$("tbody").css("height",80+"%");
 }
 
 function initDocument(){
