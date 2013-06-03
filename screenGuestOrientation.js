@@ -80,6 +80,10 @@ function initDocument(){
 }
 
 function setUrlParameters(){
+var info1=getURLParameter("info1");
+if(info1!="null") screenGuestOrientation.info1=info1;
+else screenGuestOrientation.info1="owner";
+
 screenGuestOrientation.lang="fr";//langue par defaut c'est le français
 var l=getURLParameter("lang");
 if(l!="null")
@@ -87,7 +91,8 @@ if(l!="null")
 screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
 screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
 var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
-	if(resources!="null"){
+
+if(resources!="null"){
 	screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
 	displayedRoomForGuest= resources.split(",");
 	}
@@ -97,14 +102,16 @@ function setLanguage(){//changement de langue
 switch(screenGuestOrientation.lang){
 	case "fr":
 		$("#entete td").eq(0).html("D&eacutebut");
-		$("#entete td").eq(1).html("Organisateur");
+		if (screenGuestOrientation.info1=="owner") $("#entete td").eq(1).html("Organisateur");
+		if (screenGuestOrientation.info1=="title") $("#entete td").eq(1).html("Titre");
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
 		$("title").html('Orientation des visiteurs');
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
-		$("#entete td").eq(1).html("Owner");
+		if (screenGuestOrientation.info1=="owner") $("#entete td").eq(1).html("Owner");
+		if (screenGuestOrientation.info1=="title") $("#entete td").eq(1).html("Title");
 		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
 		$("title").html('Guest Orientation');
@@ -169,17 +176,22 @@ function fillNewJson(objJson){
 		stH=getTimeFromUrbaFormat(value.startDate);
 		endH=getTimeFromUrbaFormat(value.endDate);
 		var startMinusInterval=substractTime(stH, interval);
-		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) // formation d'un nouveau JSON
+		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) { // formation d'un nouveau JSON
 			if(displayedRoomForGuest.length>0){// s'il y a des salles à afficher alors,
 				if( tmp.indexOf(value.resource.id)!=-1){//on verifie si elles font partie des bon id et on affiche 
-				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-				j=j+1;
+					if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+					if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
+					j=j+1;
+					console.log(value.fields[0].value);
 				}
 			}
-			else{
-				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+			else {
+				if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
+				if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
 				j=j+1;
+				console.log(value.fields[0].value);
 			}
+		}
 			
 	});
 
@@ -280,7 +292,8 @@ function addRes(SortedJson, items, ligne) {
 }
 
 function displayNoRes(items) {//quand il n'y a pas de réservation
-	items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
+	if (screenGuestOrientation.lang=="en") items.push('<td colspan="4" class="noRes">No booking scheduled at the moment</td>');
+	if (screenGuestOrientation.lang=="fr") items.push('<td colspan="4" class="noRes">Aucune réservation prévue pour l\'instant</td>');
 	$('<tr>', {
 	   'class': 'ligne1 refresh',
 	   html: items.join('')
