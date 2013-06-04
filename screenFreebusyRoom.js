@@ -189,12 +189,12 @@ function returnHome() {//liens vers la page par défaut
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
 		fail: function() {
-		getUrbaToken(function1, param1);
+		invalidPWorID();
 		},
 		success: function(){
 		function1(param1);
 		}
-	}).fail(function() { invalidPWorID(); })	
+	});
 }
 
 function invalidPWorID() {
