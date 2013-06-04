@@ -107,6 +107,7 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
 		$("title").html('Orientation des visiteurs');
+		screenGuestOrientation.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
@@ -115,6 +116,7 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
 		$("title").html('Guest Orientation');
+		screenGuestOrientation.loginError="The user name or password is incorrect. Please check the configuration file.";
 	break;
 }
 }
@@ -130,8 +132,12 @@ function refreshScreen(){
 		url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
 		dataType : 'jsonp',
 		async : false,
-		jsonpCallback: 'setValidToken',			
-	})	
+		jsonpCallback: 'setValidToken',
+	}).fail(function() { invalidPWorID(); })	
+}
+
+function invalidPWorID() {
+	alert(screenGuestOrientation.loginError);
 }
 
 function setValidToken(newToken){

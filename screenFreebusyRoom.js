@@ -194,7 +194,11 @@ function returnHome() {//liens vers la page par défaut
 		success: function(){
 		function1(param1);
 		}
-	});
+	}).fail(function() { invalidPWorID(); })	
+}
+
+function invalidPWorID() {
+	alert(FreebusyRoom.loginError);
 }
 
 function setValidToken(newToken){
@@ -267,6 +271,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mProchOrNext="Prochaine r&eacuteunion :";
 			FreebusyRoom.jusquOrUntil="jusqu\'&agrave ";
 			FreebusyRoom.indisOrUnav="Indisponible";//FreebusyRoom.indispoOrUnav="Indisponible"
+			FreebusyRoom.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 		break;
 		case "en":
 			//FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
@@ -280,6 +285,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mProchOrNext="Next booking :";
 			FreebusyRoom.jusquOrUntil="Until  ";
 			FreebusyRoom.indisOrUnav="Unavailable";
+			FreebusyRoom.loginError="The user name or password is incorrect. Please check the configuration file.";
 		break;
 	}
 }

@@ -140,8 +140,11 @@ function returnHome() {//liens vers la page par défaut
 		success: function(jsonp) {
                 nextFunction();
             }		
-	});
+	}).fail(function() { invalidPWorID(); })	
+}
 
+function invalidPWorID() {
+	alert(Freebusy.loginError);
 }
 
 function setValidToken(newToken){
@@ -181,6 +184,7 @@ function setPageLanguage(){
 		Freebusy.pendantOrFor="for ";
 		Freebusy.indispoOrUnava="Unavailable";
 		Freebusy.nbPlaces="seat"
+		Freebusy.loginError="The user name or password is incorrect. Please check the configuration file.";
 	break;
 	case "fr":
 		$("#salles-libres").html("Salles Libres");
@@ -191,6 +195,7 @@ function setPageLanguage(){
 		Freebusy.indispoOrUnava="Indisponible";
 		$('title').html("Occupation des salles ");
 		Freebusy.nbPlaces="place"
+		Freebusy.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 	break;
 	}
 }
