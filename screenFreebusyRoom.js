@@ -183,19 +183,17 @@ function returnHome() {//liens vers la page par défaut
 }
 
  function getUrbaToken(function1, param1){// récupération d'un token dans le but de faire un appel ajax à l'api
- $.ajax({
+	$.ajax({
 		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
-		crossDomain: true,
 		statusCode: {
 		  404: function() {
 			alert('Could not contact server.');
 		  },
 		  500: function() {
-			console.log("test");
 			alert('A server-side error has occurred.');
-			alert("test");
+			invalidPWorID();
 		  }
 		},
 		success: function(){
