@@ -137,10 +137,19 @@ function returnHome() {//liens vers la page par défaut
 		url : Freebusy.connectProtocol+Freebusy.url+'authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
+		statusCode: {
+		  404: function() {
+			alert('Could not contact server.');
+		  },
+		  500: function() {
+			alert('A server-side error has occurred.');
+			invalidPWorID();
+		  }
+		},
 		success: function(jsonp) {
                 nextFunction();
             }		
-	}).fail(function() { invalidPWorID(); })	
+	})	
 }
 
 function invalidPWorID() {

@@ -133,7 +133,16 @@ function refreshScreen(){
 		dataType : 'jsonp',
 		async : false,
 		jsonpCallback: 'setValidToken',
-	}).fail(function() { invalidPWorID(); })	
+		statusCode: {
+		  404: function() {
+			alert('Could not contact server.');
+		  },
+		  500: function() {
+			alert('A server-side error has occurred.');
+			invalidPWorID();
+		  }
+		},
+	})
 }
 
 function invalidPWorID() {

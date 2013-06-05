@@ -188,8 +188,15 @@ function returnHome() {//liens vers la page par défaut
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		crossDomain: true,
-		fail: function() {
-		invalidPWorID();
+		statusCode: {
+		  404: function() {
+			alert('Could not contact server.');
+		  },
+		  500: function() {
+			console.log("test");
+			alert('A server-side error has occurred.');
+			alert("test");
+		  }
 		},
 		success: function(){
 		function1(param1);
@@ -202,7 +209,9 @@ function invalidPWorID() {
 }
 
 function setValidToken(newToken){
-	FreebusyRoom.validToken= newToken.Token;
+	if (newToken.Token!="undefined")
+		FreebusyRoom.validToken= newToken.Token;
+	else invalidPWorID();
 }
 
 function createStartDate() {//minuit le matin du jour même en format urba
