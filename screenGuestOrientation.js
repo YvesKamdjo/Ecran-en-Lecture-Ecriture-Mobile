@@ -90,6 +90,7 @@ if(l!="null")
 	screenGuestOrientation.lang=l;
 screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
 screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+screenGuestOrientation.refreshTime=getURLParameter("refreshMilliSec");
 var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
 
 if(resources!="null"){
@@ -241,6 +242,7 @@ function displayNewJson(SortedJson){
 	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
 	//screenGuestOrientation.nbResToShow=nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
 	if ((screenGuestOrientation.nbResToShow=="null")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
+	if (screenGuestOrientation.refreshTime=="null") screenGuestOrientation.refreshTime=300000;
 	var today= new Date();
 	now=getTime();
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
@@ -253,7 +255,7 @@ function displayNewJson(SortedJson){
 	if (ligne==0) {// s'il n'y a pas de réservation,  
 		$('#entete').hide();//on cache l'entête
 		displayNoRes(items);//et on affiche une ligne indiquant qu'il n'y a pas de réservation
-		setTimeout("refreshScreen();", 300000);
+		setTimeout("refreshScreen();", screenGuestOrientation.refreshTime);
 	}
 	else {// s'il y a des réservations
 	
@@ -284,6 +286,7 @@ function displayNewJson(SortedJson){
 			turnPages(page, nbPagesTotal, ligne, nbCycles);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
 		}
 		else $("#pages").hide();
+		setTimeout("refreshScreen();", screenGuestOrientation.refreshTime);
 	}
 }
 
@@ -327,6 +330,7 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 }
 
 function turnPages(page, nbPagesTotal, ligne, nbCycles) {
+var time=screenGuestOrientation.nbResToShow*800+3000;
 	var interval = setInterval(function(){//toutes les 8s (toujours complètement arbitraire)
 		
 		if (page<=nbPagesTotal){// s'il y a toujours des pages à afficher, on passe à la suivante
@@ -346,7 +350,7 @@ function turnPages(page, nbPagesTotal, ligne, nbCycles) {
 				refreshScreen();
 			}
 		}
-	}, 8000);
+	}, time);
 }
 
 function addBlancLines(items,ligne) {//rajoute le nombre de lignes vide permettant d'obtenir un multiple de 8

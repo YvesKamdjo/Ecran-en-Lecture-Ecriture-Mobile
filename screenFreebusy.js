@@ -180,6 +180,10 @@ function setUrlParameters(){//permet de récupérer les identifiants des salles 
 		Freebusy.home=h;
 	else 
 		Freebusy.home="none";
+	var refresh=getURLParameter("refreshMilliSec");
+	if (refresh!="null")
+		Freebusy.refreshTime=refresh;
+	else Freebusy.refreshTime=300000;
 }
 
 function setPageLanguage(){
@@ -482,7 +486,7 @@ function splitRoomList(freeRooms, busyRooms) {// divise les salles en deux liste
         getNameBusyRoomDisplayed($(this).text()); 
     }); 
 	$(".loadgif").hide();
-	setTimeout(function(){location.reload();},300000);
+	setTimeout(function(){location.reload();},Freebusy.refreshTime);
 }
 
 function transfertUrlParameters(){//récupère les paramètres url des cookies
@@ -545,7 +549,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 
 	html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 	html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-	html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+	html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshMilliSec='+Freebusy.refreshTime+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 	html.push(nbPlaces+' </div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 	$("#listes-salles-libres").append(html.join(''));
 	$("li.une-salle-libre").mouseover(function() {
@@ -566,7 +570,7 @@ function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans l
 	var html=[];
 	html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 	html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-	html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'">');
+	html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshMilliSec='+Freebusy.refreshTime+'">');
 	html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 	if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 	else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
