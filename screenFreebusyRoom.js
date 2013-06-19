@@ -135,12 +135,11 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	if (screen=jaaulde.utils.cookies.get('screenList'))
 		var screen=jaaulde.utils.cookies.get('screenList');
 	else screen="capacitive";
-	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.defaultPage+"&touchScreenType="+screen;
+	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.defaultPage+"&touchScreenType="+screen+"&refreshMilliSec="+FreebusyRoom.refreshTime;
 	var resources=jaaulde.utils.cookies.get('resourcesList');	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
 		href+="&listResourccesDisplayed="+resources;
 		}
-	
 	return href;
 }
 
@@ -182,7 +181,6 @@ function inactivityTimeout() {//si la page est inactive plus de 2 min, on retour
 		clearTimeout(homeTimeout);
 		homeTimeout = setTimeout(function(){returnHome();}, 120000);
 	}
-
 	document.ontouchmove = function(){
 		clearTimeout(homeTimeout);
 		homeTimeout = setTimeout(function(){returnHome();}, 120000);
@@ -271,12 +269,16 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL et e
 	var l=getURLParameter("lang");
 	if(l!="null")
 		FreebusyRoom.lang=l
-	var h=getURLParameter("defaultPage")
+	var h=getURLParameter("defaultPage");
 	if (h!="null") 
 		FreebusyRoom.defaultPage=h;
-	var list=getURLParameter("roomListButton")
+	var list=getURLParameter("roomListButton");
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
+	var refresh=getURLParameter("refreshMilliSec");
+	if (refresh!="null")
+		FreebusyRoom.refreshTime=refresh;
+	else FreebusyRoom.refreshTime=300000;
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
@@ -644,7 +646,7 @@ function fillResInfos(list) {//rempli les infos liées à la réservation sur la pa
 		}
 	}
 	setTimeout(function() {window.location.reload();},3600000);
-	setTimeout(function() {refresh();},300000);
+	setTimeout(function() {refresh();},FreebusyRoom.refreshTime);
 }
 
 function refresh() {//fonction de rafraichissement
