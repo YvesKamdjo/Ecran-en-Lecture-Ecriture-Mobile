@@ -2,9 +2,23 @@ var FreebusyRoom= new Object();
 FreebusyRoom.pushed=0;
 
 function setIdentification(log, pass, url){
-	FreebusyRoom.login=log;
-	FreebusyRoom.password=pass;
+	var l,p,u;//login password and URL
+	l=getURLParameter("login");
+	p=getURLParameter("password");
+	u=getURLParameter("url");
+	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
+		FreebusyRoom.login=log;
+		FreebusyRoom.password=pass;
+	}
+	else
+	{
+		FreebusyRoom.login=l;
+		FreebusyRoom.password=p;
+	}
+	if(u=="null")
 	FreebusyRoom.url=url;
+	else
+	FreebusyRoom.url=u;
 }
 
 function createDuration(min){//créer une duree au format urba (impossible de demander moins de 30 min) ex:"2013-05-31T10:42:00,2013-05-31T11:12:00"
@@ -121,7 +135,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	if (screen=jaaulde.utils.cookies.get('screenList'))
 		var screen=jaaulde.utils.cookies.get('screenList');
 	else screen="capacitive";
-	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen;
+	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.defaultPage+"&touchScreenType="+screen;
 	var resources=jaaulde.utils.cookies.get('resourcesList');	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
 		href+="&listResourccesDisplayed="+resources;
@@ -156,7 +170,7 @@ function initDocument(){//initialisation
 	construireLaFrise();
 	getUrbaToken(getRoomInfo);
 	
-	if ((FreebusyRoom.home!=FreebusyRoom.ID)&&(FreebusyRoom.home!="none")) {//si la page par défaut n'est pas la page actuelle...
+	if ((FreebusyRoom.defaultPage!=FreebusyRoom.ID)&&(FreebusyRoom.defaultPage!="none")) {//si la page par défaut n'est pas la page actuelle...
 		inactivityTimeout();//on commence le compte à rebours pour y retourner en cas d'inactivité
 	}
 }
@@ -177,8 +191,8 @@ function inactivityTimeout() {//si la page est inactive plus de 2 min, on retour
 
 function returnHome() {//liens vers la page par défaut
 	var linkHome="";
-	if (FreebusyRoom.home=="list") linkHome=setBackLinkUrl();
-	else linkHome=document.location.protocol+"//"+document.location.host+""+document.location.pathname+'?resource='+FreebusyRoom.home+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&defaultPage="+FreebusyRoom.home;
+	if (FreebusyRoom.defaultPage=="list") linkHome=setBackLinkUrl();
+	else linkHome=document.location.protocol+"//"+document.location.host+""+document.location.pathname+'?resource='+FreebusyRoom.defaultPage+"&hideOwner=false&hidePhone=false&hideSubject=false&screen=capacitive&presenceConfirmation=true&lang=fr&defaultPage="+FreebusyRoom.defaultPage;
 	window.location.href = linkHome;
 }
 
@@ -223,13 +237,21 @@ function createEndDate() {//minuit le soir du jour même en format urba
 	endDate=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate()+"T23:59:59";
 	return endDate;
 }
-
-function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour filtrer les info ï¿½ afficher
+function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
+	FreebusyRoom.hideOwner=false;
+	FreebusyRoom.hidePhone=false;
+	FreebusyRoom.hideSubject=false;
+	FreebusyRoom.btnConf=true;
 	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
+	FreebusyRoom.defaultPage="none";
+	
+}
+function setUrlParameters(){//permet de recuperer les parametres dans l'URL et ecraser si neccessaire les valeurs par defaut!
+	setDefaultParameters();
 	var id=getURLParameter("resource");
-	if(id!="null")
+	if(id!="null")//Id de la salle
 		FreebusyRoom.ID= id;
 	var h=getURLParameter("hideOwner");
 	if(h!="null")
@@ -251,9 +273,7 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 		FreebusyRoom.lang=l
 	var h=getURLParameter("defaultPage")
 	if (h!="null") 
-		FreebusyRoom.home=h;
-	else 
-		FreebusyRoom.home="none";
+		FreebusyRoom.defaultPage=h;
 	var list=getURLParameter("roomListButton")
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
@@ -972,12 +992,13 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 }
 
 function grisageFrise(pos){//pos= position de la frise à chaque minute
-var select=$("#ligne3");
-var position= select.position();
-var h= select.height();
+var select=document.getElementById('ligne3');
+var t=select.offsetTop;
+var h= select.offsetHeight;
+var l= select.offsetLeft;
 	$("#grisage").css({//,
-	"z-index":"13","position": "absolute","height": h, "left":position.left,"opacity":"0.6",
-	"top":position.top,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos});
+	"z-index":"13","position": "absolute","height": h, "left":l,"opacity":"0.6",
+	"top":t,"background": "rgba(0, 0, 0, 0.5)","left": "0","width":pos, "font-size":"70%"});
 }
 
 function saveParamInCookies(){//permet de sauvegarder certains parametre dans les cookies
