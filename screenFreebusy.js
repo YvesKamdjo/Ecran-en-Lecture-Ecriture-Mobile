@@ -74,7 +74,7 @@ function scrollContent(direction) {
 function initDocument(){
 	var h=$(window).height();
 	var w=$(window).width();
-	Freebusy.connectProtocol=window.location.protocol;
+	setDefaultParameters();
 	setUrlParameters();
 	setPageLanguage();
 	
@@ -176,7 +176,12 @@ function setDefaultParameters() {
 	Freebusy.lang="fr";
 	Freebusy.screen="capacitive";
 	Freebusy.home="none";
+	Freebusy.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	Freebusy.refreshTime=300000;
+	Freebusy.hideOw="false";
+	Freebusy.hidePh="false";
+	Freebusy.hideSub="false";
+	Freebusy.btnConf="true";
 }
 
 function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
@@ -514,15 +519,8 @@ function transfertUrlParameters(){//récupère les paramètres url des cookies
 		Freebusy.hidePh=parameters[2];
 		Freebusy.hideSub=parameters[3];
 		}
-	else{//les valeurs par defauts
-		Freebusy.hideOw="false";
-		Freebusy.hidePh="false";
-		Freebusy.hideSub="false";
-	}
 	if(parameters[4]!="undefined")
 		Freebusy.btnConf=parameters[4];
-	else
-		Freebusy.btnConf="true";
 }
 
 // Interface graphique En JQuery Mobile

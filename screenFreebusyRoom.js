@@ -144,6 +144,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 }
 
 function initDocument(){//initialisation
+	setDefaultParameters();
 	setUrlParameters();//récupère les paramètres url
 	pingServeur();//vérification de l'heure
 	setlanguage();
@@ -244,10 +245,10 @@ function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	FreebusyRoom.defaultPage="none";
+	Freebusy.refreshTime=300000;
 	
 }
 function setUrlParameters(){//permet de recuperer les parametres dans l'URL et ecraser si neccessaire les valeurs par defaut!
-	setDefaultParameters();
 	var id=getURLParameter("resource");
 	if(id!="null")//Id de la salle
 		FreebusyRoom.ID= id;
@@ -278,7 +279,6 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL et e
 	var refresh=getURLParameter("refreshSec");
 	if (refresh!="null")
 		FreebusyRoom.refreshTime=parseInt(refresh, 10)*1000;
-	else FreebusyRoom.refreshTime=300000;
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
