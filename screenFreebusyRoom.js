@@ -245,7 +245,7 @@ function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	FreebusyRoom.defaultPage="none";
-	Freebusy.refreshTime=300000;
+	FreebusyRoom.refreshTime=300000;
 	
 }
 function setUrlParameters(){//permet de recuperer les parametres dans l'URL et ecraser si neccessaire les valeurs par defaut!
