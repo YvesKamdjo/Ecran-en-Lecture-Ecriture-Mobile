@@ -241,6 +241,7 @@ function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
 	FreebusyRoom.hidePhone=false;
 	FreebusyRoom.hideSubject=false;
 	FreebusyRoom.btnConf=true;
+	FreebusyRoom.home="none";
 	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
