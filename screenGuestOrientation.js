@@ -1,11 +1,24 @@
 var screenGuestOrientation= new Object();
-//var refresh=false;
 var displayedRoomForGuest=[];
 
 function setIdentification(log, pass,url){
-	screenGuestOrientation.login=log;
-	screenGuestOrientation.password=pass;
+	var l,p,u;//login password and URL
+	l=getURLParameter("login");
+	p=getURLParameter("password");
+	u=getURLParameter("url");
+	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
+		screenGuestOrientation.login=log;
+		screenGuestOrientation.password=pass;
+	}
+	else
+	{
+		screenGuestOrientation.login=l;
+		screenGuestOrientation.password=p;
+	}
+	if(u=="null")
 	screenGuestOrientation.url=url;
+	else
+	screenGuestOrientation.url=u;
 	}
 
 
@@ -205,7 +218,6 @@ function fillNewJson(objJson){
 				if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
 				if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
 				j=j+1;
-				console.log(value.fields[0].value);
 			}
 		}
 			
@@ -381,7 +393,7 @@ function nextRes(iteration) {// fonction qui "tourne la page"
 	var intervalEnd=(iteration*screenGuestOrientation.nbResToShow)+screenGuestOrientation.nbDisplayedRes;
 	var previousEnd=((iteration-1)*screenGuestOrientation.nbResToShow)+screenGuestOrientation.nbDisplayedRes;
 	
-	//$(".refresh").hide(0);//on cache toutes les lignes - sans exception (ça prend moins de temps)
+	//on cache toutes les lignes - sans exception (ça prend moins de temps)
 	for (i=0;i<intervalStart;i++) {//on montre toutes les lignes qui appartiennent à la page que l'on veut montrer
 		$('#'+i).hide(0);
 	}
@@ -401,7 +413,6 @@ function showFirstPage() {
 
 	$(".refresh").hide(0);//on cache toutes les lignes
 	for (i=0;i<screenGuestOrientation.nbDisplayedRes;i++) {//on montre les premières
-		$('#'+i).show(0);
-		//$('#'+i).animateHighlight('#ffa500',1000);	
+		$('#'+i).show(0);	
 	}
 }

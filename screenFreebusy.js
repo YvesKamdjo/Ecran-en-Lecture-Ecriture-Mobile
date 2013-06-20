@@ -4,15 +4,28 @@ Freebusy.scrollStep=25;
 Freebusy.scrolling=false;
 
 function setIdentification(log, pass,url){
-	Freebusy.login=log;
-	Freebusy.password=pass;
+	var l,p,u;//login password and URL
+	l=getURLParameter("login");
+	p=getURLParameter("password");
+	u=getURLParameter("url");
+	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
+		Freebusy.login=log;
+		Freebusy.password=pass;
+	}
+	else
+	{
+		Freebusy.login=l;
+		Freebusy.password=p;
+	}
+	if(u=="null")
 	Freebusy.url=url;
+	else
+	Freebusy.url=u;
 }
 
 $.fn.scrollBottom = function() { 
   return ($(window).height()+$("#textarea").scrollTop()-$("#listes-salles-libres").height()-$("#listes-salles-occupees").height());
 };
-
 // Wire up events for the 'scrollUp' link:
 $("#scrollUp").bind("click", function(event) {
     event.preventDefault();
@@ -27,8 +40,6 @@ $("#scrollUp").bind("click", function(event) {
 }).bind("mouseup", function(event) {
     Freebusy.scrolling = false;
 });
-
-
 $("#scrollDown").bind("click", function(event) {
     event.preventDefault();
     $("#textarea").animate({
@@ -55,7 +66,7 @@ function scrollContent(direction) {
 
 	var a=$(window).height()+$("#textarea").scrollTop();
 	var b=$("#listes-salles-libres").height()+$("#listes-salles-occupees").height()+50;
-
+	
 	if (Math.abs((a-b)/a)<0.0099) $("#scrollDown").hide();
 	else $("#scrollDown").show();
 }
