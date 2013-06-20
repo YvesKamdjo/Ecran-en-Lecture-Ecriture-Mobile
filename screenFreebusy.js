@@ -138,7 +138,8 @@ function returnHome() {//liens vers la page par défaut
 	var linkHome="";
 	
 	if (Freebusy.home!="list") 
-		linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
+		linkHome='screenFreebusyRoom.html?resource='+Freebusy.home+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.screen
+		+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home;
 	window.location.href = linkHome;
 }
 				
@@ -512,8 +513,8 @@ function transfertUrlParameters(){//récupère les paramètres url des cookies
 	var parameters=[];
 	if (jaaulde.utils.cookies.get('FBRconf'))
 		parameters=jaaulde.utils.cookies.get('FBRconf').split(",");
-	else parameters=[true,false,false,false,true];
-	Freebusy.isTactile=parameters[0];
+	else parameters=["capacitive",false,false,false,true];
+	Freebusy.screen=parameters[0];
 	if(parameters[1]!="undefined"){
 		Freebusy.hideOw=parameters[1];
 		Freebusy.hidePh=parameters[2];
@@ -561,7 +562,7 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 
 	html.push('<li class="une-salle-libre" data-icon="custom_arrow"><a class="libre" data-transition="slide" data-ajax="false"');
 	html.push(' href="screenFreebusyRoom.html?resource='+idSalle+'&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject=');
-	html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshSec='+Freebusy.refreshTime/1000+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
+	html.push(Freebusy.hideSub+'&touchScreenType='+Freebusy.screen+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshSec='+Freebusy.refreshTime/1000+'"><div class="room_name">'+nomSalle+'</div><div class="room_info"><div class="seats">');
 	html.push(nbPlaces+' </div><div class="duree"><img class="duree-icon">'+time+'</div></div></a></li>');
 	$("#listes-salles-libres").append(html.join(''));
 	$("li.une-salle-libre").mouseover(function() {
@@ -582,7 +583,7 @@ function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans l
 	var html=[];
 	html.push('<li class="une-salle-occupee" data-icon="custom_arrow">');
 	html.push('<a class="occupee" data-transition="flow"  data-ajax="false" href="screenFreebusyRoom.html?resource='+idSalle);
-	html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.isTactile+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshSec='+Freebusy.refreshTime/1000+'">');
+	html.push('&hideOwner='+Freebusy.hideOw+'&hidePhone='+Freebusy.hidePh+'&hideSubject='+Freebusy.hideSub+'&touchScreenType='+Freebusy.screen+'&confirmationButton='+Freebusy.btnConf+'&roomListButton=true&lang='+Freebusy.lang+'&defaultPage='+Freebusy.home+'&refreshSec='+Freebusy.refreshTime/1000+'">');
 	html.push('<div class="room_name">'+nomSalle+'</div><div class="room_info">');
 	if (owner!="") html.push('<div class="seats"><img class="seats-icon">'+owner+'</div></div></a></li>');
 	else html.push('<div class="seats"><img class="seats-icon indisponible">'+Freebusy.indispoOrUnava+'</div>'); //Freebusy.indispoOrUnava="Indisponible"
