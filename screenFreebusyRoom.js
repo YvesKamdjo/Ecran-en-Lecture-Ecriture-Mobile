@@ -121,7 +121,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	if (screen=jaaulde.utils.cookies.get('screenList'))
 		var screen=jaaulde.utils.cookies.get('screenList');
 	else screen="capacitive";
-	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen+"&refreshMilliSec="+FreebusyRoom.refreshTime;
+	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen+"&refreshSec="+FreebusyRoom.refreshTime/1000;
 	var resources=jaaulde.utils.cookies.get('resourcesList');	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
 		href+="&listResourccesDisplayed="+resources;
@@ -257,9 +257,9 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL pour
 	var list=getURLParameter("roomListButton");
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
-	var refresh=getURLParameter("refreshMilliSec");
+	var refresh=getURLParameter("refreshSec");
 	if (refresh!="null")
-		FreebusyRoom.refreshTime=refresh;
+		FreebusyRoom.refreshTime=parseInt(refresh, 10)*1000;
 	else FreebusyRoom.refreshTime=300000;
 }
 function langForHoursChecking(lang,serv,device){

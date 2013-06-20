@@ -80,22 +80,22 @@ function initDocument(){
 }
 
 function setUrlParameters(){
-var info1=getURLParameter("info1");
-if(info1!="null") screenGuestOrientation.info1=info1;
-else screenGuestOrientation.info1="owner";
+	var info1=getURLParameter("info1");
+	if(info1!="null") screenGuestOrientation.info1=info1;
+	else screenGuestOrientation.info1="owner";
 
-screenGuestOrientation.lang="fr";//langue par defaut c'est le français
-var l=getURLParameter("lang");
-if(l!="null")
-	screenGuestOrientation.lang=l;
-screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
-screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-screenGuestOrientation.refreshTime=getURLParameter("refreshMilliSec");
-var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
+	screenGuestOrientation.lang="fr";//langue par defaut c'est le français
+	var l=getURLParameter("lang");
+	if(l!="null")
+		screenGuestOrientation.lang=l;
+	screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
+	screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+	screenGuestOrientation.refreshTime=parseInt(getURLParameter("refreshSec"), 10)*1000;
+	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
 
-if(resources!="null"){
-	screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
-	displayedRoomForGuest= resources.split(",");
+	if(resources!="null"){
+		screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
+		displayedRoomForGuest= resources.split(",");
 	}
 }
 
