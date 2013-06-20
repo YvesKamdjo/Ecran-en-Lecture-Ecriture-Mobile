@@ -77,7 +77,8 @@ function setDisplay() {
 }
 
 function initDocument(){
-	var i=0;
+	//var i=0;
+	setDefaultParameters();
 	setUrlParameters();
 	showTime();
 	showDate();
@@ -92,20 +93,39 @@ function initDocument(){
 	displayNewJson(screenGuestOrientation.json);
 }
 
-function setUrlParameters(){
-	var info1=getURLParameter("info1");
-	if(info1!="null") screenGuestOrientation.info1=info1;
-	else screenGuestOrientation.info1="owner";
+function setDefaultParameters() {
+	screenGuestOrientation.lang="fr";
+	screenGuestOrientation.info1="owner";
+	screenGuestOrientation.timeNextBookings=120;
+	screenGuestOrientation.refreshTime=300000;
+	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
+	screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+}
 
-	screenGuestOrientation.lang="fr";//langue par defaut c'est le français
+function setUrlParameters(){
+//l'info de la première colonne (organisateur ou objet de la réunion)
+	var info1=getURLParameter("info1");
+	if(info1!="null") screenGuestOrientation.info1=info1; 
+//langue
 	var l=getURLParameter("lang");
 	if(l!="null")
 		screenGuestOrientation.lang=l;
-	screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
-	screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-	screenGuestOrientation.refreshTime=parseInt(getURLParameter("refreshSec"), 10)*1000;
+//durée maximum entre l'heure actuelle et le début des prochaines réservations que l'on montre
+	var tnb=getURLParameter("timeNextBookings");
+	if (tnb!="null")
+		screenGuestOrientation.timeNextBookings=tnb;
+//nombre de lignes qui disparaissent/apparaissent lorsque toutes les réservations ne peuvent être affichées (rotation)
+	var nrs=getURLParameter("timeNextBookings");
+	if (nrs!="null")
+		screenGuestOrientation.nbResToShow=nrs;
+//temps en seconde avant chaque rafraîchissement, converti en millisecondes
+	var rt=getURLParameter("refreshSec");
+	if (rt!="null") {
+		rt=parseInt(rt, 10)*1000;
+		screenGuestOrientation.refreshTime=rt;
+	}
+//liste des ressources affichées
 	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
-
 	if(resources!="null"){
 		screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
 		displayedRoomForGuest= resources.split(",");
@@ -251,10 +271,8 @@ function getTimeInterval(){//permet de récupérer l'intervalle de temps pendant
 function displayNewJson(SortedJson){
 	var ligne=0;
 	var items = [];
-	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
 	//screenGuestOrientation.nbResToShow=nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-	if ((screenGuestOrientation.nbResToShow=="null")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
-	if (screenGuestOrientation.refreshTime=="null") screenGuestOrientation.refreshTime=300000;
+	if (screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
 	var today= new Date();
 	now=getTime();
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
