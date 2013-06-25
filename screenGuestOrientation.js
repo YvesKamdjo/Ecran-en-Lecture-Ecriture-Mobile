@@ -373,7 +373,7 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 function turnPages(page, nbPagesTotal, ligne) {
 	var time=screenGuestOrientation.nbResToShow*800+3000;
 	var nbCycles=Math.ceil(screenGuestOrientation.refreshTime/(nbPagesTotal*time));
-	if (nbCycles<3) nbCycles=3;
+	if ((nbCycles<3)&&(nbPagesTotal<3)) nbCycles=3;
 	var interval = setInterval(function(){//toutes les 8s (toujours complètement arbitraire)
 		
 		if (page<=nbPagesTotal){// s'il y a toujours des pages à afficher, on passe à la suivante
