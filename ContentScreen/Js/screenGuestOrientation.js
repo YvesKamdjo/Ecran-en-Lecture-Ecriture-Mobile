@@ -77,7 +77,8 @@ function setDisplay() {
 }
 
 function initDocument(){
-	var i=0;
+	//var i=0;
+	setDefaultParameters();
 	setUrlParameters();
 	showTime();
 	showDate();
@@ -92,23 +93,42 @@ function initDocument(){
 	displayNewJson(screenGuestOrientation.json);
 }
 
+function setDefaultParameters() {
+	screenGuestOrientation.lang="fr";
+	screenGuestOrientation.info1="owner";
+	screenGuestOrientation.timeNextBookings=120;
+	screenGuestOrientation.refreshTime=300000;
+	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
+	screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
+}
+
 function setUrlParameters(){
-var info1=getURLParameter("infoToDisplay");
-if(info1!="null") screenGuestOrientation.info1=info1;
-else screenGuestOrientation.info1="owner";
-
-screenGuestOrientation.lang="fr";//langue par defaut c'est le français
-var l=getURLParameter("lang");
-if(l!="null")
-	screenGuestOrientation.lang=l;
-screenGuestOrientation.timeNextBookings=getURLParameter("timeNextBookings");
-screenGuestOrientation.nbResToShow=getURLParameter("nbLinesToUpdate");//nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-screenGuestOrientation.refreshTime=getURLParameter("refreshMilliSec");
-var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
-
-if(resources!="null"){
-	screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
-	displayedRoomForGuest= resources.split(",");
+//l'info de la première colonne (organisateur ou objet de la réunion)
+	var info1=getURLParameter("info1");
+	if(info1!="null") screenGuestOrientation.info1=info1; 
+//langue
+	var l=getURLParameter("lang");
+	if(l!="null")
+		screenGuestOrientation.lang=l;
+//durée maximum entre l'heure actuelle et le début des prochaines réservations que l'on montre
+	var tnb=getURLParameter("timeNextBookings");
+	if (tnb!="null")
+		screenGuestOrientation.timeNextBookings=tnb;
+//nombre de lignes qui disparaissent/apparaissent lorsque toutes les réservations ne peuvent être affichées (rotation)
+	var nrs=getURLParameter("timeNextBookings");
+	if (nrs!="null")
+		screenGuestOrientation.nbResToShow=nrs;
+//temps en seconde avant chaque rafraîchissement, converti en millisecondes
+	var rt=getURLParameter("refreshSec");
+	if (rt!="null") {
+		rt=parseInt(rt, 10)*1000;
+		screenGuestOrientation.refreshTime=rt;
+	}
+//liste des ressources affichées
+	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
+	if(resources!="null"){
+		screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
+		displayedRoomForGuest= resources.split(",");
 	}
 }
 
@@ -137,6 +157,7 @@ switch(screenGuestOrientation.lang){
 
 function refreshScreen(){
 		getUrbaToken();
+		screenGuestOrientation.json=[];
 		getUrbaJson();
 		displayNewJson(screenGuestOrientation.json);
 }
@@ -150,10 +171,12 @@ function refreshScreen(){
 		statusCode: {
 		  404: function() {
 			alert('Could not contact server.');
+			window.location.reload();
 		  },
 		  500: function() {
 			alert('A server-side error has occurred.');
 			invalidPWorID();
+			window.location.reload();
 		  }
 		},
 	})
@@ -186,7 +209,17 @@ function getUrbaJson(){
 			url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
 			async : false,
-			jsonpCallback: 'fillNewJson',		
+			jsonpCallback: 'fillNewJson',
+		statusCode: {
+		  404: function() {
+			//alert('Could not contact server.');
+			window.location.reload();
+		  },
+		  500: function() {
+			//alert('A server-side error has occurred.');
+			window.location.reload();
+		  }
+		},			
 		})
 }
 	
@@ -211,7 +244,6 @@ function fillNewJson(objJson){
 					if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
 					if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
 					j=j+1;
-					console.log(value.fields[0].value);
 				}
 			}
 			else {
@@ -251,10 +283,8 @@ function getTimeInterval(){//permet de récupérer l'intervalle de temps pendant
 function displayNewJson(SortedJson){
 	var ligne=0;
 	var items = [];
-	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
 	//screenGuestOrientation.nbResToShow=nombre de réservations à rafraîchir (quand ces deux nombres sont égaux, on rafraîchit les reservations page par page)
-	if ((screenGuestOrientation.nbResToShow=="null")||(screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes)) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
-	if (screenGuestOrientation.refreshTime=="null") screenGuestOrientation.refreshTime=300000;
+	if (screenGuestOrientation.nbResToShow>screenGuestOrientation.nbDisplayedRes) screenGuestOrientation.nbResToShow=screenGuestOrientation.nbDisplayedRes;
 	var today= new Date();
 	now=getTime();
 	$('.refresh').remove(); // on réinitialise la page (toutes les réservations précédentes sont supprimées afain de ne pas avoir de doublons)
@@ -280,8 +310,6 @@ function displayNewJson(SortedJson){
 		
 	// s'il y a plus d'une page	
 		if (ligne>screenGuestOrientation.nbDisplayedRes){
-		
-			var nbCycles=5;// nombre complètement arbitraire du nombre de fois que l'on reviendra au début avant de rafraichir l'écran
 			
 		//on cache toutes les lignes des pages suivantes
 			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {
@@ -295,10 +323,12 @@ function displayNewJson(SortedJson){
 			$("#page").html(page);
 			$("#nbPages").html("/"+(nbPagesTotal+1));
 			$("#pages").show();			
-			turnPages(page, nbPagesTotal, ligne, nbCycles);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
+			turnPages(page, nbPagesTotal, ligne);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
 		}
-		else $("#pages").hide();
+		else {
+		$("#pages").hide();
 		setTimeout("refreshScreen();", screenGuestOrientation.refreshTime);
+		}
 	}
 }
 
@@ -336,13 +366,14 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 		   'class': 'ligne1 refresh',
 		   html: items.join('')
 		   }).appendTo('table');	 
-			console.log("test");
 			items.length = 0;
 	}
 }
 
-function turnPages(page, nbPagesTotal, ligne, nbCycles) {
-var time=screenGuestOrientation.nbResToShow*800+3000;
+function turnPages(page, nbPagesTotal, ligne) {
+	var time=screenGuestOrientation.nbResToShow*800+3000;
+	var nbCycles=Math.ceil(screenGuestOrientation.refreshTime/(nbPagesTotal*time));
+	if ((nbCycles<3)&&(nbPagesTotal<3)) nbCycles=3;
 	var interval = setInterval(function(){//toutes les 8s (toujours complètement arbitraire)
 		
 		if (page<=nbPagesTotal){// s'il y a toujours des pages à afficher, on passe à la suivante
@@ -381,7 +412,6 @@ function addBlancLines(items,ligne) {//rajoute le nombre de lignes vide permetta
 }
 
 function nextRes(iteration) {// fonction qui "tourne la page"
-
 	$.fn.animateHighlight = function(highlightColor, duration) {//la super fonction qui fait un flash coloré
 		var highlightBg = highlightColor || "#FFFF9C";
 		var animateMs = duration || 1500;

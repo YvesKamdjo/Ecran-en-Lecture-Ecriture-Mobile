@@ -135,7 +135,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 	if (screen=jaaulde.utils.cookies.get('screenList'))
 		var screen=jaaulde.utils.cookies.get('screenList');
 	else screen="capacitive";
-	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.defaultPage+"&touchScreenType="+screen+"&refreshMilliSec="+FreebusyRoom.refreshTime;
+	var href="screenFreebusy.html?lang="+FreebusyRoom.lang+"&defaultPage="+FreebusyRoom.home+"&touchScreenType="+screen+"&refreshSec="+FreebusyRoom.refreshTime/1000;
 	var resources=jaaulde.utils.cookies.get('resourcesList');	
 	if(resources){//tiens compte si les salles ont été regroupées, par exemple par étage,...
 		href+="&listResourccesDisplayed="+resources;
@@ -144,6 +144,7 @@ function setBackLinkUrl(){// etablit le lien entre l'interface des salles et l'i
 }
 
 function initDocument(){//initialisation
+	setDefaultParameters();
 	setUrlParameters();//récupère les paramètres url
 	pingServeur();//vérification de l'heure
 	setlanguage();
@@ -240,14 +241,15 @@ function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
 	FreebusyRoom.hidePhone=false;
 	FreebusyRoom.hideSubject=false;
 	FreebusyRoom.btnConf=true;
+	FreebusyRoom.home="none";
 	FreebusyRoom.lang="fr";// par defaut on utilise le français!
 	FreebusyRoom.tactile="capacitive";//par defaut c'est capacitif
 	FreebusyRoom.connectProtocol=window.location.protocol;//receperation du mode de protocole de connexion
 	FreebusyRoom.defaultPage="none";
+	FreebusyRoom.refreshTime=300000;
 	
 }
 function setUrlParameters(){//permet de recuperer les parametres dans l'URL et ecraser si neccessaire les valeurs par defaut!
-	setDefaultParameters();
 	var id=getURLParameter("resource");
 	if(id!="null")//Id de la salle
 		FreebusyRoom.ID= id;
@@ -275,10 +277,9 @@ function setUrlParameters(){//permet de recuperer les parametres dans l'URL et e
 	var list=getURLParameter("roomListButton");
 	if (list!="null") 
 		FreebusyRoom.btnList=list;
-	var refresh=getURLParameter("refreshMilliSec");
+	var refresh=getURLParameter("refreshSec");
 	if (refresh!="null")
-		FreebusyRoom.refreshTime=refresh;
-	else FreebusyRoom.refreshTime=300000;
+		FreebusyRoom.refreshTime=parseInt(refresh, 10)*1000;
 }
 function langForHoursChecking(lang,serv,device){
 	if(lang=="fr")
