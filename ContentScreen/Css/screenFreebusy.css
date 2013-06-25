@@ -149,7 +149,7 @@ li:even
 }
 
 .ui-icon-custom_arrow {
-	background: url("fleche.png") no-repeat 100% !important;
+	background: url("../Img/fleche.png") no-repeat 100% !important;
 	height:100%;
 	width:2em;
 	right:1em !important;

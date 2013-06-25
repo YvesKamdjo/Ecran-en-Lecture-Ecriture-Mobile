@@ -571,10 +571,10 @@ function ajouterSalleLibre(nomSalle, idSalle, nBseats, timeFree){// affiche la s
 	$("li.une-salle-libre").mouseout(function() {
 		$(this).css('background','#ecf3ed');
 	});
-	$(".duree-icon:even").attr('src','icon-duree-light.png');
-	$(".seats-icon:even").attr('src','icon-seats-light.png');
-	$(".duree-icon:odd").attr('src','icon-duree-dark.png');
-	$(".seats-icon:odd").attr('src','icon-seats-dark.png');
+	$(".duree-icon:even").attr('src','ContentScreen/Img/icon-duree-light.png');
+	$(".seats-icon:even").attr('src','ContentScreen/Img/icon-seats-light.png');
+	$(".duree-icon:odd").attr('src','ContentScreen/Img/icon-duree-dark.png');
+	$(".seats-icon:odd").attr('src','ContentScreen/Img/icon-seats-dark.png');
 	$("a:even").css('color','#5e8894');
 	$('#listes-salles-libres').listview('refresh');
 }
@@ -594,10 +594,10 @@ function ajouterSalleOccupee(nomSalle, idSalle, owner){// ajoute la salle dans l
 	$("li.une-salle-occupee").mouseout(function() {
 		$(this).css('background','#ffe7e1');
 	});
-	$(".duree-icon:even").attr('src','icon-duree-light.png');
-	$(".seats-icon:even").attr('src','icon-seats-light.png');
-	$(".duree-icon:odd").attr('src','icon-duree-dark.png');
-	$(".seats-icon:odd").attr('src','icon-seats-dark.png');
+	$(".duree-icon:even").attr('src','ContentScreen/Img/icon-duree-light.png');
+	$(".seats-icon:even").attr('src','ContentScreen/Img/icon-seats-light.png');
+	$(".duree-icon:odd").attr('src','ContentScreen/Img/icon-duree-dark.png');
+	$(".seats-icon:odd").attr('src','ContentScreen/Img/icon-seats-dark.png');
 	$(".indisponible").css('display','none');
 	$("a:even").css('color','#5e8894');
 	$('ul').listview('refresh');

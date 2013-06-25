@@ -1,6 +1,6 @@
 var Common={};//variable globale pour ce fichier
 function launcher(){//le lanceur du programme
-$.getJSON('conf.json', function(json) {
+$.getJSON('ContentScreen/conf.json', function(json) {
 		Common.login = json[0].login;
 		Common.password = json[0].password;
 		Common.baseUrl = json[0].baseUrl;
@@ -73,5 +73,7 @@ function compareTime(time, ref) {//prend deux heures au format "hh:mm" et revoie
 	var t=time.split(":");
 	if (parseInt(t[0],10)<parseInt(r[0],10)) return false;
 	else if ((parseInt(t[0],10)==parseInt(r[0],10))&&(parseInt(t[1],10)<parseInt(r[1],10))) return false;
-	else return true;	
+	else return true;
+	//return (time<ref);
+	
 }
