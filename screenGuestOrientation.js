@@ -171,10 +171,12 @@ function refreshScreen(){
 		statusCode: {
 		  404: function() {
 			alert('Could not contact server.');
+			window.location.reload();
 		  },
 		  500: function() {
 			alert('A server-side error has occurred.');
 			invalidPWorID();
+			window.location.reload();
 		  }
 		},
 	})
@@ -207,7 +209,17 @@ function getUrbaJson(){
 			url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
 			async : false,
-			jsonpCallback: 'fillNewJson',		
+			jsonpCallback: 'fillNewJson',
+		statusCode: {
+		  404: function() {
+			//alert('Could not contact server.');
+			window.location.reload();
+		  },
+		  500: function() {
+			//alert('A server-side error has occurred.');
+			window.location.reload();
+		  }
+		},			
 		})
 }
 	
