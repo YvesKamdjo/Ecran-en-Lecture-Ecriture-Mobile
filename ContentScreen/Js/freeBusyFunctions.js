@@ -1,6 +1,6 @@
 var Common={};//variable globale pour ce fichier
 function launcher(){//le lanceur du programme
-$.getJSON('conf.json', function(json) {
+$.getJSON('ContentScreen/conf.json', function(json) {
 		Common.login = json[0].login;
 		Common.password = json[0].password;
 		Common.baseUrl = json[0].baseUrl;
