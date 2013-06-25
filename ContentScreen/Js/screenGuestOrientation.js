@@ -125,7 +125,7 @@ function setUrlParameters(){
 		screenGuestOrientation.refreshTime=rt;
 	}
 //liste des ressources affichées
-	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
+	var resources=getURLParameter("resources");//parametre URL pour lister les ressources à afficher
 	if(resources!="null"){
 		screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
 		displayedRoomForGuest= resources.split(",");

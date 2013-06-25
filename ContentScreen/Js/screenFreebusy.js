@@ -187,7 +187,7 @@ function setDefaultParameters() {
 
 function setUrlParameters(){//permet de récupérer les identifiants des salles à afficher dans l'URL
 	Freebusy.lang="fr";//la langue par defaut est le français!
-	var resources=getURLParameter("listResourccesDisplayed");//parametre URL pour lister les ressources à afficher
+	var resources=getURLParameter("resources");//parametre URL pour lister les ressources à afficher
 	if(resources!="null"){
 	Freebusy.resourcesList=resources;//la liste des ressources groupees à afficher
 	displayedRoom= resources.split(",");

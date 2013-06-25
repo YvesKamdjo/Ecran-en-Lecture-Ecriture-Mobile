@@ -250,7 +250,7 @@ function setDefaultParameters(){//fixe les valeurs par defaut aux paramètres
 	
 }
 function setUrlParameters(){//permet de recuperer les parametres dans l'URL et ecraser si neccessaire les valeurs par defaut!
-	var id=getURLParameter("resource");
+	var id=getURLParameter("resources");
 	if(id!="null")//Id de la salle
 		FreebusyRoom.ID= id;
 	var h=getURLParameter("hideOwner");
