@@ -984,10 +984,10 @@ function afficherHeureSurFrise(){// pour afficher un curseur pour l'heure sur la
 		var temp=h-8;
 		var pos= temp*uniteHeure+m*uniteMinute-1;//calcul de la position en fonction de l'heure actuelle en pixel
 		if(FreebusyRoom.state=="free")
-			sel.css('background-image','url(curseur-vert.png)');
+			sel.css('background-image','url(ContentScreen/Img/curseur-vert.png)');
 		else
 			if(FreebusyRoom.state=="busy")
-				sel.css('background-image','url(curseur-rouge.png)');
+				sel.css('background-image','url(ContentScreen/Img/curseur-rouge.png)');
 		sel.css('background-position',pos);
 		sel.css('background-size','1% 100%');
 		grisageFrise(pos+4);

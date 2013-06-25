@@ -7,18 +7,18 @@
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
 		
 		<link type="text/css" rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,500,600,700,800,900">
-		<link rel="stylesheet" href="screenFreebusyRoom.css">
+		<link rel="stylesheet" href="ContentScreen/Css/screenFreebusyRoom.css">
 	<title> </title>
 	</head>
 	
 	<body>
 	
-		<img src="load_grey.gif" class="loadgif">
+		<img src="ContentScreen/Img/load_grey.gif" class="loadgif">
 	
 		<div id="entete">
 			<table id="table-entete">
 				<tr>
-					<th id="entete-salle" align="left" valign="top"><a id="link_back" href="screenFreebusy.html"><img src="icon-list.png" id="link_img"></a><div id="nom-salle"></div></th>
+					<th id="entete-salle" align="left" valign="top"><a id="link_back" href="screenFreebusy.html"><img src="ContentScreen/Img/icon-list.png" id="link_img"></a><div id="nom-salle"></div></th>
 					<th id="entete-heure" align="right" valign="bottom"><div id="hourPanel"></div></th>
 				</tr>
 			</table>
@@ -34,7 +34,7 @@
 			<div id="bouton" class="btn_res">
 				<ul id="top-menu" class="btn_res">
 					<li>
-						<button type="button" class="btn_res" id="b_res" onClick="button_res()"><span></span><img src="arrow_d.png" id="b_res_arrow" class="btn_res"> </button>
+						<button type="button" class="btn_res" id="b_res" onClick="button_res()"><span></span><img src="ContentScreen/Img/arrow_d.png" id="b_res_arrow" class="btn_res"> </button>
 						<ul id="sub">
 							<li><div type="button" id="b_res30" class="menu_hour" onClick="res_demand(45);">30 min</div></li>
 						</ul>
@@ -69,9 +69,9 @@
 	</div>
 </body>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="freeBusyFunctions.js"></script>
-		<script type="text/javascript" src="screenFreebusyRoom.js"></script>
-		<script type="text/javascript" src="jquery.cookies.2.2.0.min.js"></script>
+		<script type="text/javascript" src="ContentScreen/Js/freeBusyFunctions.js"></script>
+		<script type="text/javascript" src="ContentScreen/Js/screenFreebusyRoom.js"></script>
+		<script type="text/javascript" src="ContentScreen/Js/jquery.cookies.2.2.0.min.js"></script>
 		<script> 
        launcher();
 		</script>
