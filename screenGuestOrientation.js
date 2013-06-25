@@ -157,6 +157,7 @@ switch(screenGuestOrientation.lang){
 
 function refreshScreen(){
 		getUrbaToken();
+		screenGuestOrientation.json=[];
 		getUrbaJson();
 		displayNewJson(screenGuestOrientation.json);
 }
@@ -231,7 +232,6 @@ function fillNewJson(objJson){
 					if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
 					if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
 					j=j+1;
-					console.log(value.fields[0].value);
 				}
 			}
 			else {
@@ -354,7 +354,6 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 		   'class': 'ligne1 refresh',
 		   html: items.join('')
 		   }).appendTo('table');	 
-			console.log("test");
 			items.length = 0;
 	}
 }
