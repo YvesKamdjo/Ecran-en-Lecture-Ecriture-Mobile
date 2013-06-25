@@ -310,8 +310,6 @@ function displayNewJson(SortedJson){
 		
 	// s'il y a plus d'une page	
 		if (ligne>screenGuestOrientation.nbDisplayedRes){
-		
-			var nbCycles=5;// nombre complètement arbitraire du nombre de fois que l'on reviendra au début avant de rafraichir l'écran
 			
 		//on cache toutes les lignes des pages suivantes
 			for (i=screenGuestOrientation.nbDisplayedRes; i<ligne; i++) {
@@ -325,10 +323,12 @@ function displayNewJson(SortedJson){
 			$("#page").html(page);
 			$("#nbPages").html("/"+(nbPagesTotal+1));
 			$("#pages").show();			
-			turnPages(page, nbPagesTotal, ligne, nbCycles);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
+			turnPages(page, nbPagesTotal, ligne);//"tourne les pages" et rafraichi l'écran quand le nbCycle est atteint
 		}
-		else $("#pages").hide();
+		else {
+		$("#pages").hide();
 		setTimeout("refreshScreen();", screenGuestOrientation.refreshTime);
+		}
 	}
 }
 
@@ -370,8 +370,10 @@ function displayNoRes(items) {//quand il n'y a pas de réservation
 	}
 }
 
-function turnPages(page, nbPagesTotal, ligne, nbCycles) {
-var time=screenGuestOrientation.nbResToShow*800+3000;
+function turnPages(page, nbPagesTotal, ligne) {
+	var time=screenGuestOrientation.nbResToShow*800+3000;
+	var nbCycles=Math.ceil(screenGuestOrientation.refreshTime/(nbPagesTotal*time));
+	if (nbCycles<3) nbCycles=3;
 	var interval = setInterval(function(){//toutes les 8s (toujours complètement arbitraire)
 		
 		if (page<=nbPagesTotal){// s'il y a toujours des pages à afficher, on passe à la suivante
@@ -410,7 +412,6 @@ function addBlancLines(items,ligne) {//rajoute le nombre de lignes vide permetta
 }
 
 function nextRes(iteration) {// fonction qui "tourne la page"
-
 	$.fn.animateHighlight = function(highlightColor, duration) {//la super fonction qui fait un flash coloré
 		var highlightBg = highlightColor || "#FFFF9C";
 		var animateMs = duration || 1500;
