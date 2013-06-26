@@ -17,8 +17,12 @@ function setIdentification(log, pass, url){
 	}
 	if(u=="null")
 	FreebusyRoom.url=url;
-	else
+	else{
+	var l=u.length;
+	if(u.substring(0, 1) != "//") u="//"+u;
+	if(u.substring(l-2,l-1)!="/") u=u+"/";
 	FreebusyRoom.url=u;
+	}
 }
 
 function createDuration(min){//créer une duree au format urba (impossible de demander moins de 30 min) ex:"2013-05-31T10:42:00,2013-05-31T11:12:00"
