@@ -95,7 +95,7 @@ function initDocument(){
 
 function setDefaultParameters() {
 	screenGuestOrientation.lang="fr";
-	screenGuestOrientation.info1="owner";
+	screenGuestOrientation.info1=0;
 	screenGuestOrientation.timeNextBookings=120;
 	screenGuestOrientation.refreshTime=300000;
 	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
@@ -104,8 +104,8 @@ function setDefaultParameters() {
 
 function setUrlParameters(){
 //l'info de la première colonne (organisateur ou objet de la réunion)
-	var info1=getURLParameter("info1");
-	if(info1!="null") screenGuestOrientation.info1=info1; 
+	var info1=getURLParameter("infoToDisplay");
+	if(info1!="null") screenGuestOrientation.info1=parseInt(info1,10); 
 //langue
 	var l=getURLParameter("lang");
 	if(l!="null")
@@ -136,8 +136,6 @@ function setLanguage(){//changement de langue
 switch(screenGuestOrientation.lang){
 	case "fr":
 		$("#entete td").eq(0).html("D&eacutebut");
-		if (screenGuestOrientation.info1=="owner") $("#entete td").eq(1).html("Organisateur");
-		if (screenGuestOrientation.info1=="title") $("#entete td").eq(1).html("Titre");
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
 		$("title").html('Orientation des visiteurs');
@@ -145,8 +143,6 @@ switch(screenGuestOrientation.lang){
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
-		if (screenGuestOrientation.info1=="owner") $("#entete td").eq(1).html("Owner");
-		if (screenGuestOrientation.info1=="title") $("#entete td").eq(1).html("Title");
 		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
 		$("title").html('Guest Orientation');
@@ -237,18 +233,17 @@ function fillNewJson(objJson){
 	$.each(objJson, function(key, value) {
 		stH=getTimeFromUrbaFormat(value.startDate);
 		endH=getTimeFromUrbaFormat(value.endDate);
+		if (j==0) $("#entete td").eq(1).html(value.fields[screenGuestOrientation.info1].displayName);
 		var startMinusInterval=substractTime(stH, interval);
 		if (compareTime(endH,now) && compareTime(now,startMinusInterval)) { // formation d'un nouveau JSON
 			if(displayedRoomForGuest.length>0){// s'il y a des salles à afficher alors,
 				if( tmp.indexOf(value.resource.id)!=-1){//on verifie si elles font partie des bon id et on affiche 
-					if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-					if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
+					newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[screenGuestOrientation.info1].value, "salles": value.resource.displayName};
 					j=j+1;
 				}
 			}
 			else {
-				if (screenGuestOrientation.info1=="owner") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[0].value, "salles": value.resource.displayName};
-				if (screenGuestOrientation.info1=="title") newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[3].value, "salles": value.resource.displayName};
+				newJson[j] = {"heuresDeResa": stH, "organisateurs": value.fields[screenGuestOrientation.info1].value, "salles": value.resource.displayName};
 				j=j+1;
 			}
 		}
