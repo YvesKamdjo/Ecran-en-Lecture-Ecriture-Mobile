@@ -109,6 +109,10 @@ function setUrlParameters(){
 		screenGuestOrientation.resourcesList=resources;//la liste des ressources groupees à afficher
 		displayedRoomForGuest= resources.split(",");
 	}
+	var logo=getURLParameter("urlLogo");//parametre URL pour lister les ressources à afficher
+	if(logo!="null"){
+		$("#logo").attr("src",logo);
+	}
 }
 
 function setLanguage(){//changement de langue
