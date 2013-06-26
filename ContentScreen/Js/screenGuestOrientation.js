@@ -17,8 +17,12 @@ function setIdentification(log, pass,url){
 	}
 	if(u=="null")
 	screenGuestOrientation.url=url;
-	else
+	else{
+	var l=u.length;
+	if(u.substring(0, 1) != "//") u="//"+u;
+	if(u.substring(l-2,l-1)!="/") u=u+"/";
 	screenGuestOrientation.url=u;
+	}
 	}
 
 
