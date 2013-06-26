@@ -95,7 +95,7 @@ function initDocument(){
 
 function setDefaultParameters() {
 	screenGuestOrientation.lang="fr";
-	screenGuestOrientation.info1=0;
+	screenGuestOrientation.info1=2;
 	screenGuestOrientation.timeNextBookings=120;
 	screenGuestOrientation.refreshTime=300000;
 	screenGuestOrientation.nbDisplayedRes=8;//nombre de réservations à montrer "par page"
@@ -104,8 +104,8 @@ function setDefaultParameters() {
 
 function setUrlParameters(){
 //l'info de la première colonne (organisateur ou objet de la réunion)
-	var info1=getURLParameter("infoToDisplay");
-	if(info1!="null") screenGuestOrientation.info1=parseInt(info1,10); 
+	var info1=getURLParameter("fieldToDisplay");
+	if(info1!="null") screenGuestOrientation.info1=parseInt(info1,10)-1; 
 //langue
 	var l=getURLParameter("lang");
 	if(l!="null")
