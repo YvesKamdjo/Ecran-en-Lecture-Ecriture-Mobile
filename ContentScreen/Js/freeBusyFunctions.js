@@ -37,19 +37,6 @@ function setIdentification(log, pass, url){
 	}
 }
 
-function getURLParameterS(name) {//recupere les parametres de l'url. name= nom du paramètre à recuperer
-    return decodeURI(
-        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-    );
-}
-
-function getURLParameterSS(name) {
-	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	results = regex.exec(location.search);
-	return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
 function getURLParameter(name) {
      var match = RegExp('[?&]' + name + '=([^&]*)')
                     .exec(window.location.search);
