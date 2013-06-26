@@ -1,27 +1,6 @@
 var screenGuestOrientation= new Object();
 var displayedRoomForGuest=[];
 
-function setIdentification(log, pass,url){
-	var l,p,u;//login password and URL
-	l=getURLParameter("login");
-	p=getURLParameter("password");
-	u=getURLParameter("url");
-	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
-		screenGuestOrientation.login=log;
-		screenGuestOrientation.password=pass;
-	}
-	else
-	{
-		screenGuestOrientation.login=l;
-		screenGuestOrientation.password=p;
-	}
-	if(u=="null")
-	screenGuestOrientation.url=url;
-	else
-	screenGuestOrientation.url=u;
-	}
-
-
 function getDMY() {
 	var theDate=[];
 	var mois = ["Janvier", "Février", "Mars", 
@@ -139,14 +118,14 @@ switch(screenGuestOrientation.lang){
 		$("#entete td").eq(2).html("Salle");
 		screenGuestOrientation.enCours="en cours";
 		$("title").html('Orientation des visiteurs');
-		screenGuestOrientation.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
+		Common.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 	break;
 	case "en":
 		$("#entete td").eq(0).html("Start time");
 		$("#entete td").eq(2).html("Room name");
 		screenGuestOrientation.enCours="In progress";
 		$("title").html('Guest Orientation');
-		screenGuestOrientation.loginError="The user name or password is incorrect. Please check the configuration file.";
+		Common.loginError="The user name or password is incorrect. Please check the configuration file.";
 	break;
 }
 }
@@ -160,7 +139,7 @@ function refreshScreen(){
 
  function getUrbaToken(){
 	$.ajax({
-		url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'authentication/getToken?login='+screenGuestOrientation.login+'&password='+screenGuestOrientation.password,
+		url : screenGuestOrientation.connectProtocol+Common.url+'authentication/getToken?login='+Common.login+'&password='+Common.password,
 		dataType : 'jsonp',
 		async : false,
 		jsonpCallback: 'setValidToken',
@@ -179,7 +158,7 @@ function refreshScreen(){
 }
 
 function invalidPWorID() {
-	alert(screenGuestOrientation.loginError);
+	alert(Common.loginError);
 }
 
 function setValidToken(newToken){
@@ -202,7 +181,7 @@ function getUrbaJson(){
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	$.ajax({
-			url : screenGuestOrientation.connectProtocol+screenGuestOrientation.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
+			url : screenGuestOrientation.connectProtocol+Common.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+screenGuestOrientation.validToken,
 			dataType : 'jsonp',
 			async : false,
 			jsonpCallback: 'fillNewJson',

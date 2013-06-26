@@ -3,26 +3,6 @@ var displayedRoom=[];
 Freebusy.scrollStep=25;
 Freebusy.scrolling=false;
 
-function setIdentification(log, pass,url){
-	var l,p,u;//login password and URL
-	l=getURLParameter("login");
-	p=getURLParameter("password");
-	u=getURLParameter("url");
-	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
-		Freebusy.login=log;
-		Freebusy.password=pass;
-	}
-	else
-	{
-		Freebusy.login=l;
-		Freebusy.password=p;
-	}
-	if(u=="null")
-	Freebusy.url=url;
-	else
-	Freebusy.url=u;
-}
-
 $.fn.scrollBottom = function() { 
   return ($(window).height()+$("#textarea").scrollTop()-$("#listes-salles-libres").height()-$("#listes-salles-occupees").height());
 };
@@ -146,7 +126,7 @@ function returnHome() {//liens vers la page par défaut
  function getUrbaToken(nextFunction){// récupération d'un token dans le but de faire un appel ajax à l'api
 
 	$.ajax({
-		url : Freebusy.connectProtocol+Freebusy.url+'authentication/getToken?login='+Freebusy.login+'&password='+Freebusy.password,
+		url : Freebusy.connectProtocol+Common.url+'authentication/getToken?login='+Common.login+'&password='+Common.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		statusCode: {
@@ -165,7 +145,7 @@ function returnHome() {//liens vers la page par défaut
 }
 
 function invalidPWorID() {
-	alert(Freebusy.loginError);
+	alert(Common.loginError);
 }
 
 function setValidToken(newToken){
@@ -217,7 +197,7 @@ function setPageLanguage(){
 		Freebusy.pendantOrFor="for ";
 		Freebusy.indispoOrUnava="Unavailable";
 		Freebusy.nbPlaces="seat"
-		Freebusy.loginError="The user name or password is incorrect. Please check the configuration file.";
+		Common.loginError="The user name or password is incorrect. Please check the configuration file.";
 	break;
 	case "fr":
 		$("#salles-libres").html("Salles Libres");
@@ -228,14 +208,14 @@ function setPageLanguage(){
 		Freebusy.indispoOrUnava="Indisponible";
 		$('title').html("Occupation des salles ");
 		Freebusy.nbPlaces="place"
-		Freebusy.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
+		Common.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 	break;
 	}
 }
 
 function getRoomList(){//récupère la liste des salles auprès de l'API
 	$.ajax({
-			'url' : Freebusy.connectProtocol+Freebusy.url+'api/v1/resources?Token='+Freebusy.validToken,
+			'url' : Freebusy.connectProtocol+Common.url+'api/v1/resources?Token='+Freebusy.validToken,
 			'dataType' : 'jsonp',
 			'jsonpCallback': 'fillRoomList'		
 		});
@@ -282,7 +262,7 @@ function createDuration(min){//traduit l'intervale de temps entre maintenant et 
 
 function getFreeRoomList(){//demande à l'API la liste des salles libres dans la prochaine demi-heure
 	$.ajax({
-			url : Freebusy.connectProtocol+Freebusy.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Common.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillFreeRoomList'		
 		});
@@ -324,7 +304,7 @@ function getResInfo() {//demande à l'API la liste des réservations de la journ
 	var endDate=createEndDate();
 	
 	$.ajax({
-			url : Freebusy.connectProtocol+Freebusy.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
+			url : Freebusy.connectProtocol+Common.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+Freebusy.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRooms'		
 		});

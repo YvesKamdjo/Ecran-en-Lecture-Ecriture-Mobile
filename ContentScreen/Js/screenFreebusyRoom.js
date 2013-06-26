@@ -1,30 +1,6 @@
 var FreebusyRoom= new Object();
 FreebusyRoom.pushed=0;
 
-function setIdentification(log, pass, url){
-	var l,p,u;//login password and URL
-	l=getURLParameter("login");
-	p=getURLParameter("password");
-	u=getURLParameter("url");
-	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
-		FreebusyRoom.login=log;
-		FreebusyRoom.password=pass;
-	}
-	else
-	{
-		FreebusyRoom.login=l;
-		FreebusyRoom.password=p;
-	}
-	if(u=="null")
-	FreebusyRoom.url=url;
-	else{
-	var l=u.length;
-	if(u.substring(0, 1) != "//") u="//"+u;
-	if(u.substring(l-2,l-1)!="/") u=u+"/";
-	FreebusyRoom.url=u;
-	}
-}
-
 function createDuration(min){//créer une duree au format urba (impossible de demander moins de 30 min) ex:"2013-05-31T10:42:00,2013-05-31T11:12:00"
 	var now= new Date();
 	var hour = now.getHours(); 
@@ -201,7 +177,7 @@ function returnHome() {//liens vers la page par défaut
 
  function getUrbaToken(function1, param1){// récupération d'un token dans le but de faire un appel ajax à l'api
 	$.ajax({
-		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'authentication/getToken?login='+FreebusyRoom.login+'&password='+FreebusyRoom.password,
+		url : FreebusyRoom.connectProtocol+Common.url+'authentication/getToken?login='+Common.login+'&password='+Common.password,
 		dataType : 'jsonp',
 		jsonpCallback: 'setValidToken',
 		statusCode: {
@@ -220,7 +196,7 @@ function returnHome() {//liens vers la page par défaut
 }
 
 function invalidPWorID() {
-	alert(FreebusyRoom.loginError);
+	alert(Common.loginError);
 }
 
 function setValidToken(newToken){
@@ -305,7 +281,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mProchOrNext="Prochaine r&eacuteunion :";
 			FreebusyRoom.jusquOrUntil="jusqu\'&agrave ";
 			FreebusyRoom.indisOrUnav="Indisponible";//FreebusyRoom.indispoOrUnav="Indisponible"
-			FreebusyRoom.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
+			Common.loginError="Le nom d'utilisateur ou le mot de passe est incorrect. Veuillez vérifier le fichier de configuration.";
 		break;
 		case "en":
 			//FreebusyRoom.mHeure="Caution: You must check the time set for this device";//message pour l'heure!
@@ -319,7 +295,7 @@ function setlanguage(){// permet de changer de langue d'affichage
 			FreebusyRoom.mProchOrNext="Next booking :";
 			FreebusyRoom.jusquOrUntil="Until  ";
 			FreebusyRoom.indisOrUnav="Unavailable";
-			FreebusyRoom.loginError="The user name or password is incorrect. Please check the configuration file.";
+			Common.loginError="The user name or password is incorrect. Please check the configuration file.";
 		break;
 	}
 }
@@ -340,7 +316,7 @@ function deOrFromAndAOrTo(debut,fin){//traduction français<=>anglais
 
 function getRoomInfo(){// récupère les informations de la salle
 	$.ajax({
-			url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
+			url: FreebusyRoom.connectProtocol+Common.url+'api/v1/resources/'+FreebusyRoom.ID+'?Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillRoomInfo',	
 			crossDomain: 'true'
@@ -350,7 +326,7 @@ function getRoomInfo(){// récupère les informations de la salle
 function getFreeRoomList(){// récupère la liste des salles libres
 	$.ajax({
 			type: "GET",
-			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+Common.url+'api/v1/resources?free=between,'+createDuration(30)+'&Token='+FreebusyRoom.validToken,
 			dataType:  'jsonp',
 			jsonpCallback: 'checkRoomVacancy',
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -413,7 +389,7 @@ function getResInfo() {//récupère les réservations
 	var startDate=createStartDate();
 	var endDate=createEndDate();
 	var geturl=$.ajax({
-			url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
+			url : FreebusyRoom.connectProtocol+Common.url+'api/v1/bookings?StartDate='+startDate+"&endDate="+endDate+'&Token='+FreebusyRoom.validToken,
 			dataType : 'jsonp',
 			jsonpCallback: 'fillResListforRoom'
 			}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -459,7 +435,7 @@ function fillResListforRoom(objJson) {// tri par id de la salle
 function getOrder(id) {//les prestations associées à la réservation
 	$.ajax({	
 		type: "GET",
-		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+Common.url+'api/v1/orders/'+id+'?Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'fillOrder',
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -702,7 +678,7 @@ function sendRes(){//envois de la réservation
 	var jsonRes=createJsonRes();
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings?Token='+FreebusyRoom.validToken,
+		url: FreebusyRoom.connectProtocol+Common.url+'api/v1/Bookings?Token='+FreebusyRoom.validToken,
 		contentType: 'application/json; charset=utf-8',
 		data: jsonRes
 		}).done(function( msg ) {
@@ -739,7 +715,7 @@ function getBookingToStop(){//recupère la resa à terminer!
 		blockDiv.remove();
 		$.ajax({
 				type: "GET",
-				url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
+				url: FreebusyRoom.connectProtocol+Common.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken,
 				dataType : 'jsonp',
 				jsonpCallback:"changeEndTime"
 				})
@@ -775,7 +751,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 	var json=JSON.stringify(jsonF);
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
+		url: FreebusyRoom.connectProtocol+Common.url+'api/v1/Bookings/'+FreebusyRoom.resId+'?Token='+FreebusyRoom.validToken+'&httpmethod=PUT',
 		contentType: 'application/json; charset=utf-8',
 		data : json
 		}).done(function(msg){
@@ -786,7 +762,7 @@ function sendBookingToStop(jsonF){//Interrompt la reservation encours en envoyan
 function getRes() {
 	console.log(FreebusyRoom.connectProtocol);
 	var geturl=$.ajax({
-		url : FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
+		url : FreebusyRoom.connectProtocol+Common.url+'api/v1/bookings/'+FreebusyRoom.resId+'?&Token='+FreebusyRoom.validToken,
 		dataType : 'jsonp',
 		jsonpCallback: 'updateResToConfirmPresence'
 	}).fail(function() {console.log("275"); getUrbaToken(getResInfo);});	
@@ -801,7 +777,7 @@ function sendPresenceConfirmation(jsonUpdateConfPres) {//confirmation de la rese
 	json=JSON.stringify(jsonUpdateConfPres);
 	$.ajax({
 		type: "POST",
-		url: FreebusyRoom.connectProtocol+FreebusyRoom.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
+		url: FreebusyRoom.connectProtocol+Common.url+'api/v1/Bookings/'+FreebusyRoom.resId+"?Token="+FreebusyRoom.validToken+"&httpmethod=PUT",
 		contentType: 'application/json; charset=utf-8',
 		data:json
 		}).done(function( msg ) {

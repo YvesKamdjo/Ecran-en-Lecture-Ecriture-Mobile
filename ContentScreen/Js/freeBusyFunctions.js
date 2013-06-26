@@ -1,22 +1,62 @@
 var Common={};//variable globale pour ce fichier
+
 function launcher(){//le lanceur du programme
 $.getJSON('ContentScreen/conf.json', function(json) {
-		Common.login = json[0].login;
-		Common.password = json[0].password;
-		Common.baseUrl = json[0].baseUrl;
+		login = json[0].login;
+		password = json[0].password;
+		baseUrl = json[0].baseUrl;
 	}).done(function() {
-		setIdentification(Common.login, Common.password, Common.baseUrl);
+		setIdentification(login, password, baseUrl);
 		$(document).ready(function() {
 			initDocument();
 		});
 	});
 }
 
-function getURLParameter(name) {//recupere les parametres de l'url. name= nom du paramètre à recuperer
+function setIdentification(log, pass, url){
+	var l,p,u;//login password and URL
+	l=getURLParameter("login");
+	p=getURLParameter("password");
+	u=getURLParameter("url");
+	if(l=="null" || p=="null"){//Si les identifiants ne sont pas dans l'URL, alors on s'authentifie grace à ceux venus du fichier de conf
+		Common.login=log;
+		Common.password=pass;
+	}
+	else
+	{
+		Common.login=l;
+		Common.password=p;
+	}
+	if(u=="null")
+	Common.url=url;
+	else{
+	var l=u.length;
+	if(u.substring(0, 1) != "//") u="//"+u;
+	if(u.substring(l-2,l-1)!="/") u=u+"/";
+	Common.url=u;
+	}
+}
+
+function getURLParameterS(name) {//recupere les parametres de l'url. name= nom du paramètre à recuperer
     return decodeURI(
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
+
+function getURLParameterSS(name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	results = regex.exec(location.search);
+	return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getURLParameter(name) {
+     var match = RegExp('[?&]' + name + '=([^&]*)')
+                    .exec(window.location.search);
+     return match ?
+        decodeURIComponent(match[1].replace(/\+/g, ' '))
+        : "null";
+ }
 
 function getTime(){// retourne l'heure au format "hh:mm"
 	var myDate = new Date(); 
